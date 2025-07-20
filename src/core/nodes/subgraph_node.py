@@ -84,8 +84,7 @@ def call_agent_node(state: Union[ViReJuniorState, ViReSeniorState, ViReManagerSt
     
     system_prompt = SystemMessage(content=formatted_prompt)
     question_prompt = HumanMessage(content=f"question: {state['question']}")
-    history = state.get("messages", [])
-    sequence = [system_prompt, question_prompt] + history
+    sequence = [system_prompt, question_prompt] 
 
     response = llm.invoke(sequence, config)
     

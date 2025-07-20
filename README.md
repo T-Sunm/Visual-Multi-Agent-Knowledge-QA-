@@ -23,6 +23,25 @@ src/
 └── main.py        # Entry point
 ```
 
+vllm serve Qwen/Qwen3-1.7B \
+--port 1234 \
+--gpu-memory-utilization 0.5 \
+--dtype auto \
+--enable-auto-tool-choice \
+--tool-call-parser hermes \
+--trust-remote-code
+
+vllm serve Qwen/Qwen3-1.7B \
+  --port 1234 \
+  --dtype auto \
+  --gpu-memory-utilization 0.5 \
+  --max-model-len 65536 \
+  --rope-scaling '{"rope_type":"yarn","factor":2.0,"original_max_position_embeddings":32768}' \
+  --enable-auto-tool-choice \
+  --tool-call-parser hermes \
+  --trust-remote-code
+
+
 ## 🛠️ Cài đặt
 
 ```bash

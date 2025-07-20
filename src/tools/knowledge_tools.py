@@ -8,13 +8,13 @@ from langchain_community.utilities import (
 )
 
 arxiv_wrapper = ArxivAPIWrapper(
-    top_k_results=2, 
+    top_k_results=1, 
     arxiv_search=None,
     arxiv_exceptions=None
 )
 arxiv = ArxivQueryRun(api_wrapper=arxiv_wrapper)
 
-wikipedia_wrapper = WikipediaAPIWrapper(top_k_results=2, wiki_client=None)
+wikipedia_wrapper = WikipediaAPIWrapper(top_k_results=1, wiki_client=None)
 wikipedia = WikipediaQueryRun(
     api_wrapper=wikipedia_wrapper,
     description="Search for information on a given topic using Wikipedia"
