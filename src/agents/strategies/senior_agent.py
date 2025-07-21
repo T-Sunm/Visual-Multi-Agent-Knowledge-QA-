@@ -9,7 +9,7 @@ class SeniorAgent(Analyst):
         super().__init__(
             name="Senior",
             description="A senior analyst who uses both the VQA model and KBs retrieval to enhance answers.",
-            tools=["vqa_tool", "arxiv", "wikipedia", "lm_knowledge"],
+            tools=["vqa_tool", "arxiv", "wikipedia"],
             system_prompt="""
                 You are **Senior Planner**, an agent that decides which actions to take for image-based Q&A tasks, optionally augmented with external knowledge retrieval.
 

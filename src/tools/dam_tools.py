@@ -76,37 +76,12 @@ def dam_caption_image(image: Union[str, Image.Image]) -> str:
     )
     return result
 
-def dam_extract_knowledge(image: Union[str, Image.Image], question: str, context: str = "") -> str:
+def dam_extract_knowledge(image: Union[str, Image.Image]) -> str:
     img = load_image(image)
     full_mask = Image.new("L", img.size, 255)
     prompt = f"""
         <image>
-        You are given:
-        - Context: a brief textual description of the scene.
-        - Question: a natural-language question about that scene.
-
-        **Task**  
-        Using only your background knowledge (not direct visual recognition), write **exactly 2-3 short factual statements** that would help someone answer the question.
-
-        **Formatting rules**  
-        – Put each statement on its own line.  
-        – No bullets, numbers, or extra text.  
-        – Do **not** repeat the context or question.  
-        – Do **not** reference these instructions.
-
-        **Example**  
-        Context: A snowboarder making a run down a powdery slope on a sunny day.  
-        Question: What is this man on?  
-        LM_Knowledge:  
-        A snowboarder rides on a snowboard.  
-        Snowboarding involves sliding down snow-covered slopes on a single board attached to both feet.  
-        A powdery slope is covered with loose, fluffy snow often found at ski resorts.
-
-        Now apply to the new sample:
-
-        Context: {context}  
-        Question: {question}  
-        LM_Knowledge:
+        Provide a highly detailed description of the image.
         """.strip()
     result = dam.get_description(
         img,

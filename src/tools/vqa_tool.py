@@ -11,10 +11,10 @@ def vqa_tool(image: Union[str, Image.Image], question: str) -> str:
 
 @tool
 def dam_caption_image_tool(image: Union[str, Image.Image]) -> str:
-    """return the caption of the image"""
+    """Generate a short caption describing the image."""
     return dam_caption_image(image)
 
 @tool
-def lm_knowledge(image: Union[str, Image.Image], question: str, context: str = "") -> str:
-    """return the knowledge of the image"""
-    return dam_extract_knowledge(image, question, context)
+def lm_knowledge(image: Union[str, Image.Image]) -> str:
+    """Extract 2–3 background-knowledge facts about the scene to help reason toward an answer."""
+    return dam_extract_knowledge(image)

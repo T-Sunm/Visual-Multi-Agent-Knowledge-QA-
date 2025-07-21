@@ -21,9 +21,9 @@ def tool_node(state: Union[ViReJuniorState, ViReSeniorState, ViReManagerState],
         tool_name = tool_call["name"]
         try:
             if tool_name == "vqa_tool" or tool_name == "lm_knowledge":
-                print(f"Processing {state.get('analyst').name} calls {tool_name}")
-                
-                tool_call["args"]["image"] = pil_to_base64(state.get("image")) 
+                tool_call['args']['image'] = state.get("image")
+                print(f"Processing {state.get('analyst').name} calls {tool_name} with args: {tool_call['args']}")
+                tool_call["args"]["image"] = pil_to_base64(tool_call['args']['image']) 
                 result = tools_registry[tool_name].invoke(tool_call["args"])
 
                 if tool_name == "vqa_tool":
@@ -110,7 +110,7 @@ def final_reasoning_node(state: Union[ViReJuniorState, ViReSeniorState, ViReMana
         'question': state.get("question", ""),
         'candidates': state.get("answer_candidate", ""),
         'KBs_Knowledge': "\n".join(state.get("KBs_Knowledge", [])),
-        'LLM_knowledge': state.get("LLM_Knowledge", "")
+        'LMs_Knowledge': "\n".join(state.get("LMs_Knowledge", []))
     }
     
     # Chỉ format với placeholders có trong prompt
@@ -126,7 +126,7 @@ def final_reasoning_node(state: Union[ViReJuniorState, ViReSeniorState, ViReMana
     final_response = llm.invoke([system_msg, human_msg])
     print("Answer candidate for ", state.get("analyst").name, ":", format_values.get("candidates", None))
     print("KBs_Knowledge for ", state.get("analyst").name, ":", format_values.get("KBs_Knowledge", []))
-    print("LLM_Knowledge for ", state.get("analyst").name, ":", format_values.get("LLM_Knowledge", ""))
+    print("LMs_Knowledge for ", state.get("analyst").name, ":", format_values.get("LMs_Knowledge", ""))
     print(f"Final response for {state.get('analyst').name}:", final_response.content)
     print("--------------------------------")
     return {
@@ -144,9 +144,9 @@ def should_continue(state: Union[ViReJuniorState, ViReSeniorState, ViReManagerSt
     number_of_steps = state.get("number_of_steps", 0)
     
     max_steps = {
-        "Junior": 4,  
-        "Senior": 6,     
-        "Manager": 8    
+        "Junior": 2,  
+        "Senior": 3,     
+        "Manager": 4    
     }.get(state.get("analyst", {}).name)
     
     if number_of_steps >= max_steps:
