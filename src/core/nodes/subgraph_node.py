@@ -20,12 +20,16 @@ def tool_node(state: Union[ViReJuniorState, ViReSeniorState, ViReManagerState],
     for tool_call in tool_calls:
         tool_name = tool_call["name"]
         try:
-            if tool_name == "vqa_tool":
-                print(f"Processing {state.get('analyst').name} calls vqa_tool")
+            if tool_name == "vqa_tool" or tool_name == "lm_knowledge":
+                print(f"Processing {state.get('analyst').name} calls {tool_name}")
                 
                 tool_call["args"]["image"] = pil_to_base64(state.get("image")) 
                 result = tools_registry[tool_name].invoke(tool_call["args"])
-                updates["answer_candidate"] = result
+
+                if tool_name == "vqa_tool":
+                    updates["answer_candidate"] = result
+                elif tool_name == "lm_knowledge":
+                    updates["LMs_Knowledge"] = [result]
                 
             elif tool_name in ["arxiv", "wikipedia"]:
                 print(f"Processing {state.get('analyst').name} calls {tool_name} with args: {tool_call['args']}")
@@ -34,9 +38,7 @@ def tool_node(state: Union[ViReJuniorState, ViReSeniorState, ViReManagerState],
                 # Process and format the result
                 processed_result = _process_knowledge_result(raw_result, tool_name)
                 print("Processed result for", state.get("analyst").name, ":", processed_result)
-                if "KBs_Knowledge" not in updates:
-                    updates["KBs_Knowledge"] = []
-                updates["KBs_Knowledge"].append(processed_result)
+                updates["KBs_Knowledge"] = [processed_result]
             else:
                 result = f"Unknown tool: {tool_name}"
 

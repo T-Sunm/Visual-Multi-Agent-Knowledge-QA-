@@ -42,7 +42,7 @@ class ViReManagerState(MessagesState):
     number_of_steps: int
     answer_candidate: str
     KBs_Knowledge: Annotated[List[str], operator.add]
-    LLM_Knowledge: str
+    LMs_Knowledge: Annotated[List[str], operator.add]
     results: Dict[str, str]
 
 

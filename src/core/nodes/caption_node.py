@@ -1,6 +1,6 @@
-from src.tools.vqa_tool import caption_image
+from src.tools.dam_tools import dam_caption_image
 
 
 def caption_node(state):
-        caption = caption_image(state.get("image"))
+        caption = dam_caption_image(state.get("image"))
         return {"image_caption": caption}

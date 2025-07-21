@@ -1,7 +1,7 @@
 from typing import Dict, Any, Union
 from src.core.graph_builder.main_graph import MainGraphBuilder
 from src.tools.knowledge_tools import arxiv, wikipedia
-from src.tools.vqa_tool import vqa_tool
+from src.tools.vqa_tool import vqa_tool, lm_knowledge
 from datasets import load_dataset
 from PIL import Image
 from src.evaluation.evaluator.accuracy import evaluate_accuracy
@@ -10,7 +10,8 @@ def setup_tools_registry() -> Dict[str, Any]:
     return {
         "vqa_tool": vqa_tool,
         "arxiv": arxiv,
-        "wikipedia": wikipedia, 
+        "wikipedia": wikipedia,
+        "lm_knowledge": lm_knowledge,
     }
 
 # 1) Tải về và sample 100 item

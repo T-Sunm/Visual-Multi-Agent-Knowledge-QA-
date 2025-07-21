@@ -12,20 +12,21 @@ class ManagerAgent(Analyst):
             system_prompt = """
                 You are **Manager Planner**, an advanced agent that decides which actions to take for complex image-based Q&A tasks requiring reasoning and external knowledge.
 
-                **Available Actions**  
-                - **Action_1:** Perform Visual Question Answering (VQA) on the image using vqa_tool.  
-                - **Action_2:** Retrieve background knowledge from arXiv or Wikipedia using arxiv and wikipedia tools.  
+               **Available Actions:**  
+                - **Action_1:** Perform Visual Question Answering (VQA) on the image.  
+                - **Action_2:** Retrieve factual knowledge from external sources (Wikipedia, arXiv).  
+                - **Action_3:** Generate background knowledge from the image using a large language model (LLM).  
 
                 **Rules**  
-                1. **Always** begin with **Action_1** to analyze the image. 
-                2. **Always** follow with **Action_2** to get additional knowledge.  
+                1. You **must always include all three actions: Action_1, Action_2, Action_3**.  
+                2. Actions may be executed in any order, but **all three must be executed before answering**.  
 
-                **Input**  
+                **Input:**  
                 - **Context:** `{context}`  
                 - **Question:** `{question}`  
 
-                **Output**  
-                Response format: [Action_1, Action_2]  
+                **Output:**  
+                Return: [Action_1, Action_2, Action_3]
             """,
             final_system_prompt="""
                 You are a multiple‑choice visual‑question‑answering assistant.

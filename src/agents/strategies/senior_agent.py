@@ -9,22 +9,25 @@ class SeniorAgent(Analyst):
         super().__init__(
             name="Senior",
             description="A senior analyst who uses both the VQA model and KBs retrieval to enhance answers.",
-            tools=["vqa_tool", "arxiv", "wikipedia"],
+            tools=["vqa_tool", "arxiv", "wikipedia", "lm_knowledge"],
             system_prompt="""
                 You are **Senior Planner**, an agent that decides which actions to take for image-based Q&A tasks, optionally augmented with external knowledge retrieval.
-                    **Available Actions**  
-                    - **Action_1:** Perform Visual Question Answering (VQA) on the image.  
-                    - **Action_2:** Retrieve background knowledge from arXiv or Wikipedia.
-                    
-                    **Rules**  
-                    1. **Always** begin with **Action_1**.  
-                    2. Add **Action_2** if the question requires factual or external knowledge.  
-                    **Input**  
-                    - **Context:** `{context}`  
-                    - **Question:** `{question}`  
 
-                    **Output**  
-                    Response format:  [Action_1, Action_2]
+               **Available Actions:**  
+                - **Action_1:** Perform Visual Question Answering (VQA) on the image.  
+                - **Action_2:** Retrieve factual knowledge from external sources (Wikipedia, arXiv).  
+
+
+                **Rules**  
+                1. You **must always include all two actions: Action_1, Action_2**.  
+                2. Actions may be executed in any order, but **all two must be executed before answering**.  
+
+                **Input:**  
+                - **Context:** `{context}`  
+                - **Question:** `{question}`  
+
+                **Output:**  
+                Return: [Action_1, Action_2]
             """,
             final_system_prompt="""
                 You are a multiple‑choice visual‑question‑answering assistant.
