@@ -20,8 +20,8 @@ dataset = load_dataset(
     split="test",
     cache_dir="./DATA"
 )
-sampled = dataset.shuffle(seed=42).select(range(2))
-sampled = sampled.select([1])
+sampled = dataset.shuffle(seed=42).select(range(20))
+# sampled = sampled.select([1])
 
 def run_visual_qa(question: str, image: Union[str, Image.Image]):
     tools_registry = setup_tools_registry()
