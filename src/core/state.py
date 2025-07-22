@@ -14,7 +14,8 @@ class ViReAgentState(MessagesState):
     results: Annotated[List[Dict[str, str]], operator.add]
     final_answer: str
     voting_details: Dict[str, Any]
-
+    phase: str
+    explanation: str
 
 class ViReJuniorState(MessagesState):
     question: str
@@ -24,7 +25,8 @@ class ViReJuniorState(MessagesState):
     number_of_steps: int
     answer_candidate: str
     results: Dict[str, str]
-
+    phase: str
+    explanation: str
 class ViReSeniorState(MessagesState):
     question: str
     image: Union[str, Image.Image]

@@ -20,10 +20,10 @@ class SubGraphBuilder:
     
     def create_agent_subgraph(self, state_class: Type, analyst_instance) -> StateGraph:
         """Create a subgraph for a specific agent type with analyst instance"""
-        workflow = StateGraph(state_class, output=SubgraphOutputState)
+        workflow = StateGraph(state_class)
         
         def agent_node(state, config):
-            state["analyst"] = analyst_instance # Auto inject analyst instance into state in first time
+            state["analyst"] = analyst_instance 
             return call_agent_node(state, config, self.tools_registry)
         
         def tools_node(state):

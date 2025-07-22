@@ -47,8 +47,23 @@ class JuniorAgent(Analyst):
                 Question: {question}  
                 Candidates: {candidates}  
                 Answer:
-        """
+            """
         )
+        self.judge_system_prompt = """
+            You are a judge that evaluates the quality of the answer.
+            You will be given a question, a context, answer, KBs_Knowledge, LMs_Knowledge.
+            You will need to evaluate the quality of the answer and return a explanation of the answer.
+            The explanation should be in the following format:
+            - **Explanation:** <explanation>
+
+            ### Now solve the new task  
+            Context: {context}  
+            Question: {question}  
+            Answer: {answer}  
+            KBs_Knowledge: {KBs_Knowledge}  
+            LMs_Knowledge: {LMs_Knowledge}  
+            Explanation:
+        """
 
 def create_junior_agent() -> JuniorAgent:
     """Factory function to create junior agent"""
