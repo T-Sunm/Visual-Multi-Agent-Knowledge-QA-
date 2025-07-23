@@ -20,8 +20,8 @@ dataset = load_dataset(
     split="test",
     cache_dir="./DATA"
 )
-sampled = dataset.shuffle(seed=42).select(range(20))
-# sampled = sampled.select([1])
+sampled = dataset.shuffle(seed=42).select(range(2))
+sampled = sampled.select([1])
 
 def run_visual_qa(question: str, image: Union[str, Image.Image]):
     tools_registry = setup_tools_registry()
@@ -35,8 +35,9 @@ def run_visual_qa(question: str, image: Union[str, Image.Image]):
     print("-" * 50)
 
     result = graph.invoke(initial_state)
-    
-    return result["final_answer"]
+    answer = result["final_answer"]
+    explanation = result["explanation"]
+    return answer, explanation
 
 def main():
     predictions = []
@@ -47,8 +48,11 @@ def main():
         img = sample["image"]
         gold = sample["multiple_choice_answer"]
 
-        pred = run_visual_qa(question=q, image=img)
+        pred, explanation = run_visual_qa(question=q, image=img)
 
+        print(f"Pred: {pred}")
+        print(f"Explanation: {explanation}")
+        print("-" * 50)
         predictions.append(pred)
         references.append(gold)
 

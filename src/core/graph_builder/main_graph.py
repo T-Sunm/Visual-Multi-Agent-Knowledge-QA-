@@ -19,42 +19,40 @@ class MainGraphBuilder:
         self.subgraph_builder = SubGraphBuilder(tools_registry)
         
     def create_main_workflow(self):
-        """Create the main multi-agent workflow"""
-        main_workflow = StateGraph(ViReAgentState)
+        main = StateGraph(ViReAgentState)
+
+        # 1) Khai báo node
+        main.add_node("caption", caption_node)
+
+        main.add_node("set_pre_phase", set_pre_phase)
+        main.add_node("set_post_phase", set_post_phase)
+
+        main.add_node("junior_analyst", self.subgraph_builder.create_junior_subgraph())
+        main.add_node("senior_analyst", self.subgraph_builder.create_senior_subgraph())
+        main.add_node("manager_analyst", self.subgraph_builder.create_manager_subgraph())
+
+        main.add_node("voting", voting_node)
+
+        # 2) Luồng PRE-vote
+        main.add_edge(START,          "caption")
+        main.add_edge("caption",      "junior_analyst")
+        main.add_edge("caption",      "senior_analyst")
+        main.add_edge("caption",      "manager_analyst")
 
 
-        main_workflow.add_node("set_pre_phase", set_pre_phase)
-        main_workflow.add_node("set_post_phase", set_post_phase)
+        main.add_conditional_edges(
+            "junior_analyst",
+            lambda s: "prevote" if s["phase"] == "prevote" else "postvote",
+            {
+                "prevote": "voting",   # lần 1 → voting
+                "postvote": END        # lần 2 → dừng
+            }
+        )
 
-        # Caption generation
-        main_workflow.add_node("caption", caption_node)
-        # Subgraphs for roles
-        main_workflow.add_node("junior_analyst", self.subgraph_builder.create_junior_subgraph())
-        main_workflow.add_node("senior_analyst", self.subgraph_builder.create_senior_subgraph())
-        main_workflow.add_node("manager_analyst", self.subgraph_builder.create_manager_subgraph())
-        # Voting aggregator
-        main_workflow.add_node("voting", voting_node)
+        main.add_edge("senior_analyst",  "voting")
+        main.add_edge("manager_analyst", "voting")
+        main.add_edge("voting",          "junior_analyst")
 
-        # Edges: initial flow into Junior (pre-vote) and parallel reviewers
-        main_workflow.add_edge(START, "caption")
-        main_workflow.add_edge("caption", "set_pre_phase")
-        main_workflow.add_edge("set_pre_phase", "junior_analyst")
-        main_workflow.add_edge("caption", "senior_analyst")
-        main_workflow.add_edge("caption", "manager_analyst")
-
-        # Voting from all reviewers
-        main_workflow.add_edge("junior_analyst", "voting")
-        main_workflow.add_edge("senior_analyst", "voting")
-        main_workflow.add_edge("manager_analyst", "voting")
-        
-
-        main_workflow.add_edge("voting", "set_post_phase")
-        main_workflow.add_edge("set_post_phase", "junior_analyst")
-        main_workflow.add_edge("senior_analyst", "junior_analyst")
-        main_workflow.add_edge("manager_analyst", "junior_analyst")
-        
-        main_workflow.add_edge("junior_analyst", END)
-
-        return main_workflow.compile()
+        return main.compile()
 
 

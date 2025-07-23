@@ -1,8 +1,9 @@
 from src.agents.base_agent import Analyst
+from pydantic import PrivateAttr
 
 class JuniorAgent(Analyst):
     """Junior analyst that uses only VQA tool"""
-    
+    _judge_system_prompt: str = PrivateAttr()
     def __init__(self):
         super().__init__(
             name="Junior",
@@ -49,7 +50,7 @@ class JuniorAgent(Analyst):
                 Answer:
             """
         )
-        self.judge_system_prompt = """
+        self._judge_system_prompt = """
             You are a judge that evaluates the quality of the answer.
             You will be given a question, a context, answer, KBs_Knowledge, LMs_Knowledge.
             You will need to evaluate the quality of the answer and return a explanation of the answer.

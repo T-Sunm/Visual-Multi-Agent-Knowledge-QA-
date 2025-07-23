@@ -136,7 +136,8 @@ def voting_node(state) -> Dict[str, Any]:
     
     return {
         "final_answer": final_answer,
-        "voting_details": voting_details
+        "voting_details": voting_details,
+        "phase": "postvote"
     }
 
 # def weighted_voting_example():

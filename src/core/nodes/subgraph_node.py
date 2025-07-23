@@ -101,7 +101,8 @@ def call_agent_node(state: Union[ViReJuniorState, ViReSeniorState, ViReManagerSt
 def final_reasoning_node(state: Union[ViReJuniorState, ViReSeniorState, ViReManagerState]) -> Dict[str, Any]:
     """Final reasoning node to synthesize results"""
     if state.get("phase") == "postvote" and state.get("analyst").name == "Junior":
-        base_prompt = state["analyst"].judge_system_prompt
+        print("Running judge system prompt")
+        base_prompt = state["analyst"]._judge_system_prompt
         placeholders = re.findall(r'\{(\w+)\}', base_prompt)
         format_values = {
             'context': state.get("image_caption", ""),
@@ -142,24 +143,26 @@ def final_reasoning_node(state: Union[ViReJuniorState, ViReSeniorState, ViReMana
     print("--------------------------------")
 
     # Return logic for each agent
-    if state.get("phase") == "postvote" and state.get("analyst").name == "Junior":
-        return {
-            "explanation": final_response.content,
-        }
-    elif state.get("analyst").name == "Senior":
-        return {
+
+    if state.get("phase") == "postvote" and state["analyst"].name == "Junior":
+        updates = {"explanation": final_response.content}
+    elif state["analyst"].name == "Senior":
+        updates = {
             "results": [{state["analyst"].name: final_response.content}],
-            "KBs_Knowledge": format_values.get("KBs_Knowledge", "")
+            "final_kbs_knowledge": format_values.get("KBs_Knowledge", "")
         }
-    elif state.get("analyst").name == "Manager":
-        return {
+    elif state["analyst"].name == "Manager":
+        updates = {
             "results": [{state["analyst"].name: final_response.content}],
-            "LMs_Knowledge": format_values.get("LMs_Knowledge", "")
+            "final_lms_knowledge": format_values.get("LMs_Knowledge", "")
         }
-    else: # Junior
-        return {
-            "results": [{state["analyst"].name: final_response.content}],
+    else:               # Junior - prevote
+        updates = {
+            "results": [{state["analyst"].name: final_response.content}]
         }
+
+
+    return {**state, **updates}
 
 
 def should_continue(state: Union[ViReJuniorState, ViReSeniorState, ViReManagerState]) -> str:
@@ -170,9 +173,9 @@ def should_continue(state: Union[ViReJuniorState, ViReSeniorState, ViReManagerSt
     number_of_steps = state.get("number_of_steps", 0)
     
     max_steps = {
-        "Junior": 2,  
-        "Senior": 3,     
-        "Manager": 4    
+        "Junior": 1,  
+        "Senior": 2,     
+        "Manager": 3    
     }.get(state.get("analyst", {}).name)
     
     if number_of_steps >= max_steps:
