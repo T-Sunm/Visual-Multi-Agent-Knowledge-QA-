@@ -35,6 +35,7 @@ class ViReJuniorState(MessagesState):
 
     # Results
     results: Dict[str, str]
+    final_answer: str
 class ViReSeniorState(MessagesState):
     question: str
     image: Union[str, Image.Image]

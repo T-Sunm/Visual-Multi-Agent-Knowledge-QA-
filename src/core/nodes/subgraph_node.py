@@ -108,8 +108,8 @@ def final_reasoning_node(state: Union[ViReJuniorState, ViReSeniorState, ViReMana
             'context': state.get("image_caption", ""),
             'question': state.get("question", ""),
             'answer': state.get("final_answer", ""),
-            'KBs_Knowledge': "\n".join(state.get("KBs_Knowledge", [])),
-            'LMs_Knowledge': "\n".join(state.get("LMs_Knowledge", []))
+            'KBs_Knowledge': state.get("final_kbs_knowledge", ""),
+            'LMs_Knowledge': state.get("final_lms_knowledge", "")
         }
     else:
         # Auto-detect placeholders từ final_system_prompt
@@ -136,11 +136,9 @@ def final_reasoning_node(state: Union[ViReJuniorState, ViReSeniorState, ViReMana
     human_msg = HumanMessage(content="Please provide your final answer.")
     
     final_response = llm.invoke([system_msg, human_msg])
-    print("Answer candidate for ", state.get("analyst").name, ":", format_values.get("candidates", None))
-    print("KBs_Knowledge for ", state.get("analyst").name, ":", format_values.get("KBs_Knowledge", ""))
-    print("LMs_Knowledge for ", state.get("analyst").name, ":", format_values.get("LMs_Knowledge", ""))
     print(f"Final response for {state.get('analyst').name}:", final_response.content)
     print("--------------------------------")
+    print(f"Values: {format_values}")
 
     # Return logic for each agent
 
