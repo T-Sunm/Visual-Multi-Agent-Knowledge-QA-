@@ -1,3 +1,5 @@
+import re
+
 def extract_answer_from_result(result: str) -> str:
     """
     Extract the actual answer from agent result text.
@@ -26,3 +28,23 @@ def extract_answer_from_result(result: str) -> str:
         return result.lower().strip('.,!?;:"')
     
     return ""
+
+def extract_explanation(result: str) -> str:
+    """
+    Extract the explanation from the agent's result text,
+    and remove the <think>...</think> block.
+    """
+    if not result:
+        return ""
+    
+    explanation_part = result
+    # First, check if "Explanation:" marker exists and split from there
+    if "Explanation:" in result:
+        explanation_part = result.split("Explanation:", 1)[-1]
+    
+    # Use regex to remove the <think>...</think> block
+    # re.DOTALL makes '.' match newlines as well
+    cleaned_explanation = re.sub(r'<think>.*?</think>', '', explanation_part, flags=re.DOTALL)
+    
+    # Return the cleaned explanation, stripped of leading/trailing whitespace
+    return cleaned_explanation.strip()

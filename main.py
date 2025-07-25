@@ -5,6 +5,7 @@ from src.tools.vqa_tool import vqa_tool, lm_knowledge
 from datasets import load_dataset
 from PIL import Image
 from src.evaluation.evaluator.accuracy import evaluate_accuracy
+from src.utils.text_processing import extract_explanation
 
 def setup_tools_registry() -> Dict[str, Any]:
     return {
@@ -51,6 +52,7 @@ def main():
         pred, explanation = run_visual_qa(question=q, image=img)
 
         print(f"Pred: {pred}")
+        explanation = extract_explanation(explanation)
         print(f"Explanation: {explanation}")
         print("-" * 50)
         predictions.append(pred)

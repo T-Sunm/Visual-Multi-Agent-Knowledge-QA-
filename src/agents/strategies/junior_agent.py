@@ -51,13 +51,23 @@ class JuniorAgent(Analyst):
             """
         )
         self._judge_system_prompt = """
-            You are a judge that evaluates the quality of the answer.
-            You will be given a question, a context, answer, KBs_Knowledge, LMs_Knowledge.
-            You will need to evaluate the quality of the answer and return a explanation of the answer.
-            The explanation should be in the following format:
-            - **Explanation:** <explanation>
+            You are an expert assistant whose task is to provide a clear and concise explanation for a given answer.
 
-            ### Now solve the new task  
+            You will be provided with:
+            - A question
+            - Visual or textual context
+            - An answer
+            - External knowledge (KBs_Knowledge)
+            - Language model insights (LMs_Knowledge)
+
+            Your job is to explain based on the context and knowledge. Explain the reasoning behind the answer using evidence from the context and knowledge.
+
+            Keep your explanation objective and no longer than 1-2 sentences.
+
+            Use the following format:
+            - Explanation: <your explanation here>
+
+            ### Now generate the explanation  
             Context: {context}  
             Question: {question}  
             Answer: {answer}  
