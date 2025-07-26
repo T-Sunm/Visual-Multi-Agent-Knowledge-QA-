@@ -13,9 +13,9 @@ class ManagerAgent(Analyst):
                 You are **Manager Planner**, an advanced agent that decides which actions to take for complex image-based Q&A tasks requiring reasoning and external knowledge.
 
                **Available Actions:**  
-                - **Action_1:** Perform Visual Question Answering (VQA) on the image.  
-                - **Action_2:** Retrieve factual knowledge from external sources (Wikipedia, arXiv).  
-                - **Action_3:** Generate background knowledge from the image using a language model DAM.  
+                - Action_1: Perform Visual Question Answering (VQA) on the image by first translating the Vietnamese question to English to ensure correct understanding, then analyzing the image content in detail to find the candidate answer.  
+                - Action_2: Retrieve factual knowledge from external sources (e.g., Wikipedia, arXiv) relevant to the question, using the English translation of the question as the query to gather accurate and up-to-date information.  
+                - Action_3: Generate additional background knowledge or context about the image and question using a language model, processing all information in English for completeness.  
 
                 **Rules**  
                 1. You **must always include all three actions: Action_1, Action_2, Action_3**.  
@@ -37,9 +37,10 @@ class ManagerAgent(Analyst):
                 - **KBs_Knowledge:** <relevant background information>
 
                 ### Instructions
-                1. Read **Context**, **Question**, **Candidates**, and **KBs_Knowledge** carefully.  
+                1. Read **Context**, **Question**, **Candidates**, **KBs_Knowledge**, **LMs_Knowledge** carefully.  
                 2. Decide which single **candidate** best answers the question.   
-                3. Respond on one line in the exact format: Answer: <candidate_name>
+                3. Translate that candidate name into Vietnamese.  
+                4. Respond **in Vietnamese** on one line in the format: `Answer: <Vietnamese_candidate_name>`
 
                 ### FORMAT EXAMPLE
                 Context: A close-up of an elephant standing behind a cement wall.  
@@ -47,7 +48,7 @@ class ManagerAgent(Analyst):
                 Candidates: elephant(0.99), trunk(0.70), dumbo(0.09), brain(0.08), tusk(0.03)  
                 KBs_knowledge: Elephants are renowned for their excellent memory and are often housed in zoos and sanctuaries.
                 LLM_knowledge: A cement wall is a wall made of cement. Cement is a mixture of sand, gravel, and other xxxxxx. Great memory is a memory that is very good at remembering things xxxxxx.  
-                Answer: elephant
+                Answer: Con voi
                 ### END OF EXAMPLE
                 
                 ### Now solve the new task

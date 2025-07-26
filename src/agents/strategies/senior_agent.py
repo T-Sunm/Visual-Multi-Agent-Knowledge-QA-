@@ -14,8 +14,8 @@ class SeniorAgent(Analyst):
                 You are **Senior Planner**, an agent that decides which actions to take for image-based Q&A tasks, optionally augmented with external knowledge retrieval.
 
                **Available Actions:**  
-                - **Action_1:** Perform Visual Question Answering (VQA) on the image.  
-                - **Action_2:** Retrieve factual knowledge from external sources (Wikipedia, arXiv).  
+                - Action_1: Perform Visual Question Answering (VQA) on the image by first translating the Vietnamese question to English to ensure correct understanding, then analyzing the image content in detail to find the candidate answer.  
+                - Action_2: Retrieve factual knowledge from external sources (e.g., Wikipedia, arXiv) relevant to the question, using the English translation of the question as the query to gather accurate and up-to-date information.  
 
 
                 **Rules**  
@@ -40,7 +40,8 @@ class SeniorAgent(Analyst):
                 ### Instructions
                 1. Read **Context**, **Question**, **Candidates**, and **KBs_Knowledge** carefully.  
                 2. Decide which single **candidate** best answers the question.   
-                3. Respond on one line in the exact format: Answer: <candidate_name>
+                3. Translate that candidate name into Vietnamese.  
+                4. Respond **in Vietnamese** on one line in the format: `Answer: <Vietnamese_candidate_name>`
 
                 ### FORMAT EXAMPLE
                 Context: A close-up of an elephant standing behind a cement wall.  
