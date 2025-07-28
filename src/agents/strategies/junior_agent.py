@@ -72,7 +72,7 @@ class JuniorAgent(Analyst):
                 - Do **not** output “Answer:” (the answer is already provided).  
                 - Do **not** add markdown, numbering, or any extra text.
 
-            ### MINI EXAMPLE (for style)
+            ### EXAMPLE
             Context: Albert Einstein was a theoretical physicist who developed the theory of relativity.
             Question: Who developed the theory of relativity?
             Answer: Albert Einstein

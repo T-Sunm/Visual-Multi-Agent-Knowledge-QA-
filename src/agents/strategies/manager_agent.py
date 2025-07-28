@@ -42,7 +42,7 @@ class ManagerAgent(Analyst):
                 3. Translate that candidate name into Vietnamese.  
                 4. Respond **in Vietnamese** on one line in the format: `Answer: <Vietnamese_candidate_name>`
 
-                ### FORMAT EXAMPLE
+                ### EXAMPLE
                 Context: A close-up of an elephant standing behind a cement wall.  
                 Question: What item in the picture is purported to have a great memory?  
                 Candidates: elephant(0.99), trunk(0.70), dumbo(0.09), brain(0.08), tusk(0.03)  

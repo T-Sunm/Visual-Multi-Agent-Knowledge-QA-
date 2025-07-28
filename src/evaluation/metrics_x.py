@@ -22,7 +22,7 @@ class VQAXEvaluator:
     - SPICE
     - BERTScore
     """
-    def __init__(self, device: str = "cuda:2"):
+    def __init__(self, device: str = "cuda:0"):
         """
         Initialize the evaluator with all necessary metric calculators.
         
