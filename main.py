@@ -5,6 +5,7 @@ from src.core.graph_builder.main_graph import MainGraphBuilder
 from src.tools.knowledge_tools import arxiv, wikipedia
 from src.tools.vqa_tool import vqa_tool, lm_knowledge
 from PIL import Image
+from tqdm import tqdm
 from src.evaluation.metrics_x import VQAXEvaluator
 from src.utils.text_processing import extract_explanation
 
@@ -43,16 +44,8 @@ for item in data:
 # Limit samples for testing
 sampled = samples[:650]
 
-def run_visual_qa(question: str, image: Union[str, Image.Image]):
-    tools_registry = setup_tools_registry()
-    builder = MainGraphBuilder(tools_registry)
-    graph = builder.create_main_workflow()
-
+def run_visual_qa(question: str, image: Union[str, Image.Image], graph):
     initial_state = {"question": question, "image": image}
-
-    print(f"Q: {question}")
-    print(f"Image: {image}")
-    print("-" * 50)
 
     result = graph.invoke(initial_state)
     answer = result["final_answer"]
@@ -60,23 +53,24 @@ def run_visual_qa(question: str, image: Union[str, Image.Image]):
     return answer, explanation
 
 def main():
+    tools_registry = setup_tools_registry()
+    builder = MainGraphBuilder(tools_registry)
+    graph = builder.create_main_workflow()
+
     predicted_answers = []
     ground_truth_answers = []
     predicted_explanations = {}
     ground_truth_explanations = {}
 
-    for i, sample in enumerate(sampled):
+    for sample in tqdm(sampled, desc="Processing samples"):
         q = sample["question"]
         img = sample["image"]
         gold_answer = sample["answer"]
         gold_explanation = sample["explanation"]
 
-        pred_answer, pred_explanation = run_visual_qa(question=q, image=img)
+        pred_answer, pred_explanation = run_visual_qa(question=q, image=img, graph=graph)
 
-        print(f"Pred: {pred_answer}")
         pred_explanation = extract_explanation(pred_explanation)
-        print(f"Explanation: {pred_explanation}")
-        print("-" * 50)
 
         predicted_answers.append(pred_answer)
         ground_truth_answers.append(gold_answer)

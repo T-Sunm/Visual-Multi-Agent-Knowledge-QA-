@@ -22,7 +22,6 @@ def tool_node(state: Union[ViReJuniorState, ViReSeniorState, ViReManagerState],
         try:
             if tool_name == "vqa_tool" or tool_name == "lm_knowledge":
                 tool_call['args']['image'] = state.get("image")
-                print(f"Processing {state.get('analyst').name} calls {tool_name} with args: {tool_call['args']}")
                 tool_call["args"]["image"] = pil_to_base64(tool_call['args']['image']) 
                 result = tools_registry[tool_name].invoke(tool_call["args"])
 
@@ -32,12 +31,10 @@ def tool_node(state: Union[ViReJuniorState, ViReSeniorState, ViReManagerState],
                     updates["LMs_Knowledge"] = [result]
                 
             elif tool_name in ["arxiv", "wikipedia"]:
-                print(f"Processing {state.get('analyst').name} calls {tool_name} with args: {tool_call['args']}")
                 raw_result = tools_registry[tool_name].invoke(tool_call["args"])
                 
                 # Process and format the result
                 processed_result = _process_knowledge_result(raw_result, tool_name)
-                print("Processed result for", state.get("analyst").name, ":", processed_result)
                 updates["KBs_Knowledge"] = [processed_result]
             else:
                 result = f"Unknown tool: {tool_name}"
@@ -101,7 +98,6 @@ def call_agent_node(state: Union[ViReJuniorState, ViReSeniorState, ViReManagerSt
 def final_reasoning_node(state: Union[ViReJuniorState, ViReSeniorState, ViReManagerState]) -> Dict[str, Any]:
     """Final reasoning node to synthesize results"""
     if state.get("phase") == "postvote" and state.get("analyst").name == "Junior":
-        print("Running judge system prompt")
         base_prompt = state["analyst"]._judge_system_prompt
         placeholders = re.findall(r'\{(\w+)\}', base_prompt)
         format_values = {
@@ -136,9 +132,6 @@ def final_reasoning_node(state: Union[ViReJuniorState, ViReSeniorState, ViReMana
     human_msg = HumanMessage(content="Please provide your final answer.")
     
     final_response = llm.invoke([system_msg, human_msg])
-    print(f"Final response for {state.get('analyst').name}:", final_response.content)
-    print("--------------------------------")
-    print(f"Values: {format_values}")
 
     # Return logic for each agent
 
@@ -177,7 +170,6 @@ def should_continue(state: Union[ViReJuniorState, ViReSeniorState, ViReManagerSt
     }.get(state.get("analyst", {}).name)
     
     if number_of_steps >= max_steps:
-        print(f"Reached max steps ({max_steps}), stopping ReAct loop")
         return "final_reasoning"
     # If no tool calls, go to final reasoning  
     if not getattr(last_message, "tool_calls", None):
