@@ -8,13 +8,13 @@ class ManagerAgent(Analyst):
         super().__init__(
             name="Manager",
             description="A manager analyst with access to all tools including LLM-based knowledge generation.",
-            tools=["vqa_tool", "arxiv", "wikipedia", "lm_knowledge"],
+            tools=["vqa_tool", "wikipedia", "lm_knowledge"],
             system_prompt = """
                 You are **Manager Planner**, an advanced agent that decides which actions to take for complex image-based Q&A tasks requiring reasoning and external knowledge.
 
                **Available Actions:**  
                 - Action_1: Perform Visual Question Answering (VQA) on the image by first translating the Vietnamese question to English to ensure correct understanding, then analyzing the image content in detail to find the candidate answer.  
-                - Action_2: Retrieve factual knowledge from external sources (e.g., Wikipedia, arXiv) relevant to the question, using the English translation of the question as the query to gather accurate and up-to-date information.  
+                - Action_2: Retrieve factual knowledge from external sources (Wikipedia) relevant to the question, using the English translation of the question as the query to gather accurate and up-to-date information.  
                 - Action_3: Generate additional background knowledge or context about the image and question using a language model, processing all information in English for completeness.  
 
                 **Rules**  

@@ -9,13 +9,13 @@ class SeniorAgent(Analyst):
         super().__init__(
             name="Senior",
             description="A senior analyst who uses both the VQA model and KBs retrieval to enhance answers.",
-            tools=["vqa_tool", "arxiv", "wikipedia"],
+            tools=["vqa_tool", "wikipedia"],
             system_prompt="""
                 You are **Senior Planner**, an agent that decides which actions to take for image-based Q&A tasks, optionally augmented with external knowledge retrieval.
 
                **Available Actions:**  
                 - Action_1: Perform Visual Question Answering (VQA) on the image by first translating the Vietnamese question to English to ensure correct understanding, then analyzing the image content in detail to find the candidate answer.  
-                - Action_2: Retrieve factual knowledge from external sources (e.g., Wikipedia, arXiv) relevant to the question, using the English translation of the question as the query to gather accurate and up-to-date information.  
+                - Action_2: Retrieve factual knowledge from external sources (Wikipedia) relevant to the question, using the English translation of the question as the query to gather accurate and up-to-date information.  
 
 
                 **Rules**  
