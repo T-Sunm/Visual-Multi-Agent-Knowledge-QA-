@@ -1,5 +1,6 @@
 import json
 import os
+import time
 from typing import Dict, Any, Union
 from src.core.graph_builder.main_graph import MainGraphBuilder
 from src.tools.knowledge_tools import arxiv, wikipedia
@@ -62,15 +63,25 @@ def main():
     predicted_explanations = {}
     ground_truth_explanations = {}
 
-    for sample in tqdm(sampled, desc="Processing samples"):
+    for i, sample in enumerate(tqdm(sampled, desc="Processing samples")):
         q = sample["question"]
         img = sample["image"]
         gold_answer = sample["answer"]
         gold_explanation = sample["explanation"]
+        sample_id = sample["question_id"]
 
+        print(f"\n--- Sample {i+1}/{len(sampled)} (ID: {sample_id}) ---")
+        
+        start_time = time.time()
+        print("Invoking graph...")
         pred_answer, pred_explanation = run_visual_qa(question=q, image=img, graph=graph)
+        end_time = time.time()
+        
+        print(f"Graph invocation finished in {end_time - start_time:.2f} seconds.")
 
+        print("Extracting explanation...")
         pred_explanation = extract_explanation(pred_explanation)
+        print("Explanation extracted.")
 
         predicted_answers.append(pred_answer)
         ground_truth_answers.append(gold_answer)

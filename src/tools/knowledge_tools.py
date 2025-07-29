@@ -21,10 +21,12 @@ wikipedia = WikipediaQueryRun(
 )
 
 
+@rate_limiter.rate_limit("arxiv", ARXIV_DELAY)
 def search_arxiv(query: str) -> str:
     """Search for information on a given topic using Arxiv"""
     return arxiv.run(query)
 
+@rate_limiter.rate_limit("wikipedia", WIKIPEDIA_DELAY)
 def search_wikipedia(query: str) -> str:
     """Search for information on a given topic using Wikipedia"""
     return wikipedia.invoke(query)
