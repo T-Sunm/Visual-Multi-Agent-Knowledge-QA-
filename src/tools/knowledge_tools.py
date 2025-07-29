@@ -6,6 +6,12 @@ from langchain_community.utilities import (
     ArxivAPIWrapper,
     WikipediaAPIWrapper,
 )
+from src.utils.rate_limiter import rate_limiter
+
+# Rate limits according to API docs
+ARXIV_DELAY = 3.0 
+WIKIPEDIA_DELAY = 2.0 
+
 
 arxiv_wrapper = ArxivAPIWrapper(
     top_k_results=1, 

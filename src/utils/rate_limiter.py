@@ -2,9 +2,6 @@ import time
 import threading
 from functools import wraps
 
-# Rate limits according to API docs
-ARXIV_DELAY = 3.0 
-WIKIPEDIA_DELAY = 2.0 
 
 class RateLimiter:
     def __init__(self):
