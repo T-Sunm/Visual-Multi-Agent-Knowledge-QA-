@@ -43,7 +43,7 @@ for item in data:
     samples.append(sample)
 
 # Limit samples for testing
-sampled = samples[:200]
+sampled = samples[:300]
 
 def run_visual_qa(question: str, image: Union[str, Image.Image], graph):
     initial_state = {"question": question, "image": image}
@@ -118,7 +118,7 @@ def main():
     }
 
     # Save results to a JSON file
-    output_filename = f"evaluation_results_{num_samples}_samples.json"
+    output_filename = f"evaluation_results_0_to_{num_samples}_samples.json"
     with open(output_filename, 'w', encoding='utf-8') as f:
         json.dump(results_to_save, f, ensure_ascii=False, indent=4)
     
