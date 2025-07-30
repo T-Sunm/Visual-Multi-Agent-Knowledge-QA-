@@ -25,8 +25,9 @@ src/
 
 vllm serve Qwen/Qwen3-1.7B \
 --port 1234 \
---gpu-memory-utilization 0.5 \
 --dtype auto \
+--gpu-memory-utilization 0.6 \
+--max-model-len 4096 \
 --enable-auto-tool-choice \
 --tool-call-parser hermes \
 --trust-remote-code
