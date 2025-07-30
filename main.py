@@ -43,7 +43,7 @@ for item in data:
     samples.append(sample)
 
 # Limit samples for testing
-sampled = samples[:100]
+sampled = samples[:200]
 
 def run_visual_qa(question: str, image: Union[str, Image.Image], graph):
     initial_state = {"question": question, "image": image}
@@ -79,9 +79,7 @@ def main():
         
         print(f"Graph invocation finished in {end_time - start_time:.2f} seconds.")
 
-        print("Extracting explanation...")
         pred_explanation = extract_explanation(pred_explanation)
-        print("Explanation extracted.")
 
         predicted_answers.append(pred_answer)
         ground_truth_answers.append(gold_answer)

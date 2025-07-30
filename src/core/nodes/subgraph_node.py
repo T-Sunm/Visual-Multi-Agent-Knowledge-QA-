@@ -24,7 +24,7 @@ def tool_node(state: Union[ViReJuniorState, ViReSeniorState, ViReManagerState],
                 tool_call['args']['image'] = state.get("image")
                 tool_call["args"]["image"] = pil_to_base64(tool_call['args']['image']) 
                 result = tools_registry[tool_name].invoke(tool_call["args"])
-
+                print(f"Agent: {state['analyst'].name} - Tool: {tool_name}")
                 if tool_name == "vqa_tool":
                     updates["answer_candidate"] = result
                 elif tool_name == "lm_knowledge":
@@ -32,7 +32,7 @@ def tool_node(state: Union[ViReJuniorState, ViReSeniorState, ViReManagerState],
                 
             elif tool_name in ["arxiv", "wikipedia"]:
                 raw_result = tools_registry[tool_name].invoke(tool_call["args"])
-                
+                print(f"Agent: {state['analyst'].name} - Tool: {tool_name}")
                 # Process and format the result
                 processed_result = _process_knowledge_result(raw_result, tool_name)
                 updates["KBs_Knowledge"] = [processed_result]
