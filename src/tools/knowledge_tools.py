@@ -10,7 +10,7 @@ from src.utils.rate_limiter import rate_limiter
 
 # Rate limits according to API docs
 ARXIV_DELAY = 3.0 
-WIKIPEDIA_DELAY = 2.0 
+WIKIPEDIA_DELAY = 3.0 
 
 
 arxiv_wrapper = ArxivAPIWrapper(
