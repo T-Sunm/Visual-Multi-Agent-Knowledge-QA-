@@ -1,7 +1,9 @@
 import json
 import os
+os.environ["CUDA_VISIBLE_DEVICES"] = "2"  # Use the second GPU (index 2)
 import time
 from typing import Dict, Any, Union
+import torch
 from src.core.graph_builder.main_graph import MainGraphBuilder
 from src.tools.knowledge_tools import arxiv, wikipedia
 from src.tools.vqa_tool import vqa_tool, lm_knowledge
@@ -43,7 +45,7 @@ for item in data:
     samples.append(sample)
 
 # Limit samples for testing
-sampled = samples[:300]
+sampled = samples[:20]
 
 def run_visual_qa(question: str, image: Union[str, Image.Image], graph):
     initial_state = {"question": question, "image": image}
@@ -97,8 +99,17 @@ def main():
     predicted_answer_indices = [answer_to_idx[ans] for ans in predicted_answers]
     ground_truth_answer_indices = [answer_to_idx[ans] for ans in ground_truth_answers]
 
+    # Release memory from the main graph and models before explanation evaluation
+    print("\nReleasing main graph and associated models from memory...")
+    del graph
+    del builder
+    del tools_registry
+    if torch.cuda.is_available():
+        torch.cuda.empty_cache()
+    print("Memory released.")
+
     # Compute metrics using the evaluator
-    print("Computing evaluation metrics...")
+    print("\nComputing evaluation metrics...")
     answer_metrics = evaluator.compute_answer_metrics(
         predicted_answer_indices, ground_truth_answer_indices
     )

@@ -23,7 +23,7 @@ src/
 └── main.py        # Entry point
 ```
 
-vllm serve Qwen/Qwen3-1.7B \
+CUDA_VISIBLE_DEVICES=2 vllm serve Qwen/Qwen3-1.7B \
 --port 1234 \
 --dtype auto \
 --gpu-memory-utilization 0.6 \

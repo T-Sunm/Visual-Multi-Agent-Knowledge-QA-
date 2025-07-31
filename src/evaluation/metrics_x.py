@@ -43,7 +43,7 @@ class VQAXEvaluator:
     - SPICE
     - BERTScore
     """
-    def __init__(self, device: str = "cuda:0"):
+    def __init__(self, device: str = "cuda"):
         """
         Initialize the evaluator with all necessary metric calculators.
         
@@ -158,7 +158,7 @@ class VQAXEvaluator:
         all_preds = [pred[0] for pred in processed_preds.values()]
         all_refs = [ref[0] for ref in processed_refs.values()]
         
-        P, R, F1 = self.bert_scorer.score(all_preds, all_refs)
+        P, R, F1 = self.bert_scorer.score(all_preds, all_refs, batch_size=16)
         
         metrics.update({
             'bertscore_p': P.mean().item(),
