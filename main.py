@@ -45,7 +45,7 @@ for item in data:
     samples.append(sample)
 
 # Limit samples for testing
-sampled = samples[:20]
+sampled = samples[:300]
 
 def run_visual_qa(question: str, image: Union[str, Image.Image], graph):
     initial_state = {"question": question, "image": image}

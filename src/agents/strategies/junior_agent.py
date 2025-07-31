@@ -66,7 +66,7 @@ class JuniorAgent(Analyst):
 
             **Strict output rules**
             1. Write the explanation in **Vietnamese**.
-            2. Briefly explain why you gave your answer.
+            2. Briefly explain why you gave your answer in one sentence.
             3. Output must follow the exact format  
                 `Explanation: <giải thích tiếng Việt>`  
                 - Do **not** output “Answer:” (the answer is already provided).  
