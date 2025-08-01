@@ -6,7 +6,7 @@ from src.agents.strategies.manager_agent import ManagerAgent
 import operator
 from PIL import Image
 from typing import Union
-
+from typing import Optional
 class ViReAgentState(MessagesState):
     question: str
     image: Union[str, Image.Image]
@@ -14,17 +14,28 @@ class ViReAgentState(MessagesState):
     results: Annotated[List[Dict[str, str]], operator.add]
     final_answer: str
     voting_details: Dict[str, Any]
-
+    phase: str
+    explanation: str
+    final_kbs_knowledge: str
+    final_lms_knowledge: str
 
 class ViReJuniorState(MessagesState):
     question: str
     image: Union[str, Image.Image]
     analyst: JuniorAgent
-    image_caption: str
+    phase: str
     number_of_steps: int
+    image_caption: str
     answer_candidate: str
-    results: Dict[str, str]
+    
+    # Explanation
+    explanation: str
+    final_kbs_knowledge: str
+    final_lms_knowledge: str
 
+    # Results
+    results: Dict[str, str]
+    final_answer: str
 class ViReSeniorState(MessagesState):
     question: str
     image: Union[str, Image.Image]
@@ -32,7 +43,12 @@ class ViReSeniorState(MessagesState):
     image_caption: str
     number_of_steps: int
     answer_candidate: str
+
+    # Knowledge
     KBs_Knowledge: Annotated[List[str], operator.add]
+    final_kbs_knowledge: str
+    
+    # Results
     results: Dict[str, str]
 class ViReManagerState(MessagesState):
     question: str
@@ -41,10 +57,25 @@ class ViReManagerState(MessagesState):
     image_caption: str
     number_of_steps: int
     answer_candidate: str
+
+    # Knowledge
     KBs_Knowledge: Annotated[List[str], operator.add]
     LMs_Knowledge: Annotated[List[str], operator.add]
+    final_lms_knowledge: str
+    
+    # Results
     results: Dict[str, str]
 
 
-class SubgraphOutputState(MessagesState):
+class JuniorOutputState(MessagesState):
+    phase: str
+    results: Optional[Dict[str, str]] = None
+    explanation: Optional[str] = None
+
+class SeniorOutputState(MessagesState):
     results: Dict[str, str]
+    final_kbs_knowledge: str
+
+class ManagerOutputState(MessagesState):
+    results: Dict[str, str]
+    final_lms_knowledge: str

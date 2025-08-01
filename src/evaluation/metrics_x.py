@@ -10,6 +10,27 @@ from pycocoevalcap.spice.spice import Spice
 from bert_score import BERTScorer
 from sklearn.metrics import accuracy_score, f1_score
 import torch
+import re
+import unicodedata
+
+def clean_text(text: str) -> str:
+    """
+    Làm sạch chuỗi trước khi gửi tới pycocoevalcap.Meteor
+    - Thay thế mọi biến thể xuống dòng và '|||' bằng khoảng trắng
+    - Loại bỏ ký tự điều khiển (Unicode category == 'Cc')
+    - Gom nhiều khoảng trắng liên tiếp thành 1
+    """
+    text = (
+        text.replace("|||", " ")
+            .replace("\r\n", " ")
+            .replace("\n", " ")
+            .replace("\r", " ")
+            .replace("\u2028", " ")
+            .replace("\u2029", " ")
+    )
+    text = "".join(ch for ch in text if unicodedata.category(ch) != "Cc")
+    text = re.sub(r"\s+", " ", text).strip()
+    return text
 
 class VQAXEvaluator:
     """
@@ -22,7 +43,7 @@ class VQAXEvaluator:
     - SPICE
     - BERTScore
     """
-    def __init__(self, device: str = "cuda:2"):
+    def __init__(self, device: str = "cuda"):
         """
         Initialize the evaluator with all necessary metric calculators.
         
@@ -65,8 +86,8 @@ class VQAXEvaluator:
                     if len(predictions[k][0].strip()) > 0 and 
                     len(references[k][0].strip()) > 0]
         
-        processed_preds = {k: predictions[k] for k in valid_ids}
-        processed_refs = {k: references[k] for k in valid_ids}
+        processed_preds = {k: [clean_text(predictions[k][0])] for k in valid_ids}
+        processed_refs = {k: [clean_text(references[k][0])] for k in valid_ids}
         
         return processed_preds, processed_refs
 
@@ -137,7 +158,7 @@ class VQAXEvaluator:
         all_preds = [pred[0] for pred in processed_preds.values()]
         all_refs = [ref[0] for ref in processed_refs.values()]
         
-        P, R, F1 = self.bert_scorer.score(all_preds, all_refs)
+        P, R, F1 = self.bert_scorer.score(all_preds, all_refs, batch_size=16)
         
         metrics.update({
             'bertscore_p': P.mean().item(),

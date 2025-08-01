@@ -13,3 +13,6 @@ matplotlib==3.10.3
 huggingface-hub==0.33.4
 datasets==4.0.0
 vllm==0.9.2
+pycocoevalcap==1.2
+bert_score==0.3.13
+scikit_learn==1.5.2

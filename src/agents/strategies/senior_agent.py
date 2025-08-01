@@ -9,13 +9,13 @@ class SeniorAgent(Analyst):
         super().__init__(
             name="Senior",
             description="A senior analyst who uses both the VQA model and KBs retrieval to enhance answers.",
-            tools=["vqa_tool", "arxiv", "wikipedia"],
+            tools=["vqa_tool", "wikipedia"],
             system_prompt="""
                 You are **Senior Planner**, an agent that decides which actions to take for image-based Q&A tasks, optionally augmented with external knowledge retrieval.
 
                **Available Actions:**  
-                - **Action_1:** Perform Visual Question Answering (VQA) on the image.  
-                - **Action_2:** Retrieve factual knowledge from external sources (Wikipedia, arXiv).  
+                - Action_1: Perform Visual Question Answering (VQA) on the image by first translating the Vietnamese question to English to ensure correct understanding, then analyzing the image content in detail to find the candidate answer.  
+                - Action_2: Retrieve factual knowledge from external sources (Wikipedia) relevant to the question, using the English translation of the question as the query to gather accurate and up-to-date information.  
 
 
                 **Rules**  
@@ -40,14 +40,15 @@ class SeniorAgent(Analyst):
                 ### Instructions
                 1. Read **Context**, **Question**, **Candidates**, and **KBs_Knowledge** carefully.  
                 2. Decide which single **candidate** best answers the question.   
-                3. Respond on one line in the exact format: Answer: <candidate_name>
+                3. Translate that candidate name into Vietnamese.  
+                4. Respond **in Vietnamese** on one line in the format: `Answer: <Vietnamese_candidate_name>`
 
-                ### FORMAT EXAMPLE
+                ### EXAMPLE
                 Context: A close-up of an elephant standing behind a cement wall.  
                 Question: What item in the picture is purported to have a great memory?  
                 Candidates: elephant(0.99), trunk(0.70), dumbo(0.09), brain(0.08), tusk(0.03)  
                 KBs_Knowledge: Elephants are renowned for their excellent memory and are often housed in zoos and sanctuaries.  
-                Answer: elephant
+                Answer: Con voi
                 ### END OF EXAMPLE
                 
                 ### Now solve the new task

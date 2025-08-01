@@ -22,22 +22,19 @@ def tool_node(state: Union[ViReJuniorState, ViReSeniorState, ViReManagerState],
         try:
             if tool_name == "vqa_tool" or tool_name == "lm_knowledge":
                 tool_call['args']['image'] = state.get("image")
-                print(f"Processing {state.get('analyst').name} calls {tool_name} with args: {tool_call['args']}")
                 tool_call["args"]["image"] = pil_to_base64(tool_call['args']['image']) 
                 result = tools_registry[tool_name].invoke(tool_call["args"])
-
+                print(f"Agent: {state['analyst'].name} - Tool: {tool_name}")
                 if tool_name == "vqa_tool":
                     updates["answer_candidate"] = result
                 elif tool_name == "lm_knowledge":
                     updates["LMs_Knowledge"] = [result]
                 
             elif tool_name in ["arxiv", "wikipedia"]:
-                print(f"Processing {state.get('analyst').name} calls {tool_name} with args: {tool_call['args']}")
                 raw_result = tools_registry[tool_name].invoke(tool_call["args"])
-                
+                print(f"Agent: {state['analyst'].name} - Tool: {tool_name}")
                 # Process and format the result
                 processed_result = _process_knowledge_result(raw_result, tool_name)
-                print("Processed result for", state.get("analyst").name, ":", processed_result)
                 updates["KBs_Knowledge"] = [processed_result]
             else:
                 result = f"Unknown tool: {tool_name}"
@@ -97,20 +94,31 @@ def call_agent_node(state: Union[ViReJuniorState, ViReSeniorState, ViReManagerSt
     }
 
 
+
 def final_reasoning_node(state: Union[ViReJuniorState, ViReSeniorState, ViReManagerState]) -> Dict[str, Any]:
     """Final reasoning node to synthesize results"""
-    
-    # Auto-detect placeholders từ final_system_prompt
-    base_prompt = state["analyst"].final_system_prompt
-    placeholders = re.findall(r'\{(\w+)\}', base_prompt)
-    
-    # Prepare available values
-    format_values = {
-        'context': state.get("image_caption", ""),
-        'question': state.get("question", ""),
-        'candidates': state.get("answer_candidate", ""),
-        'KBs_Knowledge': "\n".join(state.get("KBs_Knowledge", [])),
-        'LMs_Knowledge': "\n".join(state.get("LMs_Knowledge", []))
+    if state.get("phase") == "postvote" and state.get("analyst").name == "Junior":
+        base_prompt = state["analyst"]._judge_system_prompt
+        placeholders = re.findall(r'\{(\w+)\}', base_prompt)
+        format_values = {
+            'context': state.get("image_caption", ""),
+            'question': state.get("question", ""),
+            'answer': state.get("final_answer", ""),
+            'KBs_Knowledge': state.get("final_kbs_knowledge", ""),
+            'LMs_Knowledge': state.get("final_lms_knowledge", "")
+        }
+    else:
+        # Auto-detect placeholders từ final_system_prompt
+        base_prompt = state["analyst"].final_system_prompt
+        placeholders = re.findall(r'\{(\w+)\}', base_prompt)
+        
+        # Prepare available values
+        format_values = {
+            'context': state.get("image_caption", ""),
+            'question': state.get("question", ""),
+            'candidates': state.get("answer_candidate", ""),
+            'KBs_Knowledge': "\n".join(state.get("KBs_Knowledge", [])),
+            'LMs_Knowledge': "\n".join(state.get("LMs_Knowledge", []))
     }
     
     # Chỉ format với placeholders có trong prompt
@@ -124,16 +132,28 @@ def final_reasoning_node(state: Union[ViReJuniorState, ViReSeniorState, ViReMana
     human_msg = HumanMessage(content="Please provide your final answer.")
     
     final_response = llm.invoke([system_msg, human_msg])
-    print("Answer candidate for ", state.get("analyst").name, ":", format_values.get("candidates", None))
-    print("KBs_Knowledge for ", state.get("analyst").name, ":", format_values.get("KBs_Knowledge", []))
-    print("LMs_Knowledge for ", state.get("analyst").name, ":", format_values.get("LMs_Knowledge", ""))
-    print(f"Final response for {state.get('analyst').name}:", final_response.content)
-    print("--------------------------------")
-    return {
-        "messages": [final_response],
-        "results": [{state["analyst"].name: final_response.content}],
-        "number_of_steps": state.get("number_of_steps", 0) + 1
-    }
+
+    # Return logic for each agent
+
+    if state.get("phase") == "postvote" and state["analyst"].name == "Junior":
+        updates = {"explanation": final_response.content}
+    elif state["analyst"].name == "Senior":
+        updates = {
+            "results": [{state["analyst"].name: final_response.content}],
+            "final_kbs_knowledge": format_values.get("KBs_Knowledge", "")
+        }
+    elif state["analyst"].name == "Manager":
+        updates = {
+            "results": [{state["analyst"].name: final_response.content}],
+            "final_lms_knowledge": format_values.get("LMs_Knowledge", "")
+        }
+    else:               # Junior - prevote
+        updates = {
+            "results": [{state["analyst"].name: final_response.content}]
+        }
+
+
+    return {**state, **updates}
 
 
 def should_continue(state: Union[ViReJuniorState, ViReSeniorState, ViReManagerState]) -> str:
@@ -144,13 +164,12 @@ def should_continue(state: Union[ViReJuniorState, ViReSeniorState, ViReManagerSt
     number_of_steps = state.get("number_of_steps", 0)
     
     max_steps = {
-        "Junior": 2,  
-        "Senior": 3,     
-        "Manager": 4    
+        "Junior": 1,  
+        "Senior": 2,     
+        "Manager": 3    
     }.get(state.get("analyst", {}).name)
     
     if number_of_steps >= max_steps:
-        print(f"Reached max steps ({max_steps}), stopping ReAct loop")
         return "final_reasoning"
     # If no tool calls, go to final reasoning  
     if not getattr(last_message, "tool_calls", None):

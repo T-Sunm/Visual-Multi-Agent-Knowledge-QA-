@@ -6,7 +6,9 @@ from src.core.state import (
     ViReJuniorState, 
     ViReSeniorState, 
     ViReManagerState,
-    SubgraphOutputState
+    JuniorOutputState,
+    SeniorOutputState,
+    ManagerOutputState
 )
 from src.agents.strategies.junior_agent import JuniorAgent
 from src.agents.strategies.senior_agent import SeniorAgent
@@ -18,12 +20,12 @@ class SubGraphBuilder:
     def __init__(self, tools_registry: Dict[str, Any]):
         self.tools_registry = tools_registry
     
-    def create_agent_subgraph(self, state_class: Type, analyst_instance) -> StateGraph:
+    def create_agent_subgraph(self, state_class: Type, analyst_instance, output_state) -> StateGraph:
         """Create a subgraph for a specific agent type with analyst instance"""
-        workflow = StateGraph(state_class, output=SubgraphOutputState)
+        workflow = StateGraph(state_class, output=output_state)
         
         def agent_node(state, config):
-            state["analyst"] = analyst_instance # Auto inject analyst instance into state in first time
+            state["analyst"] = analyst_instance 
             return call_agent_node(state, config, self.tools_registry)
         
         def tools_node(state):
@@ -55,18 +57,18 @@ class SubGraphBuilder:
     def create_junior_subgraph(self):
         """Create subgraph for Junior Analyst"""
         junior_analyst = JuniorAgent()
-        workflow = self.create_agent_subgraph(ViReJuniorState, junior_analyst)
+        workflow = self.create_agent_subgraph(ViReJuniorState, junior_analyst, JuniorOutputState)
         return workflow.compile()
     
     def create_senior_subgraph(self):
         """Create subgraph for Senior Analyst"""
         senior_analyst = SeniorAgent()
-        workflow = self.create_agent_subgraph(ViReSeniorState, senior_analyst)
+        workflow = self.create_agent_subgraph(ViReSeniorState, senior_analyst, SeniorOutputState)
         return workflow.compile()
     
     def create_manager_subgraph(self):
         """Create subgraph for Manager Analyst"""
         manager_analyst = ManagerAgent()
-        workflow = self.create_agent_subgraph(ViReManagerState, manager_analyst)
+        workflow = self.create_agent_subgraph(ViReManagerState, manager_analyst, ManagerOutputState)
         return workflow.compile()
 
