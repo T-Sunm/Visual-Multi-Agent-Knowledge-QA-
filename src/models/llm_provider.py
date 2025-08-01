@@ -15,9 +15,9 @@ def get_llm(with_tools: Optional[List[Any]] = None, temperature: float = 0):
         ChatOpenAI instance, optionally bound with tools
     """
     llm = ChatOpenAI(
-        base_url="http://127.0.0.1:1234/v1",   # your vLLM server
-        api_key=SecretStr("lm_studio"),         # dummy key
-        model="Qwen/Qwen3-1.7B",       # <— specify your served model
+        base_url="http://127.0.0.1:1234/v1",   
+        api_key=SecretStr("lm_studio"),        
+        model="Qwen/Qwen3-1.7B",      
         temperature=temperature,
     )
     

@@ -80,12 +80,8 @@ def call_agent_node(state: Union[ViReJuniorState, ViReSeniorState, ViReManagerSt
     format_dict = {key: format_values[key] for key in placeholders if key in format_values}
     
     formatted_prompt = base_prompt.format(**format_dict)
-    
-    system_prompt = SystemMessage(content=formatted_prompt)
-    question_prompt = HumanMessage(content=f"question: {state['question']}")
-    sequence = [system_prompt, question_prompt] 
 
-    response = llm.invoke(sequence, config)
+    response = llm.invoke(formatted_prompt, config)
     
     return {
         "messages": state["messages"] + [response],
@@ -129,12 +125,10 @@ def final_reasoning_node(state: Union[ViReJuniorState, ViReSeniorState, ViReMana
     llm = get_llm(temperature=0.1)
     
     system_msg = SystemMessage(content=final_system_prompt)
-    human_msg = HumanMessage(content="Please provide your final answer.")
     
-    final_response = llm.invoke([system_msg, human_msg])
+    final_response = llm.invoke(system_msg)
 
     # Return logic for each agent
-
     if state.get("phase") == "postvote" and state["analyst"].name == "Junior":
         updates = {"explanation": final_response.content}
     elif state["analyst"].name == "Senior":
