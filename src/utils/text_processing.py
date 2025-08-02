@@ -1,33 +1,39 @@
 import re
+from typing import Tuple
 
-def extract_answer_from_result(result: str) -> str:
+
+TAG_PATTERN = re.compile(
+    r"<(?:think)>(.*?)</(?:think)>",  # khớp <think>…</think>
+    re.DOTALL | re.IGNORECASE,
+)
+ANSWER_PATTERN = re.compile(r"Answer:\s*(.*?)(?:\n\n|</think>)", re.IGNORECASE | re.DOTALL)
+
+def extract_answer_from_result(result: str) -> Tuple[str, str]:
     """
-    Extract the actual answer from agent result text.
-    Assumes the answer is the last word/phrase after parsing.
+    Trả về (answer, evidence) từ chuỗi kết quả của agent.
+    - answer  : nội dung sau 'Answer:' (đã chuẩn hoá về lower case & bỏ dấu câu đầu/cuối)
+    - evidence: nội dung bên trong thẻ <think> 
     """
     if not result:
-        return ""
-    
-    # Try to extract answer after "Answer:" pattern
-    if "Answer:" in result:
-        answer_part = result.split("Answer:")[-1].strip()
-        # Get the first word/phrase as the answer
-        answer = answer_part.split()[0] if answer_part.split() else ""
-        return answer.lower().strip('.,!?;:"')
-    
-    # If no "Answer:" pattern, use the last sentence as answer
-    sentences = result.strip().split('.')
-    if sentences:
-        answer = sentences[-1].strip()
-        # Get the first word as answer if it's a short phrase
-        if len(answer.split()) <= 3:
-            return answer.lower().strip('.,!?;:"')
-    
-    # Fallback: use the whole result if it's short enough
-    if len(result.split()) <= 3:
-        return result.lower().strip('.,!?;:"')
-    
-    return ""
+        return "", ""
+
+    # --- Evidence ----------------------------------------------------------
+    evidence_match = TAG_PATTERN.search(result)
+    evidence = evidence_match.group(1).strip() if evidence_match else ""
+
+    # --- Answer ------------------------------------------------------------
+    answer_match = ANSWER_PATTERN.search(result)
+    if answer_match:
+        answer_raw = answer_match.group(1).strip()
+    else:  # fallback: câu cuối cùng
+        sentences = [s.strip() for s in result.strip().split('.') if s.strip()]
+        answer_raw = sentences[-1] if sentences else ""
+
+    # chuẩn hoá answer: bỏ ký tự thừa và về lower-case
+    answer = re.sub(r'^[\W_]+|[\W_]+$', '', answer_raw).lower()
+
+    return answer, evidence
+
 
 def extract_explanation(result: str) -> str:
     """

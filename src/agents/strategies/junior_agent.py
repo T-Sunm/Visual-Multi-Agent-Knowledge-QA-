@@ -1,9 +1,7 @@
 from src.agents.base_agent import Analyst
-from pydantic import PrivateAttr
 
 class JuniorAgent(Analyst):
     """Junior analyst that uses only VQA tool"""
-    _judge_system_prompt: str = PrivateAttr()
     def __init__(self):
         super().__init__(
             name="Junior",
@@ -51,45 +49,6 @@ class JuniorAgent(Analyst):
                 Answer:
             """
         )
-        self._judge_system_prompt = """
-            You are an expert evaluator whose task is to give a clear, evidence‑based explanation for a given answer.
-
-            You will receive (all in English):
-            - Context (visual or textual)
-            - Question
-            - Answer (chosen candidate)
-            - External knowledge (KBs_Knowledge)
-            - Language‑model insights (LMs_Knowledge)
-
-            **Your goal**
-            Explain—briefly and objectively—*why* the Answer is correct, citing cues from Context and/or Knowledge.
-
-            **Strict output rules**
-            1. Write the explanation in **Vietnamese**.
-            2. Briefly explain why you gave your answer in one sentence.
-            3. Output must follow the exact format  
-                `Explanation: <giải thích tiếng Việt>`  
-                - Do **not** output “Answer:” (the answer is already provided).  
-                - Do **not** add markdown, numbering, or any extra text.
-
-            ### EXAMPLE
-            Context: Albert Einstein was a theoretical physicist who developed the theory of relativity.
-            Question: Who developed the theory of relativity?
-            Answer: Albert Einstein
-            KBs_Knowledge: Einstein formulated the theory in 1905.
-            LMs_Knowledge: The theory of relativity was developed by Albert Einstein.
-            Explanation: Albert Einstein chính là người đã phát triển thuyết tương đối.
-            ### END EXAMPLE
-
-            ### Now generate the explanation
-            Context: {context}
-            Question: {question}
-            Answer: {answer}
-            KBs_Knowledge: {KBs_Knowledge}
-            LMs_Knowledge: {LMs_Knowledge}
-            Explanation:
-        """
-
 
 def create_junior_agent() -> JuniorAgent:
     """Factory function to create junior agent"""

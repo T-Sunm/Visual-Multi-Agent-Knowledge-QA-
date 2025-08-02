@@ -23,14 +23,16 @@ src/
 └── main.py        # Entry point
 ```
 
-CUDA_VISIBLE_DEVICES=2 vllm serve Qwen/Qwen3-1.7B \
---port 1234 \
---dtype auto \
---gpu-memory-utilization 0.6 \
---max-model-len 4096 \
---enable-auto-tool-choice \
---tool-call-parser hermes \
---trust-remote-code
+CUDA_VISIBLE_DEVICES=2 \
+vllm serve Qwen/Qwen3-1.7B \
+  --port 1234 \
+  --dtype auto \
+  --gpu-memory-utilization 0.5 \
+  --max-model-len 4096 \
+  --override-generation-config '{"max_new_tokens":512}' \
+  --enable-auto-tool-choice \
+  --tool-call-parser hermes \
+  --trust-remote-code
 
 vllm serve Qwen/Qwen3-1.7B \
   --port 1234 \

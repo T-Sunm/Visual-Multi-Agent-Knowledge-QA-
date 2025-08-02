@@ -1,7 +1,7 @@
 from typing import Union, Dict, Any
 import json
 from langchain_core.runnables import RunnableConfig
-from langchain_core.messages import ToolMessage, SystemMessage, HumanMessage
+from langchain_core.messages import ToolMessage
 from src.core.state import ViReJuniorState, ViReSeniorState, ViReManagerState
 from src.models.llm_provider import get_llm
 from src.utils.tools_utils import _process_knowledge_result
@@ -93,23 +93,12 @@ def call_agent_node(state: Union[ViReJuniorState, ViReSeniorState, ViReManagerSt
 
 def final_reasoning_node(state: Union[ViReJuniorState, ViReSeniorState, ViReManagerState]) -> Dict[str, Any]:
     """Final reasoning node to synthesize results"""
-    if state.get("phase") == "postvote" and state.get("analyst").name == "Junior":
-        base_prompt = state["analyst"]._judge_system_prompt
-        placeholders = re.findall(r'\{(\w+)\}', base_prompt)
-        format_values = {
-            'context': state.get("image_caption", ""),
-            'question': state.get("question", ""),
-            'answer': state.get("final_answer", ""),
-            'KBs_Knowledge': state.get("final_kbs_knowledge", ""),
-            'LMs_Knowledge': state.get("final_lms_knowledge", "")
-        }
-    else:
-        # Auto-detect placeholders từ final_system_prompt
-        base_prompt = state["analyst"].final_system_prompt
-        placeholders = re.findall(r'\{(\w+)\}', base_prompt)
+    # Auto-detect placeholders từ final_system_prompt
+    base_prompt = state["analyst"].final_system_prompt
+    placeholders = re.findall(r'\{(\w+)\}', base_prompt)
         
-        # Prepare available values
-        format_values = {
+    # Prepare available values
+    format_values = {
             'context': state.get("image_caption", ""),
             'question': state.get("question", ""),
             'candidates': state.get("answer_candidate", ""),
@@ -124,30 +113,15 @@ def final_reasoning_node(state: Union[ViReJuniorState, ViReSeniorState, ViReMana
     
     llm = get_llm(temperature=0.1)
     
-    system_msg = SystemMessage(content=final_system_prompt)
-    
-    final_response = llm.invoke(system_msg)
-
+    final_response = llm.invoke(final_system_prompt)
+    print(f"Final response: {final_response.content}")
+    answer, evidence = extract_answer_from_result(final_response.content)
     # Return logic for each agent
-    if state.get("phase") == "postvote" and state["analyst"].name == "Junior":
-        updates = {"explanation": final_response.content}
-    elif state["analyst"].name == "Senior":
-        updates = {
-            "results": [{state["analyst"].name: final_response.content}],
-            "final_kbs_knowledge": format_values.get("KBs_Knowledge", "")
-        }
-    elif state["analyst"].name == "Manager":
-        updates = {
-            "results": [{state["analyst"].name: final_response.content}],
-            "final_lms_knowledge": format_values.get("LMs_Knowledge", "")
-        }
-    else:               # Junior - prevote
-        updates = {
-            "results": [{state["analyst"].name: final_response.content}]
-        }
-
-
-    return {**state, **updates}
+    # Return logic for each agent
+    return {
+        "results": [{state["analyst"].name: answer}],
+        "evidences": [{state["analyst"].name: evidence}]
+    }
 
 
 def should_continue(state: Union[ViReJuniorState, ViReSeniorState, ViReManagerState]) -> str:

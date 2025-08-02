@@ -17,16 +17,18 @@ class ManagerAgent(Analyst):
                 - Action_2: Retrieve factual knowledge from external sources (Wikipedia) relevant to the question, using the English translation of the question as the query to gather accurate and up-to-date information.  
                 - Action_3: Generate additional background knowledge or context about the image and question using a language model, processing all information in English for completeness.  
 
-                **Rules**  
-                1. You **must always include all three actions: Action_1, Action_2, Action_3**.  
-                2. Actions may be executed in any order, but **all three must be executed before answering**.  
+                **Use the following format:**
+                Thought: your chain-of-thought for this step  
+                Action: the action you will take (Action_1 / Action_2 / Action_3 / “finish”)  
+                Action Input: the input for that action  
+                Observation: the result returned by that action   
+                (Repeat any number of Thought/Action/Action Input/Observation blocks as needed.)
+
+                When all three required actions have been executed, finish with: Finish
 
                 **Input:**  
                 - **Context:** `{context}`  
                 - **Question:** `{question}`  
-
-                **Output:**  
-                Return: [Action_1, Action_2, Action_3]
             """,
             final_system_prompt="""
                 You are a multiple‑choice visual‑question‑answering assistant.

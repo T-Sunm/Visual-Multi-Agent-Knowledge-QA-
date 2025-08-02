@@ -1,7 +1,7 @@
 import json
 import os
 os.environ["CUDA_VISIBLE_DEVICES"] = "2"  # Use the second GPU (index 2)
-import time
+import time 
 from typing import Dict, Any, Union
 import torch
 from src.core.graph_builder.main_graph import MainGraphBuilder
@@ -10,7 +10,6 @@ from src.tools.vqa_tool import vqa_tool, lm_knowledge
 from PIL import Image
 from tqdm import tqdm
 from src.evaluation.metrics_x import VQAXEvaluator
-from src.utils.text_processing import extract_explanation
 
 def setup_tools_registry() -> Dict[str, Any]:
     return {
@@ -45,7 +44,7 @@ for item in data:
     samples.append(sample)
 
 # Limit samples for testing
-sampled = samples[:300]
+sampled = samples[:1]
 
 def run_visual_qa(question: str, image: Union[str, Image.Image], graph):
     initial_state = {"question": question, "image": image}
@@ -53,6 +52,8 @@ def run_visual_qa(question: str, image: Union[str, Image.Image], graph):
     result = graph.invoke(initial_state)
     answer = result["final_answer"]
     explanation = result["explanation"]
+    evidences = result["evidences"]
+    print(f"Evidences: {evidences}")
     return answer, explanation
 
 def main():
@@ -80,8 +81,6 @@ def main():
         end_time = time.time()
         
         print(f"Graph invocation finished in {end_time - start_time:.2f} seconds.")
-
-        pred_explanation = extract_explanation(pred_explanation)
 
         predicted_answers.append(pred_answer)
         ground_truth_answers.append(gold_answer)

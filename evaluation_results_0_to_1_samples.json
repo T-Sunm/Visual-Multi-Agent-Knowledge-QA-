@@ -1,0 +1,18 @@
+{
+    "num_samples": 1,
+    "metrics": {
+        "answer_accuracy": 0.0,
+        "answer_f1_score": 0.0,
+        "bleu_1": 1.6701700756842463e-20,
+        "bleu_2": 5.281541521658795e-16,
+        "bleu_3": 1.670170076797695e-14,
+        "bleu_4": 9.39205654357949e-14,
+        "meteor": 0.0,
+        "cider": 0.0,
+        "rouge_l": 0.0,
+        "spice": 0.0,
+        "bertscore_p": 0.6268630027770996,
+        "bertscore_r": 0.5388418436050415,
+        "bertscore_f": 0.5795292258262634
+    }
+}

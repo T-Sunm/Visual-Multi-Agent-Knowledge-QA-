@@ -11,31 +11,31 @@ class ViReAgentState(MessagesState):
     question: str
     image: Union[str, Image.Image]
     image_caption: str
+    
+    #---- Results ----#
     results: Annotated[List[Dict[str, str]], operator.add]
     final_answer: str
     voting_details: Dict[str, Any]
-    phase: str
+
+    #---- Explanation ----#
     explanation: str
-    final_kbs_knowledge: str
-    final_lms_knowledge: str
+    evidences: Annotated[List[Dict[str, str]], operator.add]
 
 class ViReJuniorState(MessagesState):
     question: str
     image: Union[str, Image.Image]
     analyst: JuniorAgent
-    phase: str
     number_of_steps: int
     image_caption: str
     answer_candidate: str
     
-    # Explanation
-    explanation: str
-    final_kbs_knowledge: str
-    final_lms_knowledge: str
-
     # Results
     results: Dict[str, str]
     final_answer: str
+
+    #---- Evidence ----#
+    evidences: Dict[str, str]
+
 class ViReSeniorState(MessagesState):
     question: str
     image: Union[str, Image.Image]
@@ -43,13 +43,13 @@ class ViReSeniorState(MessagesState):
     image_caption: str
     number_of_steps: int
     answer_candidate: str
-
-    # Knowledge
-    KBs_Knowledge: Annotated[List[str], operator.add]
-    final_kbs_knowledge: str
     
     # Results
     results: Dict[str, str]
+
+    #---- Evidence ----#
+    evidences: Dict[str, str]
+
 class ViReManagerState(MessagesState):
     question: str
     image: Union[str, Image.Image]
@@ -58,24 +58,20 @@ class ViReManagerState(MessagesState):
     number_of_steps: int
     answer_candidate: str
 
-    # Knowledge
-    KBs_Knowledge: Annotated[List[str], operator.add]
-    LMs_Knowledge: Annotated[List[str], operator.add]
-    final_lms_knowledge: str
-    
     # Results
     results: Dict[str, str]
 
+    #---- Evidence ----#
+    evidences: Dict[str, str]
 
 class JuniorOutputState(MessagesState):
-    phase: str
     results: Optional[Dict[str, str]] = None
-    explanation: Optional[str] = None
+    evidences: Optional[Dict[str, str]] = None
 
 class SeniorOutputState(MessagesState):
-    results: Dict[str, str]
-    final_kbs_knowledge: str
+    results: Optional[Dict[str, str]] = None
+    evidences: Optional[Dict[str, str]] = None
 
 class ManagerOutputState(MessagesState):
-    results: Dict[str, str]
-    final_lms_knowledge: str
+    results: Optional[Dict[str, str]] = None
+    evidences: Optional[Dict[str, str]] = None

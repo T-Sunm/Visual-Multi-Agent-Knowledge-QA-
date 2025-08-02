@@ -1,3 +1,4 @@
+import torch
 from PIL import Image
 from typing import Union
 from src.utils.image_processing import load_image
@@ -33,16 +34,17 @@ def dam_candidate_answers(image: Union[str, Image.Image], question: str) -> str:
     Question: {question}  
     Answer:
     """
-    result = dam.get_description(
-        img,
-        full_mask,
-        prompt,
-        streaming=False,
-        temperature=0.2,
-        top_p=0.5,
-        num_beams=1,
-        max_new_tokens=512
-    )
+    with torch.no_grad():
+        result = dam.get_description(
+            img,
+            full_mask,
+            prompt,
+            streaming=False,
+            temperature=0.2,
+            top_p=0.5,
+            num_beams=1,
+            max_new_tokens=512
+        )
     return result
 
 def dam_caption_image(image: Union[str, Image.Image]) -> str:
@@ -64,16 +66,17 @@ def dam_caption_image(image: Union[str, Image.Image]) -> str:
     Now apply to the new image:
 
     Caption:"""
-    result = dam.get_description(
-        img,
-        full_mask,
-        prompt,
-        streaming=False,
-        temperature=0.2,
-        top_p=0.5,
-        num_beams=1,
-        max_new_tokens=512
-    )
+    with torch.no_grad():
+        result = dam.get_description(
+            img,
+            full_mask,
+            prompt,
+            streaming=False,
+            temperature=0.2,
+            top_p=0.5,
+            num_beams=1,
+            max_new_tokens=512
+        )
     return result
 
 def dam_extract_knowledge(image: Union[str, Image.Image]) -> str:
@@ -83,14 +86,15 @@ def dam_extract_knowledge(image: Union[str, Image.Image]) -> str:
         <image>
         Provide a highly detailed description of the image.
         """.strip()
-    result = dam.get_description(
-        img,
-        full_mask,
-        prompt,
-        streaming=False,
-        temperature=0.2,
-        top_p=0.5,
-        num_beams=1,
-        max_new_tokens=256
-    )
+    with torch.no_grad():
+        result = dam.get_description(
+            img,
+            full_mask,
+            prompt,
+            streaming=False,
+            temperature=0.2,
+            top_p=0.5,
+            num_beams=1,
+            max_new_tokens=256
+        )
     return result

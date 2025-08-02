@@ -17,17 +17,18 @@ class SeniorAgent(Analyst):
                 - Action_1: Perform Visual Question Answering (VQA) on the image by first translating the Vietnamese question to English to ensure correct understanding, then analyzing the image content in detail to find the candidate answer.  
                 - Action_2: Retrieve factual knowledge from external sources (Wikipedia) relevant to the question, using the English translation of the question as the query to gather accurate and up-to-date information.  
 
+                **Use the following format:**
+                Thought: your chain-of-thought for this step  
+                Action: the action you will take (Action_1 / Action_2 / “finish”)  
+                Action Input: the input for that action  
+                Observation: the result returned by that action   
+                (Repeat any number of Thought/Action/Action Input/Observation blocks as needed.)
 
-                **Rules**  
-                1. You **must always include all two actions: Action_1, Action_2**.  
-                2. Actions may be executed in any order, but **all two must be executed before answering**.  
+                When all two required actions have been executed, finish with: Finish
 
                 **Input:**  
                 - **Context:** `{context}`  
-                - **Question:** `{question}`  
-
-                **Output:**  
-                Return: [Action_1, Action_2]
+                - **Question:** `{question}`
             """,
             final_system_prompt="""
                 You are a multiple‑choice visual‑question‑answering assistant.
