@@ -17,12 +17,12 @@ class ConsensusJudgeAgent():
 
 
             ### EXAMPLE
-            Question: Thủ đô Nhật Bản là gì?
-            Answer: Beijing
-            Evidence1: Tokyo is the capital of Japan.
-            Evidence2: Beijing is the capital of China.
-            Evidence3: Japan and China are two different countries.
-            Explanation: Tokyo mới là thành phố được công nhận là thủ đô Nhật Bản, trong khi Beijing thuộc Trung Quốc.
+            Question: Loại quả nào trong hình thường có màu vàng khi chín?
+            Answer: Quả chuối
+            Evidence1: Context mô tả “chùm chuối” xuất hiện; Question hỏi trái nào “thường có màu vàng khi chín”; trong Candidates, “banana” có xác suất cao nhất 0.85, khớp hoàn toàn với mô tả—vì thế đáp án chắc chắn là Quả chuối.
+            Evidence2: Context nêu “chùm chuối” xuất hiện; Question hỏi trái nào “thường vàng khi chín”; KBs_knowledge khẳng định chuối chín sẽ đổi vỏ sang màu vàng; trong Candidates, “banana” có xác suất cao nhất 0.85 và khớp hoàn toàn với mô tả—vì vậy đáp án chính là “Quả chuối”.
+            Evidence3: Trong Context có chùm chuối; Question hỏi trái nào “thường vàng khi chín”; KBs_knowledge nêu rõ chuối sẽ chuyển sang màu vàng khi chín; LLM_knowledge bổ sung rằng vỏ chuối chín có màu vàng đặc trưng; và trong Candidates, “banana” có xác suất cao nhất 0.85, nên đáp án chính là “Quả chuối”.
+            Explanation: Chuối là loại quả duy nhất trong cảnh vừa xuất hiện vừa được biết sẽ có vỏ vàng khi chín; do đó đáp án “Quả chuối” hoàn toàn phù hợp.
             ### END EXAMPLE
 
             ### Now, using the same format, generate the final explanation:

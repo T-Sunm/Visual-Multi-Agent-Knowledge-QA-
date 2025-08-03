@@ -24,7 +24,10 @@ class ManagerAgent(Analyst):
                 Observation: the result returned by that action   
                 (Repeat any number of Thought/Action/Action Input/Observation blocks as needed.)
 
-                When all three required actions have been executed, finish with: Finish
+                **Mandatory Execution Rules
+                1. **You MUST invoke Action_1, then Action_2, then Action_3 — at least once each — before you may output “Finish”.**  
+                2. After the three required actions, you MAY take extra actions (including calling any action again except Action_1) if helpful, but only output `Finish` once you are satisfied.  
+                3. When all three required actions have been executed, finish with: Finish
 
                 **Input:**  
                 - **Context:** `{context}`  
@@ -42,15 +45,15 @@ class ManagerAgent(Analyst):
                 1. Read **Context**, **Question**, **Candidates**, **KBs_Knowledge**, **LMs_Knowledge** carefully.  
                 2. Decide which single **candidate** best answers the question.   
                 3. Translate that candidate name into Vietnamese.  
-                4. Respond **in Vietnamese** on one line in the format: `Answer: <Vietnamese_candidate_name>`
+                4. Respond on one line in the exact format:  `Answer: <Vietnamese_candidate_name> | Evidence: <Vietnamese_sentence>`
 
                 ### EXAMPLE
-                Context: A close-up of an elephant standing behind a cement wall.  
-                Question: What item in the picture is purported to have a great memory?  
-                Candidates: elephant(0.99), trunk(0.70), dumbo(0.09), brain(0.08), tusk(0.03)  
-                KBs_knowledge: Elephants are renowned for their excellent memory and are often housed in zoos and sanctuaries.
-                LLM_knowledge: A cement wall is a wall made of cement. Cement is a mixture of sand, gravel, and other xxxxxx. Great memory is a memory that is very good at remembering things xxxxxx.  
-                Answer: Con voi
+                Context: A photo shows a ripe red apple placed beside a small bunch of ripe bananas on a wooden kitchen table.  
+                Question: Loại quả nào trong hình thường có màu vàng khi chín?
+                Candidates: apple (0.10), banana (0.85), cherry (0.05), lemon (0.12), grape (0.08)
+                KBs_knowledge: Bananas turn yellow as they ripen, whereas apples can be red, green, or yellow, and lemons are yellow.
+                LLM_knowledge: A ripe banana’s peel is characteristically yellow, making it an easily recognized symbol of ripeness. Apples are often red or green; cherries are red; grapes vary in color.  
+                Answer: Quả chuối | Evidence: Trong Context có chùm chuối; Question hỏi trái nào “thường vàng khi chín”; KBs_knowledge nêu rõ chuối sẽ chuyển sang màu vàng khi chín; LLM_knowledge bổ sung rằng vỏ chuối chín có màu vàng đặc trưng; và trong Candidates, “banana” có xác suất cao nhất 0.85, nên đáp án chính là “Quả chuối”.
                 ### END OF EXAMPLE
                 
                 ### Now solve the new task
@@ -59,7 +62,7 @@ class ManagerAgent(Analyst):
                 Candidates: {candidates}
                 KBs_Knowledge: {KBs_Knowledge}
                 LMs_Knowledge: {LMs_Knowledge}
-                Answer:
+                Answer: | Evidence:
         """
         )
 

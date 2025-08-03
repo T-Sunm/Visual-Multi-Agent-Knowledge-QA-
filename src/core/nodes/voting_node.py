@@ -1,7 +1,6 @@
-from typing import Dict, Any, List, Tuple
+from typing import Dict, Any, Tuple
 from collections import Counter
 import re
-from src.utils.text_processing import extract_answer_from_result
 
 def normalize_answer_for_voting(answer: str) -> str:
     """

@@ -25,7 +25,7 @@ class ViReJuniorState(MessagesState):
     question: str
     image: Union[str, Image.Image]
     analyst: JuniorAgent
-    number_of_steps: int
+    count_of_tool_calls: int
     image_caption: str
     answer_candidate: str
     
@@ -41,7 +41,7 @@ class ViReSeniorState(MessagesState):
     image: Union[str, Image.Image]
     analyst: SeniorAgent
     image_caption: str
-    number_of_steps: int
+    count_of_tool_calls: int
     answer_candidate: str
     
     # Results
@@ -55,7 +55,7 @@ class ViReManagerState(MessagesState):
     image: Union[str, Image.Image]
     analyst: ManagerAgent
     image_caption: str
-    number_of_steps: int
+    count_of_tool_calls: int
     answer_candidate: str
 
     # Results

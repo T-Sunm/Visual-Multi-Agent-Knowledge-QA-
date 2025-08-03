@@ -53,7 +53,10 @@ def run_visual_qa(question: str, image: Union[str, Image.Image], graph):
     answer = result["final_answer"]
     explanation = result["explanation"]
     evidences = result["evidences"]
+    print(f"Answer: {answer}")
+    print(f"Explanation: {explanation}")
     print(f"Evidences: {evidences}")
+    print(f"Evidences lengths: {[{name: len(evidence) for name, evidence in e.items()} for e in evidences]}")
     return answer, explanation
 
 def main():

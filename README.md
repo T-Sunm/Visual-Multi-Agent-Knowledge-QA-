@@ -29,7 +29,6 @@ vllm serve Qwen/Qwen3-1.7B \
   --dtype auto \
   --gpu-memory-utilization 0.5 \
   --max-model-len 4096 \
-  --override-generation-config '{"max_new_tokens":512}' \
   --enable-auto-tool-choice \
   --tool-call-parser hermes \
   --trust-remote-code

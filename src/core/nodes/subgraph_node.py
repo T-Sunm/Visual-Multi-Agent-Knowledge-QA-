@@ -7,15 +7,15 @@ from src.models.llm_provider import get_llm
 from src.utils.tools_utils import _process_knowledge_result
 import re
 from src.utils.image_processing import pil_to_base64
-from src.utils.text_processing import extract_answer_from_result
+from src.utils.text_processing import extract_answer_from_result, remove_think_block
 
 def tool_node(state: Union[ViReJuniorState, ViReSeniorState, ViReManagerState], 
               tools_registry: Dict[str, Any]) -> Dict[str, Any]:
     """Process tool calls and update state"""
     outputs = []
     tool_calls = getattr(state["messages"][-1], "tool_calls", [])
-    
-    updates = {"messages": outputs}
+    count_of_tool_calls = state.get("count_of_tool_calls", 0)
+    updates = {"messages": state["messages"] + outputs, "count_of_tool_calls": count_of_tool_calls + len(tool_calls)} # Số tool gọi trong 1 lần có thể nhiều hơn 1 nên không thể tăng 1 lần mà phải tăng số lần gọi tool
 
     for tool_call in tool_calls:
         tool_name = tool_call["name"]
@@ -80,13 +80,12 @@ def call_agent_node(state: Union[ViReJuniorState, ViReSeniorState, ViReManagerSt
     format_dict = {key: format_values[key] for key in placeholders if key in format_values}
     
     formatted_prompt = base_prompt.format(**format_dict)
-
+    
     response = llm.invoke(formatted_prompt, config)
     
     return {
         "messages": state["messages"] + [response],
-        "analyst": state["analyst"],
-        "number_of_steps": state.get("number_of_steps", 0) + 1
+        "analyst": state["analyst"]
     }
 
 
@@ -114,10 +113,9 @@ def final_reasoning_node(state: Union[ViReJuniorState, ViReSeniorState, ViReMana
     llm = get_llm(temperature=0.1)
     
     final_response = llm.invoke(final_system_prompt)
-    print(f"Final response: {final_response.content}")
-    answer, evidence = extract_answer_from_result(final_response.content)
-    # Return logic for each agent
-    # Return logic for each agent
+    cleaned_content = remove_think_block(final_response.content)
+    answer, evidence = extract_answer_from_result(cleaned_content)
+
     return {
         "results": [{state["analyst"].name: answer}],
         "evidences": [{state["analyst"].name: evidence}]
@@ -129,7 +127,7 @@ def should_continue(state: Union[ViReJuniorState, ViReSeniorState, ViReManagerSt
     messages = state["messages"]
     last_message = messages[-1]
     
-    number_of_steps = state.get("number_of_steps", 0)
+    count_of_tool_calls = state.get("count_of_tool_calls", 0)
     
     max_steps = {
         "Junior": 1,  
@@ -137,7 +135,7 @@ def should_continue(state: Union[ViReJuniorState, ViReSeniorState, ViReManagerSt
         "Manager": 3    
     }.get(state.get("analyst", {}).name)
     
-    if number_of_steps >= max_steps:
+    if count_of_tool_calls >= max_steps:
         return "final_reasoning"
     # If no tool calls, go to final reasoning  
     if not getattr(last_message, "tool_calls", None):

@@ -2,37 +2,31 @@ import re
 from typing import Tuple
 
 
-TAG_PATTERN = re.compile(
-    r"<(?:think)>(.*?)</(?:think)>",  # khớp <think>…</think>
-    re.DOTALL | re.IGNORECASE,
+# Khớp một dòng: Answer: … | Evidence: …
+INLINE_PATTERN = re.compile(
+    r"Answer:\s*([^|]+?)\s*\|\s*Evidence\s*:\s*(.*)",  # group1 = answer, group2 = evidence
+    re.IGNORECASE | re.DOTALL,
 )
-ANSWER_PATTERN = re.compile(r"Answer:\s*(.*?)(?:\n\n|</think>)", re.IGNORECASE | re.DOTALL)
 
 def extract_answer_from_result(result: str) -> Tuple[str, str]:
     """
-    Trả về (answer, evidence) từ chuỗi kết quả của agent.
-    - answer  : nội dung sau 'Answer:' (đã chuẩn hoá về lower case & bỏ dấu câu đầu/cuối)
-    - evidence: nội dung bên trong thẻ <think> 
+    Trả về (answer, evidence) từ chuỗi kết quả của agent
+    - answer  : nội dung sau 'Answer:' (chuẩn hoá lower-case, bỏ ký tự thừa)
+    - evidence: nội dung sau 'Evidence:'
     """
     if not result:
         return "", ""
 
-    # --- Evidence ----------------------------------------------------------
-    evidence_match = TAG_PATTERN.search(result)
-    evidence = evidence_match.group(1).strip() if evidence_match else ""
+    match = INLINE_PATTERN.search(result)
+    if not match:
+        return "", ""
 
-    # --- Answer ------------------------------------------------------------
-    answer_match = ANSWER_PATTERN.search(result)
-    if answer_match:
-        answer_raw = answer_match.group(1).strip()
-    else:  # fallback: câu cuối cùng
-        sentences = [s.strip() for s in result.strip().split('.') if s.strip()]
-        answer_raw = sentences[-1] if sentences else ""
+    answer_raw, evidence = match.group(1).strip(), match.group(2).strip()
 
-    # chuẩn hoá answer: bỏ ký tự thừa và về lower-case
+    # Chuẩn hoá answer: loại ký tự đầu/cuối không phải chữ số-chữ cái & về lower-case
     answer = re.sub(r'^[\W_]+|[\W_]+$', '', answer_raw).lower()
-
     return answer, evidence
+
 
 
 def extract_explanation(result: str) -> str:
@@ -54,3 +48,8 @@ def extract_explanation(result: str) -> str:
     
     # Return the cleaned explanation, stripped of leading/trailing whitespace
     return cleaned_explanation.strip()
+
+
+def remove_think_block(text: str) -> str:
+    """Removes the <think>...</think> block from a string."""
+    return re.sub(r'<think>.*?</think>', '', text, flags=re.DOTALL).strip()
