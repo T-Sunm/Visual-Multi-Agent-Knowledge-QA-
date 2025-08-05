@@ -16,8 +16,6 @@ vllm==0.9.2
 pycocoevalcap==1.2
 bert_score==0.3.13
 scikit_learn==1.5.2
-processor==0.10.0
-
 
 #-------- For ViVQA model --------
 # Do NOT run `pip install -r requirements.txt` directly due to conflicting package versions.
