@@ -16,3 +16,13 @@ vllm==0.9.2
 pycocoevalcap==1.2
 bert_score==0.3.13
 scikit_learn==1.5.2
+processor==0.10.0
+
+
+#-------- For ViVQA model --------
+#salesforce-lavis 1.0.2
+#torchscale==0.3.0
+#timm==0.6.13
+#underthesea==6.8.4
+#efficientnet_pytorch==0.7.1
+#transformers==4.54.1
