@@ -16,15 +16,3 @@ vllm==0.9.2
 pycocoevalcap==1.2
 bert_score==0.3.13
 scikit_learn==1.5.2
-
-#-------- For ViVQA model --------
-# Do NOT run `pip install -r requirements.txt` directly due to conflicting package versions.
-# Please follow these steps in your terminal inside a clean environment (e.g., conda, venv).
-# -------------------------------------------------------------------------------------------------
-# Step 1: Install the main, non-conflicting libraries for the ViVQA model: pip install timm underthesea efficientnet_pytorch transformers
-#
-# -------------------------------------------------------------------------------------------------
-# Step 2: Install the two packages that have conflicts. The second command will likely
-#         change the versions installed by the first. This is expected.
-#      2.1: pip install salesforce-lavis
-#      2.2: pip install torchscale

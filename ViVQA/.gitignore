@@ -1,0 +1,7 @@
+data/*
+__pycache__/*
+utils/__pycache__/*
+models/resnet/__pycache__/*
+modules/__pycache__/*
+models/clip_vit/weights
+models/blip2_vit/weights
