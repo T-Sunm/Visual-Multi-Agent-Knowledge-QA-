@@ -20,9 +20,13 @@ processor==0.10.0
 
 
 #-------- For ViVQA model --------
-#salesforce-lavis 1.0.2
-#torchscale==0.3.0
-#timm==0.6.13
-#underthesea==6.8.4
-#efficientnet_pytorch==0.7.1
-#transformers==4.54.1
+# Do NOT run `pip install -r requirements.txt` directly due to conflicting package versions.
+# Please follow these steps in your terminal inside a clean environment (e.g., conda, venv).
+# -------------------------------------------------------------------------------------------------
+# Step 1: Install the main, non-conflicting libraries for the ViVQA model: pip install timm underthesea efficientnet_pytorch transformers
+#
+# -------------------------------------------------------------------------------------------------
+# Step 2: Install the two packages that have conflicts. The second command will likely
+#         change the versions installed by the first. This is expected.
+#      2.1: pip install salesforce-lavis
+#      2.2: pip install torchscale
