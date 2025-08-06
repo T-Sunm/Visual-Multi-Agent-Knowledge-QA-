@@ -12,7 +12,7 @@ model = AutoModel.from_pretrained(
 dam = model.init_dam(conv_mode='v1', prompt_mode='full+focal_crop')
 
 
-def dam_candidate_answers(image: Union[str, Image.Image], question: str) -> str:
+def dam_candidate_answers(image: str, question: str) -> str:
     img = load_image(image)
     full_mask = Image.new("L", img.size, 255)
     prompt = f"""<image>
@@ -47,7 +47,7 @@ def dam_candidate_answers(image: Union[str, Image.Image], question: str) -> str:
         )
     return result
 
-def dam_caption_image(image: Union[str, Image.Image]) -> str:
+def dam_caption_image(image: str) -> str:
     img = load_image(image)
     full_mask = Image.new("L", img.size, 255)
     prompt = """<image>
@@ -79,7 +79,7 @@ def dam_caption_image(image: Union[str, Image.Image]) -> str:
         )
     return result
 
-def dam_extract_knowledge(image: Union[str, Image.Image]) -> str:
+def dam_extract_knowledge(image: str) -> str:
     img = load_image(image)
     full_mask = Image.new("L", img.size, 255)
     prompt = f"""

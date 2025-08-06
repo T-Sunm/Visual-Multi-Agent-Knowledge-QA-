@@ -29,6 +29,7 @@ This section provides a complete, step-by-step guide to setting up a clean envir
 
 ### 2. Installation
 
+#### For ViVqa tool
 To ensure a conflict-free setup, please follow these steps precisely.
 
 **Step A: Create and Activate a New Conda Environment**
@@ -55,7 +56,10 @@ Due to conflicting dependencies when using vivqa tool, you **must** install pack
 2. pip install salesforce-lavis
 3. pip install torchscale
 ```
-
+**Step D: Fastapi Package Installation**
+```bash
+pip install fastapi==0.115.12 uvicorn[standard]==0.34.2 python-multipart
+```
 ### 3. Usage
 
 The system can be run with a local or remote LLM.
