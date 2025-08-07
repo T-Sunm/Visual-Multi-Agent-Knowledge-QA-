@@ -10,7 +10,6 @@ VQA_API_URL = "http://localhost:1235/vqa/predict_base64"
 @tool
 def vqa_tool(image: str, question: str) -> str:
     """return the candidate answer with probability of the question"""
-
     try:
         payload = {
             "image_base64": image,
@@ -29,12 +28,8 @@ def vqa_tool(image: str, question: str) -> str:
             return "API trả về thành công nhưng không có dự đoán nào."    
         return predictions
             
-    except requests.exceptions.RequestException as e:
-        return f"API request failed: Không thể kết nối đến VQA service tại {VQA_API_URL}. Chi tiết: {e}"
-    except (ValueError, TypeError) as e:
-        return f"Lỗi đầu vào: {e}"
     except Exception as e:
-        return f"Lỗi không mong muốn trong vqa_tool: {e}"
+        return f"Error in vqa_tool: {e}"
 
 @tool
 def dam_caption_image_tool(image: str) -> str:

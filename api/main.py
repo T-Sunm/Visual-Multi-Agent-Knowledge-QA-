@@ -2,11 +2,11 @@ import os
 import sys
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
 import torch
 import logging
 from transformers import AutoModel
 
+os.environ["CUDA_VISIBLE_DEVICES"] = "2"
 # Add project root to Python path
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 if project_root not in sys.path:

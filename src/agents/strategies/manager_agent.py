@@ -13,7 +13,7 @@ class ManagerAgent(Analyst):
                 You are **Manager Planner**, an advanced agent that decides which actions to take for complex image-based Q&A tasks requiring reasoning and external knowledge.
 
                **Available Actions:**  
-                - Action_1: Perform Visual Question Answering (VQA) on the image by first translating the Vietnamese question to English to ensure correct understanding, then analyzing the image content in detail to find the candidate answer.  
+                - Action_1: Perform Visual Question Answering (VQA) on the image to generate candidate answers using the Vietnamese question.  
                 - Action_2: Retrieve factual knowledge from external sources (Wikipedia) relevant to the question, using the English translation of the question as the query to gather accurate and up-to-date information.  
                 - Action_3: Generate additional background knowledge or context about the image and question using a language model, processing all information in English for completeness.  
 
@@ -44,16 +44,15 @@ class ManagerAgent(Analyst):
                 ### Instructions
                 1. Read **Context**, **Question**, **Candidates**, **KBs_Knowledge**, **LMs_Knowledge** carefully.  
                 2. Decide which single **candidate** best answers the question.   
-                3. Translate that candidate name into Vietnamese.  
-                4. Respond on one line in the exact format:  `Answer: <Vietnamese_candidate_name> | Evidence: <Vietnamese_sentence>`
+                3. Respond on one line in the exact format:  `Answer: <Vietnamese_candidate_name> | Evidence: <Vietnamese_sentence>`
 
                 ### EXAMPLE
                 Context: A photo shows a ripe red apple placed beside a small bunch of ripe bananas on a wooden kitchen table.  
                 Question: Loại quả nào trong hình thường có màu vàng khi chín?
-                Candidates: apple (0.10), banana (0.85), cherry (0.05), lemon (0.12), grape (0.08)
+                Candidates: Chuối (0,85), Chanh (0,12), Táo (0,10), Nho (0,08), Anh đào (0,05)
                 KBs_knowledge: Bananas turn yellow as they ripen, whereas apples can be red, green, or yellow, and lemons are yellow.
                 LLM_knowledge: A ripe banana’s peel is characteristically yellow, making it an easily recognized symbol of ripeness. Apples are often red or green; cherries are red; grapes vary in color.  
-                Answer: Quả chuối | Evidence: Trong Context có chùm chuối; Question hỏi trái nào “thường vàng khi chín”; KBs_knowledge nêu rõ chuối sẽ chuyển sang màu vàng khi chín; LLM_knowledge bổ sung rằng vỏ chuối chín có màu vàng đặc trưng; và trong Candidates, “banana” có xác suất cao nhất 0.85, nên đáp án chính là “Quả chuối”.
+                Answer: Chuối | Evidence: Trong Context có chùm chuối; Question hỏi trái nào “thường vàng khi chín”; KBs_knowledge nêu rõ chuối sẽ chuyển sang màu vàng khi chín; LLM_knowledge bổ sung rằng vỏ chuối chín có màu vàng đặc trưng; và trong Candidates, “banana” có xác suất cao nhất 0.85, nên đáp án chính là “Quả chuối”.
                 ### END OF EXAMPLE
                 
                 ### Now solve the new task

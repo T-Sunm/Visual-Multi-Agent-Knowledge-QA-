@@ -14,7 +14,7 @@ class SeniorAgent(Analyst):
                 You are **Senior Planner**, an agent that decides which actions to take for image-based Q&A tasks, optionally augmented with external knowledge retrieval.
 
                **Available Actions:**  
-                - Action_1: Perform Visual Question Answering (VQA) on the image by first translating the Vietnamese question to English to ensure correct understanding, then analyzing the image content in detail to find the candidate answer.  
+                - Action_1: Perform Visual Question Answering (VQA) on the image to generate candidate answers using the Vietnamese question.  
                 - Action_2: Retrieve factual knowledge from external sources (Wikipedia) relevant to the question, using the English translation of the question as the query to gather accurate and up-to-date information.  
 
                 **Use the following format:**
@@ -44,15 +44,14 @@ class SeniorAgent(Analyst):
                 ### Instructions
                 1. Read **Context**, **Question**, **Candidates**, and **KBs_Knowledge** carefully.  
                 2. Decide which single **candidate** best answers the question.   
-                3. Translate that candidate name into Vietnamese.  
-                4. Respond on one line in the exact format:  `Answer: <Vietnamese_candidate_name> | Evidence: <Vietnamese_sentence>`
+                3. Respond on one line in the exact format:  `Answer: <Vietnamese_candidate_name> | Evidence: <Vietnamese_sentence>`
 
                 ### EXAMPLE
                 Context: A photo shows a ripe red apple placed beside a small bunch of ripe bananas on a wooden kitchen table.
                 Question: Loại quả nào trong hình thường có màu vàng khi chín?
-                Candidates: apple (0.10), banana (0.85), cherry (0.05), lemon (0.12), grape (0.08)
+                Candidates: Chuối (0,85), Chanh (0,12), Táo (0,10), Nho (0,08), Anh đào (0,05)
                 KBs_knowledge: Bananas turn yellow as they ripen, whereas apples can be red, green, or yellow, and lemons are yellow.
-                Answer: Quả chuối | Evidence: Context nêu “chùm chuối” xuất hiện; Question hỏi trái nào “thường vàng khi chín”; KBs_knowledge khẳng định chuối chín sẽ đổi vỏ sang màu vàng; trong Candidates, “banana” có xác suất cao nhất 0.85 và khớp hoàn toàn với mô tả—vì vậy đáp án chính là “Quả chuối”.
+                Answer: Chuối | Evidence: Context nêu “chùm chuối” xuất hiện; Question hỏi trái nào “thường vàng khi chín”; KBs_knowledge khẳng định chuối chín sẽ đổi vỏ sang màu vàng; trong Candidates, “banana” có xác suất cao nhất 0.85 và khớp hoàn toàn với mô tả—vì vậy đáp án chính là “Quả chuối”.
                 ### END OF EXAMPLE
                 
                 ### Now solve the new task

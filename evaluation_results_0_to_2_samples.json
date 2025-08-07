@@ -1,0 +1,32 @@
+{
+    "num_samples": 2,
+    "successful_samples": 0,
+    "failed_samples": 2,
+    "error_details": [
+        {
+            "sample_id": "393271001",
+            "question": "Đây có phải là bức ảnh chụp nhiều độ phơi sáng của vận động viên trượt tuyết mặc áo đen không?",
+            "error": "Memory error: CUDA out of memory. Tried to allocate 352.00 MiB. GPU 0 has a total capacity of 23.67 GiB of which 205.00 MiB is free. Process 1984771 has 10.25 GiB memory in use. Process 1986699 has 5.21 GiB memory in use. Including non-PyTorch memory, this process has 7.80 GiB memory in use. Of the allocated memory 7.28 GiB is allocated by PyTorch, and 273.03 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)"
+        },
+        {
+            "sample_id": "393284000",
+            "question": "Đây có phải là cảnh biển không?",
+            "error": "Memory error: CUDA out of memory. Tried to allocate 352.00 MiB. GPU 0 has a total capacity of 23.67 GiB of which 205.00 MiB is free. Process 1984771 has 10.25 GiB memory in use. Process 1986699 has 5.21 GiB memory in use. Including non-PyTorch memory, this process has 7.80 GiB memory in use. Of the allocated memory 7.28 GiB is allocated by PyTorch, and 273.03 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)"
+        }
+    ],
+    "metrics": {
+        "answer_accuracy": 0.0,
+        "answer_f1_score": 0.0,
+        "bleu_1": 4.9976609805369816e-17,
+        "bleu_2": 5.398090818869694e-17,
+        "bleu_3": 5.885613428524953e-17,
+        "bleu_4": 6.498228979990906e-17,
+        "meteor": 0.0,
+        "cider": 0.0,
+        "rouge_l": 0.0,
+        "spice": 0.0,
+        "bertscore_p": 0.669991672039032,
+        "bertscore_r": 0.6687190532684326,
+        "bertscore_f": 0.669313371181488
+    }
+}
