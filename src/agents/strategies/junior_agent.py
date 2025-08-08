@@ -39,7 +39,10 @@ class JuniorAgent(Analyst):
                 ### Instructions  
                 1. Read the *Context* and *Question* carefully.  
                 2. Decide which single **candidate** best answers the question.  
-                3. Respond on one line in the exact format:  `Answer: <Vietnamese_candidate_name> | Evidence: <Vietnamese_sentence>`
+                3. **If none of the candidates plausibly answers the question** (they don’t match what is described or requested), you may provide **your own answer** instead of choosing from the list.  
+                3. Answer in Vietnamese in the exact format below:  
+                    - Answer: 
+                    - Evidence: 
 
                 ### FORMAT EXAMPLE  
                 Context: A photo shows a ripe red apple placed beside a small bunch of ripe bananas on a wooden kitchen table.
@@ -52,7 +55,8 @@ class JuniorAgent(Analyst):
                 Context: {context}  
                 Question: {question}  
                 Candidates: {candidates}  
-                Answer: | Evidence:
+                Answer:  
+                Evidence:
             """
         )
 

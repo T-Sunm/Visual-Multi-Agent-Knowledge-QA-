@@ -44,7 +44,10 @@ class SeniorAgent(Analyst):
                 ### Instructions
                 1. Read **Context**, **Question**, **Candidates**, and **KBs_Knowledge** carefully.  
                 2. Decide which single **candidate** best answers the question.   
-                3. Respond on one line in the exact format:  `Answer: <Vietnamese_candidate_name> | Evidence: <Vietnamese_sentence>`
+                3. **If none of the candidates plausibly answers the question** (they don’t match what is described or requested), you may provide **your own answer** instead of choosing from the list.  
+                4. Answer in Vietnamese in the exact format below:  
+                    - Answer: 
+                    - Evidence: 
 
                 ### EXAMPLE
                 Context: A photo shows a ripe red apple placed beside a small bunch of ripe bananas on a wooden kitchen table.
@@ -59,7 +62,8 @@ class SeniorAgent(Analyst):
                 Question: {question}
                 Candidates: {candidates}
                 KBs_Knowledge: {KBs_Knowledge}
-                Answer: | Evidence:
+                Answer:  
+                Evidence:
         """
         )
 

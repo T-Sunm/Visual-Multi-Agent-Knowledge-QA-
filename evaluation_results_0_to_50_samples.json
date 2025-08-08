@@ -1,0 +1,873 @@
+{
+    "num_samples": 50,
+    "successful_samples": 50,
+    "failed_samples": 0,
+    "error_details": [],
+    "metrics": {
+        "answer_accuracy": 0.06,
+        "answer_f1_score": 0.048,
+        "bleu_1": 0.05956112852660843,
+        "bleu_2": 0.021508386899125757,
+        "bleu_3": 6.756287788883422e-08,
+        "bleu_4": 1.206605656548505e-10,
+        "meteor": 0.14377858392509393,
+        "cider": 0.004408760444129146,
+        "rouge_l": 0.07260273867415691,
+        "spice": 0.011839472499117891,
+        "bertscore_p": 0.6491699814796448,
+        "bertscore_r": 0.6822864413261414,
+        "bertscore_f": 0.6645826697349548
+    },
+    "detailed_results": [
+        {
+            "question": "Đây có phải là bức ảnh chụp nhiều độ phơi sáng của vận động viên trượt tuyết mặc áo đen không?",
+            "image_caption": "A man snowboarding down a snowy hill.",
+            "evidences": [
+                {
+                    "Junior": "Mô tả trong ngữ cảnh không đề cập đến độ phơi sáng hoặc màu áo của vận động viên trượt tuyết."
+                },
+                {
+                    "Manager": "Context mô tả một người trượt tuyết trên núi, và câu hỏi hỏi về việc có phải là ảnh chụp nhiều độ phơi sáng của vận động viên trượt tuyết mặc áo đen. Dù câu hỏi liên quan đến \"những độ phơi sáng\", nhưng trong Context, chủ thể chính là người trượt tuyết, và \"trượt tuyết\" là một trong các候选 (0.0531). Dù câu hỏi có thể hiểu sai về \"những độ phơi sáng\", nhưng \"trượt tuyết\" là chủ thể chính trong hình ảnh, nên đáp án là \"trượt tuyết\"."
+                },
+                {
+                    "Senior": "Bức ảnh chỉ là một bức ảnh đơn lẻ của người trượt tuyết trên núi, không liên quan đến việc chụp nhiều độ phơi sáng. Các候选词 như \"trượt tuyết\" (snowboarder) là phần tử trong cảnh, nhưng câu hỏi liên quan đến kỹ thuật chụp ảnh, không có thông tin trong KBs_Knowledge hoặc context hỗ trợ."
+                }
+            ],
+            "final_answer": "Không",
+            "explanation": "Bức ảnh chỉ là một bức ảnh đơn lẻ của người trượt tuyết trên núi, không liên quan đến kỹ thuật chụp nhiều độ phơi sáng hoặc màu áo, nên đáp án \"Không\" phù hợp với bằng chứng."
+        },
+        {
+            "question": "Đây có phải là cảnh biển không?",
+            "image_caption": "A man in a red and yellow jacket is snowboarding in the air.",
+            "evidences": [
+                {
+                    "Junior": "Hình ảnh mô tả là người trượt tuyết trong không gian có sương giá, không có yếu tố biển (nước, cát) nên không phải cảnh biển. Candidates có \"trượt tuyết\" với xác suất 0.5724, phù hợp với ngữ cảnh."
+                },
+                {
+                    "Manager": "Hình ảnh mô tả là người trượt tuyết trong không gian có núi, không liên quan đến cảnh biển. KBs_knowledge không có thông tin về cảnh biển, và LMs_knowledge chỉ xác định trượt tuyết là hoạt động trên núi. Vì vậy, không có cảnh biển trong ngữ cảnh, và các候选 không phù hợp."
+                },
+                {
+                    "Senior": "Hình ảnh mô tả là người trượt tuyết trong không gian có sự xuất hiện của người trượt tuyết, trong khi \"biển\" là một khái niệm không liên quan đến hoạt động trượt tuyết. KBs_knowledge không đề cập đến \"biển\" nhưng các candidate khác như \"núi\" hoặc \"đồi\" có thể là nơi trượt tuyết, nhưng \"trượt tuyết\" là đáp án chính xác nhất vì hoạt động này thường diễn ra ở khu vực có sương giá, không phải ở bãi biển."
+                }
+            ],
+            "final_answer": "trượt tuyết",
+            "explanation": "Hình ảnh mô tả là người trượt tuyết trong không gian có núi, không có yếu tố biển, và \"trượt tuyết\" là đáp án chính xác nhất dựa trên ngữ cảnh và xác suất 0.5724."
+        },
+        {
+            "question": "Những loại hoa trong bình?",
+            "image_caption": "A vase of tulips sits on a table.",
+            "evidences": [
+                {
+                    "Junior": "Context mô tả \"bình có hoa tulips\", nên \"bông hoa\" là loại hoa trong bình. Trong Candidates, \"bông hoa\" có xác suất cao nhất (0.6980) và khớp hoàn toàn với mô tả."
+                },
+                {
+                    "Manager": "Trong Context có hình ảnh một bình chứa hoa tulips, nên \"bông hoa\" là loại hoa trong bình. KBs_Knowledge xác nhận rằng tulips là loại hoa, và LMs_Knowledge bổ sung rằng \"bông hoa\" là thuật ngữ chung cho các loại hoa. Các lựa chọn khác như \"lọ cắm hoa\" hoặc \"hoa hồng\" không phù hợp với ngữ cảnh."
+                },
+                {
+                    "Senior": "Context nêu \"bình có hoa tulips\", Question hỏi \"loại hoa trong bình\", KBs_knowledge không cung cấp thông tin thêm, và Candidates có \"bông hoa\" với xác suất cao nhất 0.6980, khớp hoàn toàn với mô tả \"bình có hoa tulips\" — vì vậy đáp án chính là \"bông hoa\"."
+                }
+            ],
+            "final_answer": "bông hoa",
+            "explanation": "Bông hoa là thuật ngữ chung cho các loại hoa trong bình, phù hợp với mô tả \"bình có hoa tulips\" và xác suất cao nhất trong Candidates."
+        },
+        {
+            "question": "Trời có mưa không?",
+            "image_caption": "A man and woman kissing on a bench in a city.",
+            "evidences": [
+                {
+                    "Junior": "Context mô tả một cảnh ở đường phố, nhưng không có thông tin nào về thời tiết. Các candidate đều liên quan đến địa điểm, không có từ ngữ liên quan đến thời tiết. Do đó, không thể xác định trời có mưa hay không từ các candidate đã cho."
+                },
+                {
+                    "Manager": "Câu hỏi hỏi \"trời có mưa không?\" nhưng ngữ cảnh chỉ mô tả cảnh người đàn ông và người phụ nữ hôn trên băng ghế trong thành phố. Không có thông tin nào trong KBs_Knowledge hoặc LMs_Knowledge liên quan đến thời tiết. Các候选词 như \"đường phố\", \"băng ghế\" đều là các yếu tố trong cảnh, nhưng không xác định thời tiết. Do đó, không có bằng chứng nào để xác định trời có mưa hay không."
+                },
+                {
+                    "Senior": "Context mô tả một cảnh ở thành phố, nhưng không có thông tin nào liên quan đến thời tiết như mưa. Các candidate đều là các địa điểm (đường phố, băng ghế, bến du thuyền), không liên quan đến câu hỏi về thời tiết. Do đó, không có bằng chứng nào trong candidates hỗ trợ hoặc phản bác câu hỏi."
+                }
+            ],
+            "final_answer": "Không",
+            "explanation": "Không có thông tin trong ngữ cảnh hoặc các candidate liên quan đến thời tiết, do đó không thể xác định trời có mưa hay không."
+        },
+        {
+            "question": "Người đàn ông đội mũ đang làm gì?",
+            "image_caption": "A man riding a skateboard down a street.",
+            "evidences": [
+                {
+                    "Junior": "Context mô tả người đàn ông đang đi ván trượt, và câu hỏi hỏi về hành động của người đàn ông đội mũ. Các候选选项中 \"ván trượt\" (skateboard) trực tiếp khớp với hành động trong context, trong khi các lựa chọn khác như máy ảnh, xe ô tô, hoặc bức ảnh không liên quan đến hành động đi ván trượt. Do đó, đáp án là \"ván trượt\" với xác suất cao nhất."
+                },
+                {
+                    "Manager": "Trong Context, người đàn ông đang đi ván trượt trên đường; Question hỏi hành động của người đàn ông đội mũ; KBs_knowledge không có thông tin về hành động cụ thể, nhưng LMs_knowledge xác định ván trượt là phương tiện di chuyển trong hình; và candidate \"ván trượt\" có xác suất cao nhất (0.6395) phù hợp với mô tả."
+                },
+                {
+                    "Senior": "Context mô tả người đàn ông đang trượt ván trượt trên đường; Question hỏi hành động của người đàn ông đội mũ; KBs_knowledge không cung cấp thông tin thêm, nhưng xác suất cao nhất cho \"ván trượt\" (0.6395) phù hợp với hành động chính trong hình ảnh."
+                }
+            ],
+            "final_answer": "ván trượt",
+            "explanation": "Hành động \"ván trượt\" trực tiếp khớp với mô tả trong context và là lựa chọn duy nhất phù hợp với câu hỏi."
+        },
+        {
+            "question": "Bữa ăn này có cơm không?",
+            "image_caption": "A plate of food with meat, rice, and vegetables.",
+            "evidences": [
+                {
+                    "Junior": "Context mô tả có cơm trong bữa ăn, và câu hỏi hỏi \"bữa ăn này có cơm không?\" nên đáp án là \"có cơm\". Các候选项 không liên quan trực tiếp đến việc xác định sự tồn tại của cơm, nhưng thông tin trong context cho thấy cơm có mặt."
+                },
+                {
+                    "Manager": "Trong Context có \"đĩa ăn\" là món ăn chứa cơm; Question hỏi \"bữa ăn có cơm không?\" và \"đĩa ăn\" là vật dụng đựng bữa ăn, nên đáp án là \"đĩa ăn\". Các候选选项中 \"đĩa ăn\" có xác suất cao nhất 0.0538, phù hợp với ngữ cảnh."
+                },
+                {
+                    "Senior": "Context mô tả \"đĩa ăn\" chứa cơm, thịt, rau, và các món ăn khác. Câu hỏi hỏi \"bữa ăn có cơm không?\" được trả lời bằng \"có\", nhưng các候选 are về các vật thể khác. Tuy nhiên, \"đĩa ăn\" là container chứa cơm, nên đáp án là \"đĩa ăn\" vì nó là vật thể trực tiếp chứa cơm trong hình."
+                }
+            ],
+            "final_answer": "đĩa ăn",
+            "explanation": "Đĩa ăn là vật thể trực tiếp chứa cơm trong hình, và câu hỏi hỏi \"bữa ăn có cơm không?\" được trả lời bằng \"đĩa ăn\" vì nó là container chứa cơm trong cảnh."
+        },
+        {
+            "question": "Đây có phải là một chiếc thuyền giải trí?",
+            "image_caption": "A large ship is docked at a port.",
+            "evidences": [
+                {
+                    "Junior": "Hình ảnh mô tả là một chiếc tàu lớn được cảng, không phải là thuyền giải trí. Các lựa chọn khác như \"bến du thuyền\" là nơi cảng, không phải tàu. Tàu lớn thường là tàu thương mại hoặc tàu du lịch, không phải thuyền giải trí."
+                },
+                {
+                    "Manager": "Context mô tả một chiếc tàu lớn đang đậu tại cảng, câu hỏi hỏi liệu đây là chiếc thuyền giải trí, và \"bến du thuyền\" là một trong những lựa chọn có xác suất cao nhất (0.0664). KBs_Knowledge (dù không được cung cấp) có thể liên quan đến việc tàu lớn tại cảng thường là tàu du thuyền, trong khi các lựa chọn khác như \"con thuyền\" (0.7299) hoặc \"ca nô\" (0.0064) không phù hợp với mô tả \"tàu lớn\". LLM_knowledge bổ sung rằng tàu du thuyền thường được đặt tại cảng, nên đáp án chính xác là \"bến du thuyền\"."
+                },
+                {
+                    "Senior": "Context mô tả một chiếc tàu lớn ở bến cảng, trong khi các tòa nhà không liên quan đến hình ảnh. KBs_knowledge không có thông tin về tàu lớn tại cảng là thuyền giải trí. Vì vậy, không có candidate phù hợp, nhưng theo quy định, câu trả lời là \"Các tòa nhà\"."
+                }
+            ],
+            "final_answer": "bến du thuyền",
+            "explanation": "\"Bến du thuyền\" là lựa chọn có xác suất cao nhất (0.0664) dựa trên mô tả hình ảnh tàu lớn tại cảng và thông tin từ KBs_knowledge, dù hình ảnh mô tả là tàu, nhưng đáp án được xác định là \"bến du thuyền\" do liên kết giữa tàu lớn và bến du thuyền."
+        },
+        {
+            "question": "Đây là phòng nào?",
+            "image_caption": "A living room with a couch, a fireplace, a TV, and a statue.",
+            "evidences": [
+                {
+                    "Junior": "Context mô tả một phòng có các yếu tố như ghế, bếp, TV, và tượng, đây là phòng trong nhà (nhà ở). Các lựa chọn khác như \"nhiều cái ghế\" hoặc \"cây\" là đồ vật không phải phòng."
+                },
+                {
+                    "Manager": "Context mô tả một phòng khách có các yếu tố như ghế, fireplace, TV, và tượng, cho thấy đây là một phòng trong nhà. Question hỏi \"phòng nào\" và Candidates có \"nhà ở\" với xác suất 0.0624, phù hợp với ngữ cảnh. KBs_knowledge không cung cấp thông tin cụ thể, nhưng LMs_knowledge xác nhận rằng phòng khách là một phần của nhà."
+                },
+                {
+                    "Senior": "Context mô tả một phòng có các yếu tố như ghế, fireplace, TV, và tượng, thường được coi là một phòng trong nhà. Dù không rõ cụ thể là phòng nào, \"nhà ở\" là lựa chọn duy nhất có xác suất cao nhất (0.0624) và phù hợp với mô tả về một không gian sống. Các lựa chọn khác như \"nhiều cái ghế\" hoặc \"màn\" không liên quan trực tiếp đến loại phòng."
+                }
+            ],
+            "final_answer": "nhà ở",
+            "explanation": "Phòng được mô tả là không gian sống trong nhà, và \"nhà ở\" là lựa chọn duy nhất phù hợp với ngữ cảnh và xác suất cao nhất."
+        },
+        {
+            "question": "Họ đang chơi gì vậy?",
+            "image_caption": "A baseball player is swinging a bat in front of a crowd.",
+            "evidences": [
+                {
+                    "Junior": "Hình ảnh mô tả một người chơi bóng (bóng đá) đang swinging bat, điều này phù hợp với trò chơi bóng đá (baseball) sử dụng quả bóng. Trong các lựa chọn, \"quả bóng\" là vật thể chính của trò chơi, và không có lựa chọn nào khác phù hợp với mô tả."
+                },
+                {
+                    "Manager": "Trong Context, người chơi đang chơi bóng đá (baseball) với gậy (bat) và quả bóng (ball). KBs_Knowledge không cung cấp thông tin cụ thể về môn thể thao, nhưng LMs_Knowledge bổ sung rằng gậy và quả bóng là dụng cụ của bóng đá. Tuy nhiên, câu hỏi hỏi \"họ đang chơi gì\", nên đáp án là môn thể thao \"bóng đá\" (baseball) dù các候选 are items."
+                },
+                {
+                    "Senior": "Hình ảnh mô tả một người chơi bóng (bóng đá) đang swinging bat, trong khi quả bóng là vật dụng chính của môn bóng đá. Các候选包括 \"gậy\" (bat), \"quả bóng\" (ball), \"sân vận động\" (stadium), \"vợt\" (racquet), \"áo sơ mi\" (shirt). KBs_knowledge xác nhận bóng là vật dụng chính của bóng đá, và hình ảnh mô tả có sự xuất hiện của gậy và quả bóng trong môn bóng đá. Do đó, đáp án là \"quả bóng\" vì đây là vật dụng chính của môn bóng đá."
+                }
+            ],
+            "final_answer": "Quả bóng",
+            "explanation": "Trong hình ảnh, quả bóng là vật thể chính của trò chơi bóng đá (baseball), và câu hỏi hỏi \"họ đang chơi gì\" nên đáp án là \"quả bóng\" vì đây là vật dụng chính của môn thể thao."
+        },
+        {
+            "question": "Đây là môn thể thao gì?",
+            "image_caption": "A baseball player is swinging a bat at a ball.",
+            "evidences": [
+                {
+                    "Junior": "Hình ảnh mô tả một người chơi bóng đá đang swinging a bat at a ball, cho thấy đây là một sân vận động (sân bóng đá) nơi người chơi thi đấu."
+                },
+                {
+                    "Manager": "Trong Context có gậy; Question hỏi \"đây là môn thể thao gì?\" (what sport is this?); KBs_Knowledge không có thông tin cụ thể, nhưng LMs_Knowledge bổ sung rằng gậy là công cụ dùng trong bóng đá. Vì hành động trong Context là người chơi bóng đá dùng gậy đánh bóng, nên đáp án là \"gậy\"."
+                },
+                {
+                    "Senior": "Hình ảnh mô tả một người chơi bóng đá đang đá bóng, với sự xuất hiện của gậy (gậy bóng đá) và quả bóng, phù hợp với hành động \"đẩy bóng\" trong môn bóng đá. Các候选项 như \"quả bóng\" và \"gậy\" là dụng cụ trong môn bóng đá, nhưng câu hỏi yêu cầu xác định môn thể thao, không phải dụng cụ. Do đó, đáp án là \"bóng đá\" dựa trên ngữ cảnh mô tả hành động đá bóng."
+                }
+            ],
+            "final_answer": "gậy",
+            "explanation": "Hành động trong Context là người chơi bóng đá dùng gậy đánh bóng, nên đáp án là \"gậy\" vì đây là dụng cụ dùng trong môn bóng đá."
+        },
+        {
+            "question": "Đây là loại thức ăn gì?",
+            "image_caption": "A hot dog with mustard and onions on a bun.",
+            "evidences": [
+                {
+                    "Junior": "Context mô tả \"một hot dog với tương ớt và hành trên một bao\" là một loại sandwich, trong khi các lựa chọn khác như \"bun\", \"búi tóc\", \"giấy bạc\", \"cái mâm\", \"bữa ăn\" không phù hợp với mô tả về loại thức ăn. Lựa chọn \"sandwich\" có xác suất cao nhất (0.6184) phù hợp với câu hỏi."
+                },
+                {
+                    "Manager": "LMs_Knowledge nêu rõ \"A hot dog with mustard and onions on a bun is a sandwich\". Candidates có \"sandwich\" với xác suất 0.6184, phù hợp với ngữ cảnh và kiến thức về thức ăn."
+                },
+                {
+                    "Senior": "Context mô tả một hot dog với mayonnaise và ớt trên bánh, đây là đặc điểm điển hình của loại thức ăn \"sandwich\". Trong các lựa chọn, \"sandwich\" có xác suất cao nhất (0.6184) và khớp hoàn toàn với mô tả."
+                }
+            ],
+            "final_answer": "sandwich",
+            "explanation": "Loại thức ăn được mô tả trong ngữ cảnh là \"sandwich\", và đáp án \"sandwich\" khớp hoàn toàn với mô tả trong các bằng chứng."
+        },
+        {
+            "question": "Môn thể thao nào đang được chơi?",
+            "image_caption": "A man playing tennis on a clay court.",
+            "evidences": [
+                {
+                    "Junior": ""
+                },
+                {
+                    "Manager": "Trong Context có hình ảnh một người chơi tennis trên sân cỏ clay, và câu hỏi hỏi môn thể thao đang được chơi. KBs_Knowledge không nêu rõ môn thể thao, nhưng LMs_Knowledge bổ sung rằng tennis là môn thể thao phổ biến với các vật dụng như vợt, quả bóng. Dù các候选 are items, câu hỏi yêu cầu môn thể thao, nên đáp án là \"tennis\"."
+                },
+                {
+                    "Senior": "Context mô tả một người chơi tennis trên sân cỏ clay, và câu hỏi hỏi môn thể thao đang được chơi. KBs_knowledge không cung cấp thông tin thêm, nhưng từ ngữ trong context rõ ràng chỉ ra môn thể thao là tennis. Các候选项 (vợt, quả bóng) là dụng cụ liên quan đến tennis, nhưng câu hỏi yêu cầu môn thể thao, không phải dụng cụ. Do đó, đáp án chính xác là \"tennis\"."
+                }
+            ],
+            "final_answer": "uncertain",
+            "explanation": "uncertain"
+        },
+        {
+            "question": "Người này có đeo cà vạt không?",
+            "image_caption": "A man wearing glasses and a striped tie.",
+            "evidences": [
+                {
+                    "Junior": "Mô tả trong ngữ cảnh nói đến \"một chiếc áo sơ mi có dây\" và \"một chiếc áo sơ mi có dây\" được đeo, trong khi \"cà vạt\" là một phần của trang phục này. Câu hỏi yêu cầu xác định người có đeo cà vạt, và trong các lựa chọn, \"cà vạt\" là phần tử trực tiếp được đề cập trong ngữ cảnh. Các lựa chọn khác như \"đồng hồ\", \"điện thoại\", \"bộ đồ\", và \"máy ảnh\" không liên quan đến trang phục của người đàn ông trong ngữ cảnh."
+                },
+                {
+                    "Manager": "Trong Context, người này đeo cà vạt (một loại dây lưng) và một chiếc áo sơ mi. Câu hỏi hỏi người này có đeo cà vạt không, và Context rõ ràng mô tả người này đeo cà vạt. Các候选选项中 \"cà vạt\" có xác suất cao nhất (0.8130), phù hợp với mô tả trong Context."
+                },
+                {
+                    "Senior": "Context mô tả người mặc áo phông và dây lưng (cà vạt), trong khi câu hỏi hỏi người có đeo cà vạt không. KBs_knowledge xác nhận cà vạt là một phần của bộ đồ, và candidate \"cà vạt\" có xác suất cao nhất (0.5684) phù hợp với mô tả trong hình."
+                }
+            ],
+            "final_answer": "cà vạt",
+            "explanation": "Người này được mô tả đeo cà vạt trong ngữ cảnh, và câu hỏi yêu cầu xác định người có đeo cà vạt, nên đáp án \"cà vạt\" hoàn toàn phù hợp với thông tin trong Context."
+        },
+        {
+            "question": "Đây là trò chơi gì?",
+            "image_caption": "A baseball player holding a bat and signing autographs for fans.",
+            "evidences": [
+                {
+                    "Junior": "Hình ảnh mô tả một người chơi bóng đá cầm gậy và ký tên, khớp hoàn toàn với mô tả trò chơi là bóng đá."
+                },
+                {
+                    "Manager": ""
+                },
+                {
+                    "Senior": "Hình ảnh mô tả một người chơi bóng bầu dục cầm gậy và ký tên cho người hâm mộ, đây là hoạt động của trò chơi Béisbol. Các lựa chọn còn lại (gậy, sân vận động, quả bóng, băng ghế, găng tay) là vật dụng liên quan nhưng không phải trò chơi."
+                }
+            ],
+            "final_answer": "uncertain",
+            "explanation": "uncertain"
+        },
+        {
+            "question": "Phòng này có cần bảo trì không?",
+            "image_caption": "A bathtub filled with water and a silver faucet.",
+            "evidences": [
+                {
+                    "Junior": "Context mô tả \"bồn tắm\" và \"đèn\" trong phòng; Question hỏi phòng có cần bảo trì không? Các候选 items bồn tắm (0.9333) là phần tử chính trong phòng, và việc có bồn tắm thường yêu cầu bảo trì. Các item khác như chậu, nhà ở, hồ bơi, bát không liên quan trực tiếp đến phòng hoặc yêu cầu bảo trì."
+                },
+                {
+                    "Manager": "Context mô tả một bồn tắm đầy nước và một van kim loại, cho thấy phòng có chứa bồn tắm. Câu hỏi \"Phòng này có cần bảo trì không?\" liên quan đến trạng thái của phòng, nhưng các候选 (bồn tắm, chậu, nhà ở, hồ bơi, bát) được đưa ra với xác suất cao nhất là bồn tắm (0.9333). KBs_Knowledge không cung cấp thông tin cụ thể, nhưng LMs_Knowledge gợi ý rằng bồn tắm là vật thể có thể cần bảo trì. Do đó, đáp án chính xác là bồn tắm."
+                },
+                {
+                    "Senior": "Context mô tả bồn tắm đầy nước và vòi kim loại, cho thấy phòng có chứa bồn tắm. Việc có bồn tắm trong phòng thường yêu cầu bảo trì, và khả năng cao nhất trong các lựa chọn là bồn tắm với xác suất 0.9333."
+                }
+            ],
+            "final_answer": "bồn tắm",
+            "explanation": "Phòng có chứa bồn tắm (xác suất cao nhất 0.9333) và bồn tắm thường yêu cầu bảo trì, nên đáp án \"bồn tắm\" phù hợp với ngữ cảnh và thông tin trong evidences."
+        },
+        {
+            "question": "Người đàn ông đang chơi môn thể thao gì?",
+            "image_caption": "A man in a white shirt is playing tennis.",
+            "evidences": [
+                {
+                    "Junior": "Context mô tả người đàn ông đang chơi tennis, trong đó \"vợt\" là dụng cụ chính của môn thể thao này. Các lựa chọn khác như \"quả bóng\" (0.6974) và \"áo sơ mi\" (0.0142) không liên quan trực tiếp đến môn thể thao, trong khi \"vợt\" là thành phần thiết yếu của tennis."
+                },
+                {
+                    "Manager": ""
+                },
+                {
+                    "Senior": ""
+                }
+            ],
+            "final_answer": "uncertain",
+            "explanation": "uncertain"
+        },
+        {
+            "question": "Bãi đậu xe có được đánh dấu bằng vạch trắng không?",
+            "image_caption": "A man riding a motorcycle in a parking lot.",
+            "evidences": [
+                {
+                    "Junior": "Bãi đậu xe thường được đánh dấu bằng vạch trắng để phân định khu vực停放区域, nhưng trong các lựa chọn cung cấp, không có đáp án trực tiếp liên quan đến việc đánh dấu của bãi đậu xe. Tuy nhiên, dựa trên thông tin chung, bãi đậu xe có thể được đánh dấu bằng vạch trắng, nên câu trả lời là \"Có\"."
+                },
+                {
+                    "Manager": "Bãi đậu xe là phần của hệ thống giao thông đường bộ, nên thường được đánh dấu bằng vạch trắng. KBs_Knowledge không cung cấp thông tin cụ thể, nhưng LMs_Knowledge hỗ trợ rằng bãi đậu xe thuộc phạm vi đường bộ, nên đáp án là \"đường bộ\"."
+                },
+                {
+                    "Senior": "Câu hỏi hỏi về việc bãi đậu xe có được đánh dấu bằng vạch trắng, nhưng các lựa chọn Candidates không bao gồm bất kỳ thuật ngữ liên quan đến vạch trắng hoặc bãi đậu xe. KBs_knowledge không cung cấp thông tin cụ thể về quy định về đánh dấu bãi đậu xe. Do đó, dựa trên ngữ cảnh và lựa chọn Candidates, kết luận là bãi đậu xe không được đánh dấu bằng vạch trắng."
+                }
+            ],
+            "final_answer": "đường bộ",
+            "explanation": "Bãi đậu xe thuộc phạm vi đường bộ, nên được đánh dấu bằng vạch trắng theo quy định, do đó đáp án là \"đường bộ\"."
+        },
+        {
+            "question": "Con chó có thích Scooby Snacks không?",
+            "image_caption": "A dog wearing a green sweater is sniffing a toy.",
+            "evidences": [
+                {
+                    "Junior": "Mô tả trong ngữ cảnh chỉ rõ con chó đang sniffing một đồ chơi, nhưng câu hỏi hỏi về sở thích của con chó đối với Scooby Snacks. Không có thông tin nào trong các lựa chọn đề xuất liên quan đến sở thích của con chó hoặc đồ chơi cụ thể là Scooby Snacks. Do đó, không có đáp án phù hợp trong các lựa chọn được cung cấp."
+                },
+                {
+                    "Manager": "Trong Context, con chó đang sniffing một toy; Question hỏi về việc con chó thích Scooby Snacks, nhưng không có thông tin liên quan đến sở thích của con chó; tuy nhiên, candidate \"đồ chơi\" (toy) là đối tượng mà con chó đang sniffing, có thể được coi là \"đồ chơi\" trong ngữ cảnh này. Tuy nhiên, câu hỏi về sở thích của con chó với Scooby Snacks không có bằng chứng trực tiếp trong Context, nhưng candidate \"đồ chơi\" là duy nhất liên quan đến hành động của con chó."
+                },
+                {
+                    "Senior": "Context chỉ mô tả con chó sniffing một đồ chơi, nhưng không có thông tin nào liên quan đến sở thích của con chó với Scooby Snacks. Câu hỏi yêu cầu xác định sự thích thú của con chó, nhưng không có bằng chứng trong ngữ cảnh hoặc KBs_knowledge để hỗ trợ."
+                }
+            ],
+            "final_answer": "Không có đáp án phù hợp",
+            "explanation": "Ngữ cảnh chỉ mô tả con chó sniffing một đồ chơi, nhưng câu hỏi yêu cầu xác định sở thích của con chó với Scooby Snacks. Không có thông tin liên quan đến sở thích hoặc đồ ăn cụ thể trong ngữ cảnh hoặc KBs_knowledge, do đó không có đáp án phù hợp."
+        },
+        {
+            "question": "Đây là con vật gì?",
+            "image_caption": "A cow with its tongue out in a pen.",
+            "evidences": [
+                {
+                    "Junior": "Context mô tả \"con vật\" là \"con bò\" và các候选选项中 \"con bò\" có xác suất cao nhất (0.9828), phù hợp với mô tả hình ảnh \"con bò với miệng mở\" trong hình."
+                },
+                {
+                    "Manager": "Trong Context có hình ảnh một con bò với miệng mở trong một chuồng; Question hỏi loại con vật cụ thể; KBs_Knowledge xác nhận con bò là một loài động vật phổ biến; LMs_Knowledge bổ sung rằng con bò thường có miệng mở khi ăn hoặc nghỉ; và trong Candidates, \"con bò\" có xác suất cao nhất 0.9828."
+                },
+                {
+                    "Senior": "Context mô tả \"con vật\" trong hình là \"con bò\" với xác suất cao nhất 0.9828; KBs_knowledge xác nhận \"con bò\" là loài động vật thường được thấy trong pen, và mô tả \"vừa ra miệng\" phù hợp với đặc điểm của con bò."
+                }
+            ],
+            "final_answer": "con bò",
+            "explanation": "Hình ảnh mô tả con vật với miệng mở và xác suất cao nhất là \"con bò\", phù hợp với thông tin trong Context và KBs_knowledge."
+        },
+        {
+            "question": "Người đàn ông đang làm gì?",
+            "image_caption": "A man flying a kite on a beach.",
+            "evidences": [
+                {
+                    "Junior": "Context mô tả \"người đàn ông đang làm gì\" và \"diều\" là vật dụng liên quan đến hành động \"điều\" (flying a kite). Các lựa chọn khác như \"bờ biển\", \"dĩa nhựa\", \"áo sơ mi\", \"lá cờ\" không liên quan đến hành động cụ thể."
+                },
+                {
+                    "Manager": "Trong Context có hình ảnh người đàn ông đang diều (tức là đang làm việc với diều), và câu hỏi hỏi người đàn ông đang làm gì. Candidate \"diều\" có xác suất cao nhất (0.9251), phù hợp với ngữ cảnh. Các candidate khác như \"bờ biển\" (0.0060), \"dĩa nhựa\" (0.0059), \"áo sơ mi\" (0.0057), \"lá cờ\" (0.0042) đều không liên quan đến hành động \"diều\" trong ngữ cảnh."
+                },
+                {
+                    "Senior": "Context nêu \"người đàn ông đang làm gì\" và \"diều\" là vật dụng được dùng để bay kẹo, khớp hoàn toàn với mô tả; các候选选项 khác như \"bờ biển\" (0.0060), \"dĩa nhựa\" (0.0059), \"áo sơ mi\" (0.0057), \"lá cờ\" (0.0042) đều không liên quan đến hành động \"bay kẹo\"."
+                }
+            ],
+            "final_answer": "diều",
+            "explanation": "\"Diều\" là vật dụng được mô tả trong ngữ cảnh liên quan đến hành động \"điều\" (bay kẹo), và là lựa chọn duy nhất phù hợp với câu hỏi \"người đàn ông đang làm gì\"."
+        },
+        {
+            "question": "Anh ấy đang chơi môn thể thao gì?",
+            "image_caption": "A person surfing on a wave in the ocean.",
+            "evidences": [
+                {
+                    "Junior": "Context mô tả \"người lướt sóng\" và \"bình thường\" trong hình ảnh, trong khi các lựa chọn khác như \"bảng\", \"bờ biển\", \"cây sào\", \"hồ bơi\" không liên quan trực tiếp đến môn thể thao lướt sóng. Lựa chọn \"ván lướt sóng\" có xác suất cao nhất (0.8910) phù hợp với mô tả."
+                },
+                {
+                    "Manager": "Trong Context có hình ảnh người lướt sóng trên sóng biển; Question hỏi môn thể thao mà người đó chơi; KBs_Knowledge không cung cấp thông tin cụ thể nhưng LMs_Knowledge bổ sung rằng \"ván lướt sóng\" là dụng cụ chính của môn thể thao này; và candidate \"ván lướt sóng\" có xác suất cao nhất 0.8910."
+                },
+                {
+                    "Senior": "Context mô tả người đang lướt sóng trên sóng biển, trong khi \"ván lướt sóng\" là phương tiện chính của môn thể thao này. KBs_knowledge xác nhận \"ván lướt sóng\" là dụng cụ liên quan đến surfing, và các lựa chọn khác (bảng, bờ biển, cây sào, hồ bơi) không liên quan đến môn thể thao này."
+                }
+            ],
+            "final_answer": "ván lướt sóng",
+            "explanation": "Hình ảnh mô tả người lướt sóng trên biển và \"ván lướt sóng\" là dụng cụ chính của môn thể thao này, nên đáp án \"ván lướt sóng\" phù hợp với ngữ cảnh và thông tin được cung cấp."
+        },
+        {
+            "question": "Đây là loại chó gì?",
+            "image_caption": "A dog carrying a frisbee in its mouth.",
+            "evidences": [
+                {
+                    "Junior": "Các候选者 đều là các vật thể (dĩa nhựa, sandwich, sân, vòi) không liên quan đến loại chó, và câu hỏi yêu cầu xác định loại chó, không có lựa chọn nào phù hợp với mô tả."
+                },
+                {
+                    "Manager": "Context mô tả một chú chó mang frisbee, câu hỏi hỏi loại chó, nhưng các candidate không bao gồm loài chó cụ thể. KBs_knowledge và LMs_knowledge không cung cấp thông tin về giống chó, và các candidate như \"dĩa nhựa\", \"màu nâu\", \"sandwich\", \"sân\", \"vòi\" không liên quan đến chó. Do đó, không có candidate phù hợp, nhưng câu trả lời chính xác là \"Chó thường\" (chú chó thông thường) dựa trên ngữ cảnh."
+                },
+                {
+                    "Senior": "Các候选 (dĩa nhựa, màu nâu, sandwich, sân, vòi) đều là vật thể không liên quan đến chó, và câu hỏi yêu cầu xác định loại chó. Không có thông tin nào trong KBs_Knowledge hoặc候选 có liên quan đến loại chó. Do đó, không có đáp án trong danh sách候选."
+                }
+            ],
+            "final_answer": "Không có đáp án phù hợp",
+            "explanation": "Các候选 đều là vật thể không liên quan đến chó, và không có thông tin nào trong KBs_Knowledge hoặc候选 liên quan đến loại chó, do đó không có đáp án phù hợp."
+        },
+        {
+            "question": "Họ đang chơi môn thể thao gì?",
+            "image_caption": "A baseball player pitching a ball in front of a crowd.",
+            "evidences": [
+                {
+                    "Junior": "Context mô tả \"người chơi bóng\" trong một sân vận động có người hò hét, phù hợp với mô tả \"đang chơi môn thể thao\" trong Candidates."
+                },
+                {
+                    "Manager": "Hình ảnh mô tả một người chơi bóng đang giao bóng trước đám đông, cho thấy môn thể thao là bóng. Trong Candidates, \"bóng\" là một trong những lựa chọn, và KBs_Knowledge xác định bóng là vật phẩm quan trọng của môn bóng. LLM_knowledge bổ sung rằng bóng là yếu tố chính của môn bóng."
+                },
+                {
+                    "Senior": "Hình ảnh mô tả là một cầu thủ bóng đá đang ném bóng trước đám đông, xác nhận rằng môn thể thao được đề cập là bóng đá. Các lựa chọn còn lại (quả bóng, gậy, sân vận động, áo sơ mi, găng tay) là vật dụng liên quan nhưng không phải môn thể thao."
+                }
+            ],
+            "final_answer": "bóng",
+            "explanation": "Môn thể thao được xác định là bóng dựa trên hình ảnh người chơi bóng và sự xuất hiện của bóng trong các lựa chọn, đồng thời xác nhận bóng là yếu tố quan trọng của môn thể thao."
+        },
+        {
+            "question": "Mọi người đang làm gì?",
+            "image_caption": "A woman and a child flying a kite in the sky.",
+            "evidences": [
+                {
+                    "Junior": "Hình ảnh mô tả \"mọi người đang làm gì\" liên quan đến việc \"điều\" (kite) trong không gian trời, và candidate \"diều\" có xác suất cao nhất 0.9647, khớp hoàn toàn với mô tả."
+                },
+                {
+                    "Manager": "Trong Context, mọi người đang bay kẹt (diều) trong không khí; câu hỏi hỏi \"mọi người đang làm gì\" yêu cầu xác định hành động, trong khi diều là vật thể được bay; KBs_knowledge không đề cập đến hành động, nhưng LMs_knowledge xác nhận diều là vật được bay trong hình; candidate \"diều\" có xác suất cao nhất 0.9647."
+                },
+                {
+                    "Senior": "Hình ảnh mô tả \"mọi người đang làm gì\" và có \"diều\" trong các lựa chọn. KBs_knowledge không cung cấp thông tin thêm, nhưng dựa vào ngữ cảnh \"mọi người đang bay kẹt\" (diều) là hành động chính, nên đáp án là \"diều\" với xác suất cao nhất 0.9647."
+                }
+            ],
+            "final_answer": "diều",
+            "explanation": "Hình ảnh mô tả mọi người đang bay kẹt (diều) trong không khí, và \"diều\" là vật thể được bay, nên đáp án \"diều\" phù hợp với mô tả và xác suất cao nhất."
+        },
+        {
+            "question": "Mọi người đang làm gì?",
+            "image_caption": "A man and a woman are cooking in a kitchen.",
+            "evidences": [
+                {
+                    "Junior": "Context mô tả \"mọi người đang làm gì\" trong phòng bếp; Candidates có \"phòng bếp\" với xác suất cao nhất 0.8977, khớp hoàn toàn với mô tả—vì thế đáp án chắc chắn là phòng bếp."
+                },
+                {
+                    "Manager": "Trong Context, mọi người đang nấu ăn trong phòng bếp; Question hỏi \"mọi người đang làm gì?\" (tương đương \"đang nấu ăn\"); KBs_knowledge không có thông tin cụ thể về hành động, nhưng \"phòng bếp\" là nơi thường có hoạt động nấu ăn; LLM_knowledge bổ sung rằng phòng bếp là nơi nấu ăn chính."
+                },
+                {
+                    "Senior": "Context nêu \"mọi người đang làm gì?\" và \"phòng bếp\" là nơi họ đang nấu ăn. KBs_knowledge không cung cấp thông tin cụ thể, nhưng dựa trên ngữ cảnh, \"phòng bếp\" là nơi họ đang ở, và \"phòng bếp\" có xác suất cao nhất trong các lựa chọn."
+                }
+            ],
+            "final_answer": "phòng bếp",
+            "explanation": "Phòng bếp là nơi thường có hoạt động nấu ăn, khớp hoàn toàn với mô tả và xác suất cao nhất trong các lựa chọn."
+        },
+        {
+            "question": "Người đàn ông đội gì trên đầu?",
+            "image_caption": "A skier wearing a red bobble hat is skiing down a snowy slope.",
+            "evidences": [
+                {
+                    "Junior": "Mô tả trong ngữ cảnh là \"đường núi\" và \"sự kiện trượt tuyết\", trong khi \"bầu trời\" là một khái niệm liên quan đến không gian xung quanh, không phải trang phục. Tuy nhiên, theo các lựa chọn cung cấp, \"bầu trời\" là lựa chọn duy nhất có thể liên quan đến khung cảnh trong ngữ cảnh, dù không trực tiếp mô tả trang phục."
+                },
+                {
+                    "Manager": "Trong Context có người đàn ông đội một chiếc mũ đỏ có hình tròn (bóp), nhưng các候选选项 không có \"mũ\" hoặc \"bóp\" trực tiếp. Tuy nhiên, \"bầu trời\" là một trong những lựa chọn duy nhất trong danh sách, dù không phải là mũ. Tuy nhiên, theo ngữ cảnh, câu hỏi hỏi \"đội gì trên đầu\" nên phải là một vật thể có thể đội trên đầu, nhưng không có lựa chọn nào phù hợp với các候选选项. Do đó, có thể có lỗi trong danh sách候选选项, nhưng dựa trên thông tin đã cho, \"bầu trời\" là lựa chọn duy nhất còn lại."
+                },
+                {
+                    "Senior": "Context nêu \"người đàn ông đội gì trên đầu\" và \"màu đỏ bobble hat\" được mô tả. Trong các lựa chọn, \"bầu trời\" là chỉ định duy nhất có thể liên quan đến \"đội trên đầu\", dù không chính xác về mặt vật lý. Tuy nhiên, theo quy định, nếu không có đáp án phù hợp trong candidates, có thể đưa ra câu trả lời riêng."
+                }
+            ],
+            "final_answer": "bầu trời",
+            "explanation": "\"Bầu trời\" là lựa chọn duy nhất còn lại trong danh sách có thể liên quan đến khung cảnh trong ngữ cảnh, dù không trực tiếp mô tả trang phục, nhưng phù hợp với câu hỏi về việc người đàn ông đội gì trên đầu."
+        },
+        {
+            "question": "Mèo đang cầm loại đồ chơi trái cây nào?",
+            "image_caption": "A cat is laying on a couch with a banana in its mouth.",
+            "evidences": [
+                {
+                    "Junior": "Context mô tả \"mèo đang cầm loại đồ chơi trái cây nào\" và xác định rõ \"trái cây\" là chuối (banana). Trong các lựa chọn, \"chuối\" là loại trái cây chính xác nhất phù hợp với mô tả, dù \"đồ chơi\" (đồ chơi) là một lựa chọn khác nhưng không liên quan trực tiếp đến \"trái cây\" trong câu hỏi."
+                },
+                {
+                    "Manager": "Trong Context, mèo đang cầm một quả chuối; Question hỏi loại đồ chơi trái cây mà mèo cầm; KBs_Knowledge không có thông tin cụ thể, nhưng LMs_Knowledge xác nhận chuối là loại trái cây; và trong Candidates, \"chuối\" có xác suất cao nhất 0.1127, phù hợp với tình huống."
+                },
+                {
+                    "Senior": "Context nêu \"mèo đang cầm loại đồ chơi trái cây nào\" và rõ ràng mô tả \"một quả chuối\" trong hình. KBs_knowledge không cần thiết vì thông tin trực tiếp từ ngữ cảnh xác định loại trái cây. Trong Candidates, \"chuối\" có xác suất cao nhất (0.1127) và khớp hoàn toàn với mô tả."
+                }
+            ],
+            "final_answer": "chuối",
+            "explanation": "Ngữ cảnh mô tả mèo cầm đồ chơi trái cây, và trong các lựa chọn, \"chuối\" là loại trái cây chính xác nhất phù hợp với mô tả."
+        },
+        {
+            "question": "Có một trong những biển báo bị phong hóa không?",
+            "image_caption": "A stop sign with a 4-way sign underneath it.",
+            "evidences": [
+                {
+                    "Junior": "Context mô tả biển báo (stop sign) và 4-way sign, nhưng các candidate (xe tải, tường, máy bay, vòi, lá cờ) không phải là biển báo. Vì vậy, không có biển báo trong candidate bị phong hóa."
+                },
+                {
+                    "Manager": "Câu hỏi hỏi về biển báo bị phong hóa, nhưng các候选 (xe tải, tường, máy bay, vòi, lá cờ) không phải là biển báo. Biển báo trong hình là stop sign và 4-way sign, nhưng không có trong danh sách候选. Do đó, không có đáp án phù hợp trong các候选, nên câu trả lời là \"Không\"."
+                },
+                {
+                    "Senior": "Các候选者 (xe tải, tường, máy bay, vòi, lá cờ) là các vật thể không phải là biển báo, trong khi ngữ cảnh mô tả một biển báo (chìa khóa, biển báo 4 phương) nên không có biển báo bị phong hóa trong các候选者."
+                }
+            ],
+            "final_answer": "Không",
+            "explanation": "Các候选 không chứa biển báo trong ngữ cảnh mô tả, và câu hỏi hỏi về biển báo bị phong hóa, nên đáp án \"Không\" phù hợp."
+        },
+        {
+            "question": "Trời có mưa không?",
+            "image_caption": "A man holding an umbrella in the rain.",
+            "evidences": [
+                {
+                    "Junior": "Hình ảnh mô tả người đang cầm umbrella trong mưa, trực tiếp xác nhận điều kiện thời tiết đang mưa."
+                },
+                {
+                    "Manager": "Trong Context, người đàn ông đang cầm chiếc ô trong mưa. Câu hỏi \"Trời có mưa không?\" được trả lời bằng việc người đàn ông cầm chiếc ô, cho thấy đang có mưa. KBs_knowledge không đề cập đến thời tiết, nhưng LMs_knowledge bổ sung rằng việc cầm chiếc ô là dấu hiệu của mưa. Trong Candidates, \"chiếc ô\" có xác suất 0.1100, cao hơn các lựa chọn khác."
+                },
+                {
+                    "Senior": "Hình ảnh mô tả người cầm umbrella trong mưa, trực tiếp xác nhận điều kiện thời tiết có mưa."
+                }
+            ],
+            "final_answer": "chiếc ô",
+            "explanation": "Hình ảnh người cầm chiếc ô trong mưa xác nhận điều kiện thời tiết có mưa, nên đáp án \"chiếc ô\" phù hợp với câu hỏi."
+        },
+        {
+            "question": "Chiếc thìa đó có bị xỉn màu không?",
+            "image_caption": "Two bowls of soup with broccoli on a wooden table.",
+            "evidences": [
+                {
+                    "Junior": "Context không đề cập đến thìa, chỉ mô tả các món ăn và vật thể khác. Vì vậy, không có thông tin để xác định thìa có bị xỉn màu."
+                },
+                {
+                    "Manager": "Câu hỏi hỏi chiếc thìa có bị xỉn màu, trong các候选 có \"tách\" (thìa) với xác suất 0.0206. Bối cảnh mô tả hai chén cháo với broccoli trên bàn gỗ, không có thông tin cụ thể về trạng thái của thìa. KBs_knowledge không nêu rõ màu sắc của thìa, và LLM_knowledge chỉ ra rằng thìa thường sạch sẽ. Tuy nhiên, \"tách\" là候选 duy nhất liên quan đến thìa, nên đáp án là \"tách\" với xác suất thấp nhất."
+                },
+                {
+                    "Senior": "Hình ảnh không đề cập đến thìa hoặc trạng thái sạch sẽ của thìa, nên không có thông tin để xác định chiếc thìa đó có bị xỉn màu không."
+                }
+            ],
+            "final_answer": "tách",
+            "explanation": "Vì bối cảnh không đề cập đến thìa hoặc trạng thái của nó, và \"tách\" là候选 duy nhất liên quan đến thìa với xác suất thấp nhất, đáp án \"tách\" là hợp lý nhất."
+        },
+        {
+            "question": "Người đàn ông đang làm gì?",
+            "image_caption": "Two police officers on horseback patrolling a city street.",
+            "evidences": [
+                {
+                    "Junior": "Context mô tả \"người đàn ông\" đang làm việc trên con ngựa, và trong các lựa chọn, \"con ngựa\" (0.9883) là lựa chọn có xác suất cao nhất, phù hợp với mô tả trong hình."
+                },
+                {
+                    "Manager": "Context mô tả hai cảnh sát trên ngựa đang patrolling trên đường phố. Question hỏi người đàn ông đang làm gì. KBs_knowledge không có thông tin về hành động cụ thể, nhưng LLM_knowledge cho biết cảnh sát thường patrolling. Tuy nhiên, các候选选项 không bao gồm hành động, nên phải đưa ra câu trả lời riêng."
+                },
+                {
+                    "Senior": "Context mô tả hai cảnh sát viên trên ngựa patrolling đường phố; Question hỏi hành động của người đàn ông (thực tế là cảnh sát viên), KBs_knowledge không có thông tin cụ thể, nhưng từ ngữ \"patrolling\" trong context xác định hành động chính. Các candidate là các vật thể không liên quan đến hành động, nên không có đáp án trong list."
+                }
+            ],
+            "final_answer": "patrolling",
+            "explanation": "Hành động \"patrolling\" được mô tả trong context, và câu trả lời \"patrolling\" trực tiếp xác định hành động của cảnh sát viên trên ngựa, phù hợp với mô tả trong hình."
+        },
+        {
+            "question": "Đây có phải là ga tàu không?",
+            "image_caption": "A red and blue train travels down the tracks.",
+            "evidences": [
+                {
+                    "Junior": "Hình ảnh mô tả một tàu đang di chuyển trên đường ray, không có yếu tố gợi ý về một ga tàu. Các候选词 đều liên quan đến loại tàu, nhưng câu hỏi yêu cầu xác định đây là ga tàu hay không, điều này không được hỗ trợ bởi ngữ cảnh."
+                },
+                {
+                    "Manager": "Context mô tả một tàu chạy trên đường ray, và KBs_knowledge nêu rõ \"đường sắt\" là hệ thống đường ray cho tàu. LLM_knowledge bổ sung rằng tàu chạy trên đường ray là đặc điểm của đường sắt, không phải ga tàu. Các候选词 như \"tàu hỏa\" (tàu car) hoặc \"đường sắt\" (hệ thống đường ray) đều liên quan đến tàu, nhưng câu hỏi hỏi \"có phải là ga tàu không?\" (là ga tàu hay không), nên \"đường sắt\" là loại tàu, không phải ga. Tuy nhiên, nếu câu hỏi là \"có phải là ga tàu không?\" thì \"đường sắt\" không phải là ga, nhưng trong các候选词, \"đường sắt\" là loại tàu, không phải ga. Tuy nhiên, dựa trên ngữ cảnh, \"đường sắt\" là hệ thống đường ray, nên có thể được coi là \"tàu\" trong ngữ cảnh này. Do đó, đáp án là \"đường sắt\" với bằng chứng là context mô tả tàu chạy trên đường ray."
+                },
+                {
+                    "Senior": ""
+                }
+            ],
+            "final_answer": "uncertain",
+            "explanation": "uncertain"
+        },
+        {
+            "question": "Thức ăn đã sẵn sàng chưa?",
+            "image_caption": "A plate of food with broccoli and meat.",
+            "evidences": [
+                {
+                    "Junior": "Context mô tả \"món ăn\" (thức ăn) được bày trên bát, và câu hỏi hỏi về việc thức ăn đã sẵn sàng chưa. Trong các lựa chọn, \"món ăn\" là thuật ngữ chính xác nhất để chỉ thức ăn, phù hợp với ngữ cảnh và câu hỏi."
+                },
+                {
+                    "Manager": "Context mô tả một bát thức ăn với broccoli và thịt, hỏi \"thức ăn đã sẵn sàng chưa?\" (food is ready?), KBs_knowledge không có thông tin cụ thể, nhưng LMs_knowledge nêu rõ \"món ăn\" là món ăn. Trong Candidates, \"món ăn\" có xác suất 0.0209, nhưng nếu câu hỏi liên quan đến việc thức ăn đã được chuẩn bị (đã sẵn sàng), thì \"món ăn\" là đáp án phù hợp nhất vì nó đại diện cho món ăn trên bát. Tuy nhiên, \"bát\" (0.8166) là vật dụng chứa thức ăn, nhưng câu hỏi không liên quan đến vật dụng mà là trạng thái thức ăn đã sẵn sàng. Do đó, đáp án chính xác là \"món ăn\"."
+                },
+                {
+                    "Senior": "Context mô tả \"một bát thức ăn\" với broccoli và thịt, hỏi \"thức ăn đã sẵn sàng chưa?\" và các candidate có \"bát\" (0.8166) là khả năng cao nhất. KBs_knowledge xác nhận \"bát\" là dụng cụ đựng thức ăn, nên nếu có bát, thức ăn đã sẵn sàng."
+                }
+            ],
+            "final_answer": "món ăn",
+            "explanation": "\"Món ăn\" là thuật ngữ chính xác để chỉ thức ăn trong ngữ cảnh câu hỏi, phù hợp với mô tả \"món ăn\" trên bát và câu hỏi về trạng thái thức ăn đã sẵn sàng."
+        },
+        {
+            "question": "Đây có phải là nhà của ai đó không?",
+            "image_caption": "A group of people sitting around a table.",
+            "evidences": [
+                {
+                    "Junior": "Hình ảnh mô tả là một nhóm người ngồi quanh bàn, không có yếu tố rõ ràng liên quan đến \"nhà\" hoặc các cấu trúc kiến trúc. Các候选选项 (quán ăn, phòng, sân vườn, băng ghế, cái ghế) đều là nơi ở hoặc vật dụng, nhưng không thể xác định đây là \"nhà\" của ai đó. Do đó, không có đáp án phù hợp trong các候选, nên trả lời riêng."
+                },
+                {
+                    "Manager": "Context mô tả một nhóm người ngồi quanh bàn, hỏi liệu đây có phải là nhà của ai đó. KBs_Knowledge không cung cấp thông tin cụ thể, nhưng LMs_Knowledge gợi ý rằng \"phòng\" là một phần của nhà. Trong các候选, \"phòng\" có xác suất 0.0829, phù hợp với việc một phòng là không gian trong nhà. Các đối tượng khác như quán ăn, sân vườn, hoặc ghế không liên quan trực tiếp đến tính chất \"nhà\" của scene."
+                },
+                {
+                    "Senior": "Hình ảnh mô tả là một nhóm người ngồi quanh bàn, không có yếu tố rõ ràng liên quan đến \"nhà\" hoặc \"địa điểm sống động\". Các候选选项 (quán ăn, phòng, sân vườn, băng ghế, cái ghế) đều là nơi ở hoặc hoạt động, nhưng câu hỏi yêu cầu xác định liệu đây là \"nhà\" của ai đó. Vì hình ảnh không thể xác định là \"nhà\", nên đáp án là \"Không\"."
+                }
+            ],
+            "final_answer": "Không",
+            "explanation": "Hình ảnh mô tả nhóm người ngồi quanh bàn không có yếu tố liên quan đến \"nhà\" hoặc \"cấu trúc kiến trúc\", và các候选选项 đều là nơi ở hoặc vật dụng không thể xác định là \"nhà\" của ai đó. Do đó, đáp án \"Không\" phù hợp với thông tin trong evidences."
+        },
+        {
+            "question": "Loại trái cây này là gì?",
+            "image_caption": "A single orange is shown against a black background.",
+            "evidences": [
+                {
+                    "Junior": "Hình ảnh hiển thị một quả cam, và câu hỏi yêu cầu xác định loại trái cây. Trong các lựa chọn, \"quả cam\" là loại trái cây chính xác nhất, khớp hoàn toàn với mô tả hình ảnh."
+                },
+                {
+                    "Manager": "Trong Context có hình ảnh một quả cam; Question hỏi loại trái cây là gì; KBs_Knowledge không có thông tin cụ thể, nhưng LMs_Knowledge bổ sung rằng cam là loại trái cây có hình dạng và màu sắc đặc trưng; trong Candidates, \"quả cam\" có xác suất cao nhất 0.1157, phù hợp với hình ảnh một quả cam trong Context."
+                },
+                {
+                    "Senior": "Hình ảnh mô tả là \"quả cam\" và \"những quả cam\" trong Candidates, trong khi \"táo\", \"hoá quả\" và các lựa chọn khác không phù hợp với mô tả \"quả cam\" trong ngữ cảnh. KBs_knowledge xác nhận rằng cam là loại trái cây, và câu hỏi yêu cầu xác định loại trái cây, nên đáp án chính xác là \"quả cam\"."
+                }
+            ],
+            "final_answer": "Quả cam",
+            "explanation": "Quả cam là loại trái cây được xác định rõ ràng từ hình ảnh và thông tin về tính chất của nó, phù hợp với câu hỏi và các bằng chứng hỗ trợ."
+        },
+        {
+            "question": "Đó có phải là một chiếc F-16 không?",
+            "image_caption": "A jet plane is flying through the sky, leaving a trail of smoke behind it.",
+            "evidences": [
+                {
+                    "Junior": "Mô tả trong ngữ cảnh là \"máy bay\" (jet plane) đang bay qua không khí, và câu hỏi hỏi \"đó có phải là một chiếc F-16 không?\" (is it an F-16?). F-16 là một loại máy bay chiến đấu jet, nên đáp án \"máy bay\" phù hợp với ngữ cảnh và câu hỏi. Các lựa chọn khác như \"ga ra\" (có thể là lỗi chính tả hoặc thuật ngữ không rõ), \"bầu trời\", \"núi\", \"bảy\" không liên quan đến loại máy bay được mô tả."
+                },
+                {
+                    "Manager": "Context mô tả một chiếc máy bay bay qua không khí với dấu vết khói, và câu hỏi hỏi liệu đó có phải là F-16. Trong các候选, \"máy bay\" có xác suất cao nhất (0.6422), thể hiện sự phù hợp với mô tả trong Context. KBs_Knowledge không cung cấp thông tin cụ thể về loại máy bay, nhưng LMs_Knowledge bổ sung rằng \"máy bay\" là thuật ngữ chung cho các loại máy bay, trong khi các候选 khác như \"ga ra\" (có thể là model cụ thể) hoặc \"bầu trời\" không liên quan đến việc xác định loại máy bay."
+                },
+                {
+                    "Senior": "Context mô tả một chiếc máy bay bay qua không khí với dấu tích của khói, và candidate \"máy bay\" có xác suất cao nhất (0.6422). Vì F-16 là một loại máy bay chiến đấu, nhưng không có thông tin cụ thể trong context về loại máy bay, nên đáp án là \"máy bay\" vì nó là loại máy bay phổ biến trong context."
+                }
+            ],
+            "final_answer": "máy bay",
+            "explanation": "Đáp án \"máy bay\" phù hợp với ngữ cảnh mô tả máy bay bay qua không khí và câu hỏi hỏi loại máy bay, vì \"máy bay\" là thuật ngữ chung cho các loại máy bay, trong khi các候选 khác không liên quan đến loại cụ thể."
+        },
+        {
+            "question": "Người chơi có thuận tay phải không?",
+            "image_caption": "A baseball player wearing a Raiders jersey is holding a bat.",
+            "evidences": [
+                {
+                    "Junior": "Context mô tả người chơi đang cầm gậy (gậy là vật dụng liên quan đến việc cầm bat), và trong bóng đá, người chơi thường cầm gậy với tay phải để thuận tay phải. Do đó, người chơi có khả năng thuận tay phải."
+                },
+                {
+                    "Manager": "Trong bóng đá, người chơi thuận tay phải thường sử dụng tay phải để cầm gậy. Hình ảnh cho thấy người chơi đang cầm gậy, và trong KBs_knowledge, gậy thường được cầm bằng tay phải cho người chơi thuận tay phải. Do đó, người chơi có khả năng thuận tay phải."
+                },
+                {
+                    "Senior": "Văn bản không nêu rõ người chơi có thuận tay phải hay trái. Các yếu tố như áo sơ mi, gậy, quả bóng, lồng không liên quan trực tiếp đến việc xác định tay thuận của người chơi. Tuy nhiên, trong thực tế, người chơi bóng đá thường cầm gậy với tay phải nếu thuận tay phải, nhưng ngữ cảnh không xác định điều này."
+                }
+            ],
+            "final_answer": "Có",
+            "explanation": "Hình ảnh cho thấy người chơi cầm gậy, và trong bóng đá, người chơi thuận tay phải thường cầm gậy với tay phải, nên đáp án \"Có\" phù hợp với bằng chứng."
+        },
+        {
+            "question": "Con vật này có răng nanh không?",
+            "image_caption": "An elephant standing in a forest.",
+            "evidences": [
+                {
+                    "Junior": "Context mô tả \"con vật\" là voi; Question hỏi liệu voi có răng nanh không; trong Candidates, \"con voi\" có xác suất cao nhất 0.4686, khớp hoàn toàn với mô tả—vì thế đáp án chắc chắn là Con vật này có răng nanh."
+                },
+                {
+                    "Manager": "Context mô tả một con voi trong rừng, câu hỏi hỏi con vật có răng nanh không, và các候选包括 \"con voi\" (elephant) là loài động vật có răng nanh. KBs_Knowledge xác nhận rằng voi có răng nanh, còn các候选 như \"thân cây\" (tree), \"bãi cỏ\" (grassland), \"đồi\" (hill), và \"bức ảnh\" (photo) là vật thể không có răng nanh. LLM_knowledge bổ sung rằng voi là loài có răng nanh, nên đáp án chính xác là \"con voi\"."
+                },
+                {
+                    "Senior": "KBs_knowledge xác nhận voi có răng nanh, trong khi các lựa chọn khác (thân cây, bãi cỏ, đồi, bức ảnh) không liên quan đến động vật. Câu hỏi hỏi về sự tồn tại của răng nanh trong con vật, và \"con voi\" là đáp án chính xác dựa trên kiến thức đã cung cấp."
+                }
+            ],
+            "final_answer": "con voi",
+            "explanation": "Con voi là loài động vật có răng nanh được xác nhận trong các nguồn kiến thức, và đáp án \"con voi\" khớp hoàn toàn với mô tả và xác suất cao nhất trong các候选."
+        },
+        {
+            "question": "Đây có phải là một môi trường ồn ào không?",
+            "image_caption": "A dark alley with a building on the right side.",
+            "evidences": [
+                {
+                    "Junior": "Môi trường tối trong hình ảnh là một nơi yên tĩnh, không có yếu tố ồn ào như đường phố hoặc vạch kẻ đường. Context mô tả một con đường tối với một nhà ở bên phải, điều này thường không có tính chất ồn ào."
+                },
+                {
+                    "Manager": "Context mô tả một con đường tối với một nhà ở bên phải, mà \"đường phố\" (road) là một khái niệm phổ biến cho các con đường. Mặc dù context nói về \"con đường tối\" nhưng không xác định rõ là đường phố hay con đường khác. Tuy nhiên, \"đường phố\" là lựa chọn gần nhất với ngữ cảnh, và trong các candidate, \"đường phố\" có xác suất cao nhất (0.1418) so với các lựa chọn khác. Ngoài ra, \"đường phố\" có thể được hiểu là con đường, nơi có thể có tiếng ồn từ người đi đường hoặc phương tiện."
+                },
+                {
+                    "Senior": "Môi trường trong hình là một con đường tối với một nhà ở bên phải, không có yếu tố nào cho thấy nó là môi trường ồn ào. Context nêu rõ \"con đường tối\" và không có yếu tố liên quan đến hoạt động đông đúc, nên không phải môi trường ồn ào."
+                }
+            ],
+            "final_answer": "Không",
+            "explanation": "Môi trường trong hình được mô tả là tối và yên tĩnh, không có yếu tố ồn ào, phù hợp với đáp án \"Không\"."
+        },
+        {
+            "question": "Sự kiện này là gì?",
+            "image_caption": "A table with six wine glasses on it.",
+            "evidences": [
+                {
+                    "Junior": "Context mô tả một bàn có 6 chén rượu, đây là môi trường thường thấy tại quán bar, nơi người ta thường sử dụng chén rượu và đặt trên bàn."
+                },
+                {
+                    "Manager": "Context mô tả một bàn có sáu chén rượu, điều này thường xảy ra tại quán bar. Trong Candidates, \"quán bar\" có xác suất 0.0218, nhưng vì hình ảnh trong Context gợi ý môi trường bar với rượu, đây là sự kiện phổ biến nhất. Các候选项 như \"rượu\" (0.23) là đồ uống, không phải sự kiện, còn \"chén đĩa\" (0.0248) là vật dụng, không liên quan đến sự kiện."
+                },
+                {
+                    "Senior": "Context nêu \"bát rượu\" xuất hiện; Question hỏi sự kiện liên quan đến bàn có bát rượu; KBs_knowledge không có thông tin thêm, nhưng candidate \"rượu\" có xác suất cao nhất 0.23 và khớp hoàn toàn với mô tả—vì vậy đáp án chính là \"Rượu\"."
+                }
+            ],
+            "final_answer": "quán bar",
+            "explanation": "Sự kiện được mô tả trong Context là môi trường bar với chén rượu, và \"quán bar\" là sự kiện phổ biến nhất dựa trên mô tả và xác suất cao nhất."
+        },
+        {
+            "question": "Bức tranh miêu tả ngày lễ nào?",
+            "image_caption": "A tray of cookies and a vase of flowers on a table.",
+            "evidences": [
+                {
+                    "Junior": "Bức tranh mô tả một cái lọ cắm hoa (lọ cắm hoa có xác suất 0.0350) và một đĩa bánh (bánh có xác suất 0.1048), đều là biểu tượng của ngày lễ Christmas."
+                },
+                {
+                    "Manager": "Bức tranh miêu tả ngày lễ có sự xuất hiện của lọ cắm hoa và các món bánh, phù hợp với các ngày lễ như Christmas hoặc Tết. Trong Candidates, \"lọ cắm hoa\" có xác suất cao nhất (0.0350), và Context mô tả một lọ hoa trên bàn, gợi ý ngày lễ có yếu tố hoa và bánh."
+                },
+                {
+                    "Senior": "Bức tranh mô tả một cái lọ cắm hoa và các loại bánh trên bàn, thường liên quan đến ngày lễ Christmas, khi người ta thường có hoa và bánh. Trong các lựa chọn, \"lọ cắm hoa\" là phần chính trong cảnh, và KBs_knowledge xác nhận sự liên quan của hoa với ngày lễ Christmas."
+                }
+            ],
+            "final_answer": "lọ cắm hoa",
+            "explanation": "Bức tranh mô tả sự xuất hiện của lọ cắm hoa và các món bánh, thường liên quan đến ngày lễ Christmas, do đó đáp án \"lọ cắm hoa\" phù hợp với nội dung trong chứng cứ."
+        },
+        {
+            "question": "Người đàn ông chơi môn thể thao nào?",
+            "image_caption": "A man in a green shirt and black shorts is playing tennis.",
+            "evidences": [
+                {
+                    "Junior": "Context mô tả người đàn ông chơi tennis, trong đó \"vợt\" là dụng cụ cần thiết để chơi môn thể thao này. Các候选选项中 \"vợt\" có xác suất cao nhất (0.0668), phù hợp với mô tả."
+                },
+                {
+                    "Manager": "Trong Context, người đàn ông đang chơi tennis; Question hỏi môn thể thao người đàn ông chơi; KBs_knowledge không có thông tin cụ thể về môn thể thao; LLM_knowledge bổ sung rằng tennis là môn thể thao liên quan đến vợt và quả bóng. Tuy nhiên, vì không có \"tennis\" trong Candidates, nhưng Context rõ ràng mô tả người đàn ông chơi tennis, nên câu trả lời là \"tennis\" (dù không nằm trong danh sách Candidates)."
+                },
+                {
+                    "Senior": "Context nêu \"người đàn ông chơi môn thể thao nào?\" và mô tả cụ thể là \"chơi tennis\". Các candidate là các vật dụng liên quan đến tennis, nhưng câu hỏi yêu cầu trả lời về môn thể thao, không phải vật dụng. Do đó, đáp án là \"tennis\" dựa trên thông tin trong context."
+                }
+            ],
+            "final_answer": "Tennis",
+            "explanation": "Câu trả lời \"Tennis\" phù hợp với mô tả trong context trực tiếp, xác định môn thể thao người đàn ông chơi, dù không có \"tennis\" trong danh sách候选选项."
+        },
+        {
+            "question": "Đứa trẻ đang cầm cái gì?",
+            "image_caption": "A young boy wearing glasses and a black jacket is holding a red kite.",
+            "evidences": [
+                {
+                    "Junior": "Context mô tả \"đang cầm cái gì\" và \"diều\" là từ khóa chính trong các候选选项; Question hỏi vật thể được cầm, trong khi \"diều\" là vật thể cụ thể được mô tả trong hình ảnh, với xác suất cao nhất 0.87."
+                },
+                {
+                    "Manager": "Trong Context, đứa trẻ đang cầm cái gì được mô tả là \"cái cánh\" (kite) màu đỏ. Câu hỏi hỏi \"đứa trẻ đang cầm cái gì?\" và Candidates có \"diều\" với xác suất cao nhất 0.8700. KBs_Knowledge không cung cấp thông tin thêm, nhưng LMs_Knowledge bổ sung rằng \"diều\" là vật thể thường được cầm trong hình ảnh."
+                },
+                {
+                    "Senior": "Context nêu \"đang cầm cái gì\" và \"cái đó là diều\" (kite). KBs_knowledge không cần thiết vì mô tả trực tiếp trong context. Trong Candidates, \"diều\" có xác suất cao nhất 0.87 và khớp hoàn toàn với mô tả—vì vậy đáp án chính là \"diều\"."
+                }
+            ],
+            "final_answer": "diều",
+            "explanation": "Đứa trẻ đang cầm \"diều\" được mô tả trực tiếp trong context và có xác suất cao nhất trong các候选选项, nên đáp án chính xác."
+        },
+        {
+            "question": "Đường đang cong về bên trái hay bên phải?",
+            "image_caption": "A man taking a selfie in a mirror while riding a motorcycle.",
+            "evidences": [
+                {
+                    "Junior": "Mô tả trong ngữ cảnh không đề cập đến đường bộ hoặc hướng cong của đường. Câu hỏi yêu cầu xác định hướng cong của đường, nhưng không có thông tin nào trong ngữ cảnh liên quan đến đường hoặc hướng đi của xe máy. Do đó, không thể xác định được hướng cong của đường từ thông tin đã cho."
+                },
+                {
+                    "Manager": "Câu hỏi hỏi về hướng cong của đường, và trong KBs_Knowledge có thông tin \"đường bộ\" là một phần của cảnh. Dù không có thông tin cụ thể về hướng cong của đường trong ngữ cảnh, nhưng \"đường bộ\" là đối tượng chính được đề cập trong câu hỏi, và các candidate khác như \"xe máy\" hoặc \"máy ảnh\" không liên quan trực tiếp đến đường. Do đó, đáp án là \"đường bộ\" với xác suất 0.0195."
+                },
+                {
+                    "Senior": "Context không đề cập đến hướng cong của đường, nhưng candidate \"đường bộ\" có xác suất thấp nhất 0.0195. Tuy nhiên, câu hỏi yêu cầu xác định hướng đường cong, và không có thông tin trong ngữ cảnh để xác định, nên có thể không có câu trả lời phù hợp từ các candidate. Tuy nhiên, do không có lựa chọn khác, đáp án là \"đường bộ\" với xác suất thấp nhất."
+                }
+            ],
+            "final_answer": "đường bộ",
+            "explanation": "Đáp án \"đường bộ\" là phù hợp vì trong ngữ cảnh, \"đường bộ\" là đối tượng chính được đề cập, và câu hỏi yêu cầu xác định hướng đường cong, dù không có thông tin cụ thể về hướng trong ngữ cảnh."
+        },
+        {
+            "question": "Đây có phải là một buổi lễ hội không?",
+            "image_caption": "A black dinosaur statue stands in a park with kites flying in the sky.",
+            "evidences": [
+                {
+                    "Junior": "Context mô tả \"kites flying in the sky\", trong đó \"diều\" là một trong những vật thể được nhắc đến trong các候选, và việc có kites thường liên quan đến các hoạt động của lễ hội. Do đó, đáp án phù hợp nhất là \"diều\" với xác suất 0.1413."
+                },
+                {
+                    "Manager": "Context mô tả hình ảnh một cái đài khủng long trong công viên với những chiếc kites bay trong không khí, điều này thường liên quan đến các buổi lễ hội. KBs_knowledge nêu rõ rằng kites là biểu tượng của các buổi lễ hội, và trong các lựa chọn, \"diều\" (kites) có xác suất cao nhất 0.1413, phù hợp nhất với tình huống."
+                },
+                {
+                    "Senior": "Scene mô tả một khu vui chơi với một tượng động vật đen và những chiếc lá kites bay trong không khí, nhưng không có yếu tố đặc trưng của một buổi lễ hội (như đèn lồng, người tham gia, hoặc hoạt động đặc thù). Các候选 (diều, máy bay, hươu cao cổ, xe ô tô, tường) không liên quan trực tiếp đến tính chất của một buổi lễ hội, và câu hỏi không yêu cầu xác định đối tượng cụ thể trong scene."
+                }
+            ],
+            "final_answer": "diều",
+            "explanation": "Diều là vật thể được nhắc đến trong cảnh có kites flying, và kites thường liên quan đến các hoạt động của lễ hội, nên đáp án \"diều\" phù hợp nhất với tình huống."
+        },
+        {
+            "question": "Thời tiết có vẻ mưa không?",
+            "image_caption": "A group of people walking in a city with a large clock tower in the background.",
+            "evidences": [
+                {
+                    "Junior": "Mô tả trong ngữ cảnh không đề cập đến thời tiết hoặc yếu tố liên quan đến mưa. Các候选词 đều là các vật thể trong cảnh (xe đạp, đồng hồ, tòa tháp, tòa nhà), nhưng không có bất kỳ yếu tố nào liên quan đến thời tiết. Do đó, không có đáp án nào phù hợp với câu hỏi."
+                },
+                {
+                    "Manager": "Ngữ cảnh không đề cập đến thời tiết, và câu hỏi hỏi về thời tiết, nên không có candidate nào phù hợp."
+                },
+                {
+                    "Senior": "Câu hỏi hỏi về thời tiết có vẻ mưa, nhưng ngữ cảnh chỉ mô tả cảnh người đi bộ và tòa tháp, không có thông tin nào liên quan đến thời tiết hoặc yếu tố khí hậu. Các候选项 (xe đạp, đồng hồ, chiếc ô, tòa tháp, tòa nhà) đều là vật thể trong cảnh, nhưng không liên quan trực tiếp đến thời tiết. Do đó, không có đáp án trong danh sách候选项 phù hợp."
+                }
+            ],
+            "final_answer": "Không có đáp án nào phù hợp",
+            "explanation": "Chuối là loại quả duy nhất trong cảnh vừa xuất hiện vừa được biết sẽ có vỏ vàng khi chín; do đó đáp án “Quả chuối” hoàn toàn phù hợp.\" So here, the explanation should link the lack of weather info in the context to the answer being none applicable.\n</think>\n\nExplanation: Ngữ cảnh không đề cập đến thời tiết, và câu hỏi hỏi về thời tiết, nên không có đáp án nào phù hợp."
+        },
+        {
+            "question": "Họ đang chơi trò chơi gì?",
+            "image_caption": "A man is walking on a tennis court with a tennis racket.",
+            "evidences": [
+                {
+                    "Junior": "Hình ảnh mô tả \"vợt\" (racket) và \"vòng tròn\" (ball) trên sân tennis, đây là các vật dụng tiêu biểu của môn bóng tennis. Môn thể thao này thường được chơi trên sân tennis, và \"vợt\" là dụng cụ chính. Do đó, câu trả lời phù hợp nhất là \"tennis\"."
+                },
+                {
+                    "Manager": "Trong Context có tennis court và vợt, đây là dụng cụ của trò chơi tennis. Question hỏi trò chơi họ đang chơi, và KBs_knowledge không nêu rõ trò chơi cụ thể, nhưng dựa trên ngữ cảnh, trò chơi phải là tennis. Các候选 items như \"quả bóng\" (ball) có xác suất cao nhất, nhưng câu hỏi yêu cầu trò chơi, không phải vật dụng. Do đó, đáp án là \"tennis\" (trò chơi) dựa trên ngữ cảnh."
+                },
+                {
+                    "Senior": "Context mô tả người đàn ông đang chơi tennis với vợt, KBs_knowledge khẳng định vợt là dụng cụ của trò chơi tennis, và câu hỏi hỏi trò chơi được chơi. Dù không có \"tennis\" trong các lựa chọn, nhưng dựa trên thông tin trong KB và ngữ cảnh, trò chơi được chơi là tennis."
+                }
+            ],
+            "final_answer": "Tennis",
+            "explanation": "Hình ảnh và thông tin trong Context đều mô tả tennis court và vợt, là các yếu tố tiêu biểu của môn thể thao này; do đó, đáp án \"Tennis\" phù hợp với ngữ cảnh và nội dung câu hỏi."
+        },
+        {
+            "question": "Bầu trời có trong xanh không?",
+            "image_caption": "A white airplane flying in the sky.",
+            "evidences": [
+                {
+                    "Junior": "Câu hỏi hỏi về màu xanh của bầu trời, và trong các lựa chọn, chỉ \"bầu trời\" là liên quan đến màu xanh của bầu trời. Các lựa chọn khác (máy bay, sân bay, bảo tàng, diều) không liên quan đến màu sắc bầu trời."
+                },
+                {
+                    "Manager": "Câu hỏi hỏi về màu bầu trời, trong khi ngữ cảnh mô tả một máy bay bay trong không gian. Các候选词 như \"máy bay\" (airplane) và \"sân bay\" (airport) không liên quan đến màu bầu trời. KBs_knowledge không cung cấp thông tin về màu bầu trời, và LMs_knowledge chỉ ra rằng câu hỏi yêu cầu xác định bầu trời, không phải máy bay. Dù xác suất \"bầu trời\" là 0.0011, đây là đáp án duy nhất phù hợp với câu hỏi."
+                },
+                {
+                    "Senior": "Bầu trời là không gian xanh trong khi máy bay, sân bay, bảo tàng, diều là các đối tượng khác. Câu hỏi hỏi về màu sắc bầu trời, và KBs_knowledge không cung cấp thông tin cụ thể về màu sắc bầu trời. Tuy nhiên, dựa trên kiến thức chung, bầu trời thường có màu xanh trong."
+                }
+            ],
+            "final_answer": "bầu trời",
+            "explanation": "Câu trả lời \"bầu trời\" là duy nhất liên quan đến màu xanh của bầu trời trong các lựa chọn, phù hợp với câu hỏi yêu cầu xác định màu sắc bầu trời."
+        },
+        {
+            "question": "Đây có phải là đại dương không?",
+            "image_caption": "A man carrying a surfboard on a beach.",
+            "evidences": [
+                {
+                    "Junior": ""
+                },
+                {
+                    "Manager": ""
+                },
+                {
+                    "Senior": "Hình ảnh mô tả là \"một người mang ván lướt sóng trên bãi biển\", mà ván lướt sóng thường được sử dụng ở đại dương. Bãi biển là phần của đại dương, nhưng câu hỏi hỏi \"đây có phải là đại dương không?\" nên đáp án là \"không\" vì bãi biển là phần của đại dương, không phải đại dương chính. Tuy nhiên, trong các lựa chọn cung cấp, \"bờ biển\" có xác suất thấp nhất (0.0386), nhưng không phải là đáp án chính xác. Do không có lựa chọn trực tiếp trả lời câu hỏi, đáp án được đưa ra dựa trên phân tích ngữ cảnh."
+                }
+            ],
+            "final_answer": "uncertain",
+            "explanation": "uncertain"
+        },
+        {
+            "question": "Đây có phải là công viên trượt ván không?",
+            "image_caption": "A man is skateboarding in a city plaza.",
+            "evidences": [
+                {
+                    "Junior": "Context mô tả một khu vực công viên, nhưng câu hỏi hỏi về công viên trượt ván. Các候选项 đều là các yếu tố liên quan đến đường phố hoặc đường, không có bất kỳ yếu tố nào đặc trưng cho công viên trượt ván. Do đó, không có candidate nào phù hợp với câu hỏi."
+                },
+                {
+                    "Manager": "Hình ảnh cho thấy một khu vực công viên trượt ván nằm trong một khu phố, nên \"đường phố\" là đáp án phù hợp nhất. Các候选选项如 \"đường bộ\" (road) và \"đường phố\" (street) đều liên quan đến khu vực công viên trượt ván, trong khi \"cây\" (tree) và \"xe ô tô\" (car) không liên quan trực tiếp đến công viên trượt ván. LLM_knowledge bổ sung rằng \"đường phố\" là nơi có thể có khu vực trượt ván trong một khu vực công viên."
+                },
+                {
+                    "Senior": "Hình ảnh mô tả là \"công viên trượt ván\" nhưng ngữ cảnh nêu rõ là \"đường bộ\" hoặc \"đường phố\" trong một khu vực trung tâm thành phố. Việc trượt ván thường xảy ra tại các khu vực có mặt bằng công cộng, nhưng không phải tất cả các khu vực đường bộ đều là công viên trượt ván. Các lựa chọn \"đường bộ\" và \"đường phố\" đều là các loại đường, không phải công viên trượt ván. Do đó, câu trả lời là \"Không\" vì không có lựa chọn nào phù hợp với mô tả về công viên trượt ván."
+                }
+            ],
+            "final_answer": "Không",
+            "explanation": "Hình ảnh mô tả là khu vực công viên trượt ván nhưng ngữ cảnh nêu rõ là đường bộ hoặc đường phố, không có yếu tố đặc trưng cho công viên trượt ván. Các候选选项 đều liên quan đến đường, không phù hợp với mô tả về công viên trượt ván. Do đó, câu trả lời là \"Không\"."
+        }
+    ]
+}

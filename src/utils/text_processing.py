@@ -8,23 +8,33 @@ INLINE_PATTERN = re.compile(
     re.IGNORECASE | re.DOTALL,
 )
 
+MULTILINE_PATTERN = re.compile(
+    r"Answer:\s*(.+?)(?:\n|\r\n|\r)\s*Evidence:\s*(.*)",  # group1 = answer, group2 = evidence
+    re.IGNORECASE | re.DOTALL,
+)
+
 def extract_answer_from_result(result: str) -> Tuple[str, str]:
     """
     Trả về (answer, evidence) từ chuỗi kết quả của agent
-    - answer  : nội dung sau 'Answer:' (chuẩn hoá lower-case, bỏ ký tự thừa)
+    - answer  : nội dung sau 'Answer:' 
     - evidence: nội dung sau 'Evidence:'
+    
+    Hỗ trợ cả 2 format:
+    1. Inline: "Answer: abc | Evidence: xyz"
+    2. Multiline: "Answer: abc\nEvidence: xyz"
     """
-    if not result:
-        return "", ""
 
-    match = INLINE_PATTERN.search(result)
-    if not match:
-        return "", ""
+    # Thử format mới trước (multiline)
+    match = MULTILINE_PATTERN.search(result)
+    if match:
+        answer, evidence = match.group(1).strip(), match.group(2).strip()
+    else:
+        # Fallback về format cũ (inline)
+        match = INLINE_PATTERN.search(result)
+        if not match:
+            return "", ""
+        answer, evidence = match.group(1).strip(), match.group(2).strip()
 
-    answer_raw, evidence = match.group(1).strip(), match.group(2).strip()
-
-    # Chuẩn hoá answer: loại ký tự đầu/cuối không phải chữ số-chữ cái & về lower-case
-    answer = re.sub(r'^[\W_]+|[\W_]+$', '', answer_raw).lower()
     return answer, evidence
 
 

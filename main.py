@@ -49,54 +49,37 @@ for item in data:
     samples.append(sample)
 
 # Limit samples for testing
-sampled = samples[:300]
+sampled = samples[:50]
 
 def run_visual_qa(question: str, image: Union[str, Image.Image], graph, sample_id: str = None):
     """
     Run visual QA with comprehensive error handling
-    Returns tuple: (answer, explanation, success_flag, error_message)
+    Returns tuple: (full_state, success_flag, error_message)
     """
     try:
         initial_state = {"question": question, "image": image}
         
         result = graph.invoke(initial_state)
+        caption = result['image_caption']
+        evidences = result['evidences']
         answer = result["final_answer"]
         explanation = result["explanation"]
         
-        return answer, explanation, True, None
+        full_state = {
+            "question": question,
+            "image_caption": caption,
+            "evidences": evidences,
+            "final_answer": answer,
+            "explanation": explanation
+        }
+        return full_state, True, None
         
     except Exception as e:
         error_message = str(e)
         sample_info = f" (Sample ID: {sample_id})" if sample_id else ""
-        
-        # Check for common VLLM/context length errors
-        if any(keyword in error_message.lower() for keyword in [
-            "context length", "maximum context", "input is too long", 
-            "sequence length", "token limit", "context window"
-        ]):
-            logger.error(f"Context length error{sample_info}: {error_message}")
-            fallback_answer = "Error: Context length exceeded"
-            fallback_explanation = "Unable to process due to context length limitation"
-            return fallback_answer, fallback_explanation, False, f"Context length error: {error_message}"
-        
-        # Check for other common errors
-        elif any(keyword in error_message.lower() for keyword in [
-            "cuda out of memory", "out of memory", "oom"
-        ]):
-            logger.error(f"Memory error{sample_info}: {error_message}")
-            # Try to free up some memory
-            if torch.cuda.is_available():
-                torch.cuda.empty_cache()
-            fallback_answer = "Error: Out of memory"
-            fallback_explanation = "Unable to process due to memory limitation"
-            return fallback_answer, fallback_explanation, False, f"Memory error: {error_message}"
-        
-        # Handle other general errors
-        else:
-            logger.error(f"General error{sample_info}: {error_message}")
-            fallback_answer = "Error: Processing failed"
-            fallback_explanation = "Unable to process due to unexpected error"
-            return fallback_answer, fallback_explanation, False, f"General error: {error_message}"
+
+        logger.error(f"General error{sample_info}: {error_message}")
+        return {}, False, error_message
 
 def main():
     tools_registry = setup_tools_registry()
@@ -111,13 +94,13 @@ def main():
     # Track errors for reporting
     error_samples = []
     successful_samples = 0
-
+    detailed_results = []
     for i, sample in enumerate(tqdm(sampled, desc="Processing samples")):
         q = sample["question"]
         img = sample["image"]
         gold_answer = sample["answer"]
         gold_explanation = sample["explanation"]
-        sample_id = sample["question_id"]
+        sample_id = str(sample["question_id"])
 
         print(f"\n--- Sample {i+1}/{len(sampled)} (ID: {sample_id}) ---")
         
@@ -125,7 +108,7 @@ def main():
         print("Invoking graph...")
         
         # Use the enhanced run_visual_qa with error handling
-        pred_answer, pred_explanation, success, error_msg = run_visual_qa(
+        full_state, success, error_msg = run_visual_qa(
             question=q, image=img, graph=graph, sample_id=str(sample_id)
         )
         
@@ -144,13 +127,16 @@ def main():
             })
             print(f"❌ Sample failed: {error_msg}")
 
-        # Always add results to lists (even if they're error fallbacks)
-        predicted_answers.append(pred_answer)
+        # Answers
+        predicted_answers.append(full_state.get("final_answer", ""))
         ground_truth_answers.append(gold_answer)
         
-        sample_id_str = str(sample["question_id"])
-        predicted_explanations[sample_id_str] = [pred_explanation]
-        ground_truth_explanations[sample_id_str] = gold_explanation
+        # Explanations
+        predicted_explanations[sample_id] = [full_state.get("explanation", "")]
+        ground_truth_explanations[sample_id] = gold_explanation
+
+        # Detailed results
+        detailed_results.append(full_state)
 
     # Print error summary
     print(f"\n--- Processing Summary ---")
@@ -158,10 +144,7 @@ def main():
     print(f"Successful: {successful_samples}")
     print(f"Failed: {len(error_samples)}")
     
-    if error_samples:
-        print(f"\n--- Error Details ---")
-        for error_sample in error_samples:
-            print(f"Sample {error_sample['sample_id']}: {error_sample['error']}")
+
 
     # Create a vocabulary for answers to convert them to integer indices
     # as required by compute_answer_metrics
@@ -205,7 +188,8 @@ def main():
         "successful_samples": successful_samples,
         "failed_samples": len(error_samples),
         "error_details": error_samples,
-        "metrics": metrics
+        "metrics": metrics,
+        "detailed_results": detailed_results
     }
 
     # Save results to a JSON file

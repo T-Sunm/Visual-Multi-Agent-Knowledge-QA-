@@ -69,11 +69,11 @@ If you are using a local model with VLLM, open a new terminal, activate the `viv
 
 ```bash
 # Command to serve a local LLM with VLLM
-CUDA_VISIBLE_DEVICES=2 \
+CUDA_VISIBLE_DEVICES=1 \
 vllm serve Qwen/Qwen3-1.7B \
   --port 1234 \
   --dtype auto \
-  --gpu-memory-utilization 0.4 \
+  --gpu-memory-utilization 0.6 \
   --max-model-len 4096 \
   --enable-auto-tool-choice \
   --tool-call-parser hermes \
