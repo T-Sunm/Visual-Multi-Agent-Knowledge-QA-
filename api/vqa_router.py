@@ -7,6 +7,8 @@ import base64
 import io
 import logging
 
+from api.utils.processor import Processor
+
 # Setup logging
 logger = logging.getLogger(__name__)
 
@@ -28,13 +30,12 @@ class VQAResponse(BaseModel):
     device_used: str
 
 
-def predict_vqa(model, processor, device, image: Image.Image, question: str, top_k: int = 5) -> Dict:
+def predict_vqa(model, device, ckpt, image: Image.Image, question: str, top_k: int = 5) -> Dict:
     """
     Core VQA prediction function
     
     Args:
         model: The loaded VQA model
-        processor: The processor for input preparation
         device: Computing device (CPU/GPU)
         image: PIL Image object
         question: Vietnamese question string
@@ -43,47 +44,38 @@ def predict_vqa(model, processor, device, image: Image.Image, question: str, top
     Returns:
         Dictionary containing predictions and metadata
     """
-    try:
-        # Process inputs
-        inputs = processor(image, question, return_tensors='pt')
-        inputs["image"] = inputs["image"].unsqueeze(0)
-        
-        # Move inputs to device
-        for key in inputs:
-            if isinstance(inputs[key], torch.Tensor):
-                inputs[key] = inputs[key].to(device)
-        
-        # Make prediction
-        with torch.no_grad():
-            output = model(**inputs)
-            logits = output.logits
-            
-            # Convert logits to probabilities
-            probabilities = torch.nn.functional.softmax(logits, dim=-1)[0]
-            
-            # Get top-k predictions
-            topk_probs, topk_indices = torch.topk(probabilities, top_k)
-            
-            # Format results
-            candidates_answer = ""
-            for i in range(top_k):
-                idx = topk_indices[i].item()
-                prob = topk_probs[i].item()
-                answer = model.config.id2label[idx]
-                
-                candidates_answer += f"{model.config.id2label[topk_indices[i].item()]} ({topk_probs[i]:.4f}) "            
-            return {
-                "success": True,
-                "question": question,
-                "predictions": candidates_answer,
-                "device_used": str(device)
-            }
-            
-    except Exception as e:
-        logger.error(f"Prediction error: {e}")
+    config = ckpt['config']
+    word2idx = ckpt['word2idx']
+    idx2answer = ckpt['idx2answer']
+
+    processor = Processor(
+        word2idx=word2idx,
+        max_question_length=config.get('max_question_length', 20)
+    )
+
+    inputs = processor(image, question)
+    image_tensor = inputs["image"].to(device)
+    question_tensor = inputs["question"].to(device)
+
+    with torch.no_grad():
+        answer_logits, _ = model.generate_explanation(
+            image=image_tensor,
+            question=question_tensor,
+            beam_size=3
+        )
+        probabilities = torch.nn.functional.softmax(answer_logits, dim=-1)[0]
+        topk_probs, topk_indices = torch.topk(probabilities, top_k)
+        candidates_answer = ""
+        for i in range(top_k):
+            idx = topk_indices[i].item()
+            prob = topk_probs[i].item()
+            answer = idx2answer.get(idx, "Unknown")
+            candidates_answer += f"{answer} ({prob:.4f}) "
         return {
-            "success": False,
-            "error": str(e)
+            "success": True,
+            "question": question,
+            "predictions": candidates_answer,
+            "device_used": str(device)
         }
 
 
@@ -113,8 +105,8 @@ async def predict_with_file(
         # Make prediction
         result = predict_vqa(
             request.app.state.model,
-            request.app.state.processor,
             request.app.state.device,
+            request.app.state.ckpt,
             pil_image,
             question,
             top_k
@@ -156,8 +148,8 @@ async def predict_with_base64(
         # Make prediction
         result = predict_vqa(
             request.app.state.model,
-            request.app.state.processor,
             request.app.state.device,
+            request.app.state.ckpt,
             pil_image,
             question,
             top_k
