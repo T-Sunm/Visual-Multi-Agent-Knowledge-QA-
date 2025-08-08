@@ -1,0 +1,3 @@
+[submodule "ViVQA-X"]
+	path = ViVQA-X
+	url = git@github.com:duongtruongbinh/ViVQA-X.git
