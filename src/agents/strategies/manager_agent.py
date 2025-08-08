@@ -44,8 +44,7 @@ class ManagerAgent(Analyst):
                 ### Instructions
                 1. Read **Context**, **Question**, **Candidates**, **KBs_Knowledge**, **LMs_Knowledge** carefully.  
                 2. Decide which single **candidate** best answers the question and provide the evidence.   
-                3. **If none of the candidates plausibly answers the question** (they don’t match what is described or requested), you may provide **your own answer** instead of choosing from the list.  
-                4. Answer in Vietnamese in the exact format below:  
+                3. Answer in Vietnamese in the exact format below:  
                     - Answer:
                     - Evidence: 
 

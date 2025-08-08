@@ -44,8 +44,7 @@ class SeniorAgent(Analyst):
                 ### Instructions
                 1. Read **Context**, **Question**, **Candidates**, and **KBs_Knowledge** carefully.  
                 2. Decide which single **candidate** best answers the question.   
-                3. **If none of the candidates plausibly answers the question** (they don’t match what is described or requested), you may provide **your own answer** instead of choosing from the list.  
-                4. Answer in Vietnamese in the exact format below:  
+                3. Answer in Vietnamese in the exact format below:  
                     - Answer: 
                     - Evidence: 
 
