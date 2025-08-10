@@ -79,6 +79,14 @@ vllm serve Qwen/Qwen3-1.7B \
   --tool-call-parser hermes \
   --trust-remote-code
 ```
+```bash
+#command to run eval-lstm-cnn
+python script/eval_checkpoint_vivqax.py \
+  --json_path /mnt/VLAI_data/ViVQA-X/ViVQA-X_val.json \
+  --image_dir /mnt/VLAI_data/COCO_Images/val2014/ \
+  --gpu 2 --device cuda --batch_size 32 --num_workers 4 \
+  --limit 300 --out ./vivqax_eval_val_300.json
+```
 
 #### Step 3b: Run a Sample Query
 Once the environment is set up (and the local LLM server is running, if applicable), you can run a query from the command line.
