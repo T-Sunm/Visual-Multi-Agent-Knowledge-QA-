@@ -49,7 +49,7 @@ for item in data:
     samples.append(sample)
 
 # Limit samples for testing
-sampled = samples[:50]
+sampled = samples[:300]
 
 def run_visual_qa(question: str, image: Union[str, Image.Image], graph, sample_id: str = None):
     """
@@ -136,6 +136,7 @@ def main():
         ground_truth_explanations[sample_id] = gold_explanation
 
         # Detailed results
+        full_state["gold_answer"] = gold_answer
         detailed_results.append(full_state)
 
     # Print error summary
