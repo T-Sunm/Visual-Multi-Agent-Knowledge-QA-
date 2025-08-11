@@ -2,7 +2,7 @@ from PIL import Image
 import requests
 from langchain_core.tools import tool
 from typing import Union
-from src.tools.dam_tools import dam_candidate_answers, dam_caption_image, dam_extract_knowledge
+from src.tools.dam_tools import dam_candidate_answers, dam_caption_image, dam_extract_knowledge, describe_object_with_prompt
 
 VQA_API_URL = "http://localhost:1235/vqa/predict_base64"
 
@@ -33,8 +33,8 @@ def vqa_tool(image: str, question: str) -> str:
 
 @tool
 def dam_caption_image_tool(image: str) -> str:
-    """Generate a short caption describing the image."""
-    return dam_caption_image(image)
+    """Identifies and provides a detailed description of a specific object in an image based on a text prompt."""
+    return describe_object_with_prompt(image)
 
 @tool
 def lm_knowledge(image: str) -> str:
