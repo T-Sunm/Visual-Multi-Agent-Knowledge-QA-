@@ -150,18 +150,16 @@ def get_mask_from_bbox(image: Image.Image, bbox: list) -> np.ndarray:
     best_mask_idx = scores.argmax()
     return masks[best_mask_idx].numpy()
 
-### --- Hàm CÔNG CỤ CHÍNH đã được đóng gói ---
-
-def describe_object_with_prompt(image: str, text_prompt: str) -> str:
+def describe_object_with_prompt(image: str, object_name: str) -> str:
     try:
         img = load_image(image)
     except Exception as e:
         return f"[Error] Failed to load image: {e}"
 
     # Bước 1: Tìm đối tượng bằng Grounding DINO
-    bbox = get_bbox_from_prompt(img, text_prompt)
+    bbox = get_bbox_from_prompt(img, object_name)
     if bbox is None:
-        return f"[Error] Could not find '{text_prompt}' in the image."
+        return f"[Error] Could not find '{object_name}' in the image."
 
     # Bước 2: Phân đoạn đối tượng bằng SAM
     mask_np = get_mask_from_bbox(img, bbox)

@@ -19,22 +19,25 @@ def tool_node(state: Union[ViReJuniorState, ViReSeniorState, ViReManagerState],
 
     for tool_call in tool_calls:
         tool_name = tool_call["name"]
+        print("Agent: ", state["analyst"].name, "tool_name: ", tool_name, "args: ", tool_call["args"])
         try:
-            if tool_name == "vqa_tool" or tool_name == "lm_knowledge":
+            if tool_name == "vqa_tool" or tool_name == "lm_knowledge" or tool_name == "analyze_image_object":
                 tool_call['args']['image'] = state.get("image")
                 tool_call["args"]["image"] = pil_to_base64(tool_call['args']['image']) 
                 result = tools_registry[tool_name].invoke(tool_call["args"])
                 if tool_name == "vqa_tool":
                     updates["answer_candidate"] = result
                 elif tool_name == "lm_knowledge":
-                    updates["LMs_Knowledge"] = [result]
+                    updates["lms_knowledge"] = [result]
+                elif tool_name == "analyze_image_object":
+                    updates["object_analysis"] = [result]
                 
             elif tool_name in ["arxiv", "wikipedia"]:
                 raw_result = tools_registry[tool_name].invoke(tool_call["args"])
                 print(f"Agent: {state['analyst'].name} - Tool: {tool_name}")
                 # Process and format the result
                 processed_result = _process_knowledge_result(raw_result, tool_name)
-                updates["KBs_Knowledge"] = [processed_result]
+                updates["kbs_knowledge"] = [processed_result]
             else:
                 result = f"Unknown tool: {tool_name}"
 
@@ -100,10 +103,11 @@ def final_reasoning_node(state: Union[ViReJuniorState, ViReSeniorState, ViReMana
             'context': state.get("image_caption", ""),
             'question': state.get("question", ""),
             'candidates': state.get("answer_candidate", ""),
-            'KBs_Knowledge': "\n".join(state.get("KBs_Knowledge", [])),
-            'LMs_Knowledge': "\n".join(state.get("LMs_Knowledge", []))
+            'KBs_Knowledge': "\n".join(state.get("kbs_knowledge", [])),
+            'LMs_Knowledge': "\n".join(state.get("lms_knowledge", [])),
+            'Object_Analysis': "\n".join(state.get("object_analysis", []))
     }
-    
+    print("agent: ", state["analyst"].name, "state: ", format_values)
     # Chỉ format với placeholders có trong prompt
     format_dict = {key: format_values[key] for key in placeholders if key in format_values}
     

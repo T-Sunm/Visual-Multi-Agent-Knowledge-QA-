@@ -1,0 +1,41 @@
+{
+    "num_samples": 1,
+    "successful_samples": 1,
+    "failed_samples": 0,
+    "error_details": [],
+    "metrics": {
+        "answer_accuracy": 0.0,
+        "answer_f1_score": 0.0,
+        "bleu_1": 0.09615384615199707,
+        "bleu_2": 1.3730875909260602e-09,
+        "bleu_3": 3.3533238161343528e-12,
+        "bleu_4": 1.6655497133613283e-13,
+        "meteor": 0.23485358698962716,
+        "cider": 0.0,
+        "rouge_l": 0.10565819861431873,
+        "spice": 0.0,
+        "bertscore_p": 0.6513773798942566,
+        "bertscore_r": 0.728318989276886,
+        "bertscore_f": 0.6877027750015259
+    },
+    "detailed_results": [
+        {
+            "question": "Đây có phải là bức ảnh chụp nhiều độ phơi sáng của vận động viên trượt tuyết mặc áo đen không?",
+            "image_caption": "A group of people snowboarding down a snowy hill.",
+            "evidences": [
+                {
+                    "Junior": "Bối cảnh mô tả \"một nhóm người trượt tuyết\" mà không đề cập đến các yếu tố liên quan đến độ phơi sáng hoặc nhiều lần chụp ảnh. Câu hỏi yêu cầu xác định liệu bức ảnh có phải là \"múi độ phơi sáng\" của vận động viên trượt tuyết mặc áo đen, nhưng không có thông tin nào trong bối cảnh hỗ trợ hoặc phản bác điều này. Do đó, đáp án \"không\" là phù hợp nhất."
+                },
+                {
+                    "Manager": "Bức ảnh mô tả một nhóm người trượt tuyết trên núi sa mạc, không có yếu tố liên quan đến độ phơi sáng nhiều lần hoặc các yếu tố kỹ thuật số trong ảnh. Object_Analysis chỉ tập trung vào màu sắc và phong cách trang phục của người trượt tuyết, nhưng không đề cập đến việc chụp nhiều độ phơi sáng. KBs_Knowledge về độ phơi sáng trong ảnh không liên quan đến tình huống này. Vì vậy, câu trả lời \"không\" là phù hợp nhất với thông tin đã cho."
+                },
+                {
+                    "Senior": "Context mô tả một nhóm người trượt tuyết trên núi sa mạc, nhưng không đề cập đến việc chụp nhiều độ phơi sáng hoặc kỹ thuật chụp ảnh. KBs_Knowledge chỉ nêu về hoạt động trượt tuyết mà không liên quan đến kỹ thuật chụp ảnh. Vì vậy, không có bằng chứng nào cho thấy bức ảnh được chụp với nhiều độ phơi sáng của vận động viên trượt tuyết mặc áo đen."
+                }
+            ],
+            "final_answer": "không",
+            "explanation": "Bức ảnh mô tả một nhóm người trượt tuyết trên núi sa mạc, không có yếu tố liên quan đến độ phơi sáng hoặc kỹ thuật chụp ảnh, vì vậy không thể khẳng định đây là bức ảnh chụp nhiều độ phơi sáng của vận động viên trượt tuyết mặc áo đen.",
+            "gold_answer": "có"
+        }
+    ]
+}

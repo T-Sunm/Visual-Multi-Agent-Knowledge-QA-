@@ -32,9 +32,9 @@ def vqa_tool(image: str, question: str) -> str:
         return f"Error in vqa_tool: {e}"
 
 @tool
-def dam_caption_image_tool(image: str) -> str:
+def dam_caption_image_tool(image: str, object_name: str) -> str:
     """Identifies and provides a detailed description of a specific object in an image based on a text prompt."""
-    return describe_object_with_prompt(image)
+    return describe_object_with_prompt(image, object_name)
 
 @tool
 def lm_knowledge(image: str) -> str:
