@@ -4,38 +4,38 @@
     "failed_samples": 0,
     "error_details": [],
     "metrics": {
-        "answer_accuracy": 0.0,
-        "answer_f1_score": 0.0,
-        "bleu_1": 0.09615384615199707,
-        "bleu_2": 1.3730875909260602e-09,
-        "bleu_3": 3.3533238161343528e-12,
-        "bleu_4": 1.6655497133613283e-13,
-        "meteor": 0.23485358698962716,
+        "answer_accuracy": 1.0,
+        "answer_f1_score": 1.0,
+        "bleu_1": 0.14285714285034018,
+        "bleu_2": 2.6726124189937955e-09,
+        "bleu_3": 7.217267259522698e-12,
+        "bleu_4": 3.8015566316858765e-13,
+        "meteor": 0.10967250571210968,
         "cider": 0.0,
-        "rouge_l": 0.10565819861431873,
+        "rouge_l": 0.19122257053291536,
         "spice": 0.0,
-        "bertscore_p": 0.6513773798942566,
-        "bertscore_r": 0.728318989276886,
-        "bertscore_f": 0.6877027750015259
+        "bertscore_p": 0.6644431948661804,
+        "bertscore_r": 0.6765741109848022,
+        "bertscore_f": 0.6704537868499756
     },
     "detailed_results": [
         {
-            "question": "Đây có phải là bức ảnh chụp nhiều độ phơi sáng của vận động viên trượt tuyết mặc áo đen không?",
-            "image_caption": "A group of people snowboarding down a snowy hill.",
+            "question": "Những loại hoa trong bình?",
+            "image_caption": "A vase of tulips on a table.",
             "evidences": [
                 {
-                    "Junior": "Bối cảnh mô tả \"một nhóm người trượt tuyết\" mà không đề cập đến các yếu tố liên quan đến độ phơi sáng hoặc nhiều lần chụp ảnh. Câu hỏi yêu cầu xác định liệu bức ảnh có phải là \"múi độ phơi sáng\" của vận động viên trượt tuyết mặc áo đen, nhưng không có thông tin nào trong bối cảnh hỗ trợ hoặc phản bác điều này. Do đó, đáp án \"không\" là phù hợp nhất."
+                    "Junior": "Context mô tả \"bình có hoa tulips\", và trong Candidates, \"hoa tulip\" có xác suất cao nhất 0.0584, khớp hoàn toàn với mô tả—vì thế đáp án chắc chắn là Hoa tulip."
                 },
                 {
-                    "Manager": "Bức ảnh mô tả một nhóm người trượt tuyết trên núi sa mạc, không có yếu tố liên quan đến độ phơi sáng nhiều lần hoặc các yếu tố kỹ thuật số trong ảnh. Object_Analysis chỉ tập trung vào màu sắc và phong cách trang phục của người trượt tuyết, nhưng không đề cập đến việc chụp nhiều độ phơi sáng. KBs_Knowledge về độ phơi sáng trong ảnh không liên quan đến tình huống này. Vì vậy, câu trả lời \"không\" là phù hợp nhất với thông tin đã cho."
+                    "Manager": "Context mô tả một bình có hoa tulip. KBs_Knowledge xác nhận tulip là loài hoa có màu sắc rực rỡ và thường được đặt trong bình. Object_Analysis cho biết bình có hoa tulip tươi và màu sắc rực rỡ. Dù các lựa chọn候选 không bao gồm \"tulip\", câu trả lời chính xác dựa trên thông tin trong ngữ cảnh và kiến thức cơ bản về tulip."
                 },
                 {
-                    "Senior": "Context mô tả một nhóm người trượt tuyết trên núi sa mạc, nhưng không đề cập đến việc chụp nhiều độ phơi sáng hoặc kỹ thuật chụp ảnh. KBs_Knowledge chỉ nêu về hoạt động trượt tuyết mà không liên quan đến kỹ thuật chụp ảnh. Vì vậy, không có bằng chứng nào cho thấy bức ảnh được chụp với nhiều độ phơi sáng của vận động viên trượt tuyết mặc áo đen."
+                    "Senior": "Context nêu rõ \"một bình hoa tulips trên bàn\", và KBs_knowledge xác nhận tulips là loài hoa có đặc điểm cụ thể. Vì vậy, loại hoa trong bình là tulips."
                 }
             ],
-            "final_answer": "không",
-            "explanation": "Bức ảnh mô tả một nhóm người trượt tuyết trên núi sa mạc, không có yếu tố liên quan đến độ phơi sáng hoặc kỹ thuật chụp ảnh, vì vậy không thể khẳng định đây là bức ảnh chụp nhiều độ phơi sáng của vận động viên trượt tuyết mặc áo đen.",
-            "gold_answer": "có"
+            "final_answer": "Tulip",
+            "explanation": "Bức ảnh cho thấy bình có hoa tulip, và theo kiến thức thông thường, hoa tulip thường được đặt trong bình.",
+            "gold_answer": "hoa tulip"
         }
     ]
 }

@@ -8,6 +8,7 @@ import torch
 from src.core.graph_builder.main_graph import MainGraphBuilder
 from src.tools.knowledge_tools import arxiv, wikipedia
 from src.tools.vqa_tool import vqa_tool, lm_knowledge, dam_caption_image_tool
+from src.utils.text_processing import normalize_answer
 from PIL import Image
 from tqdm import tqdm
 from src.evaluation.metrics_x import VQAXEvaluator
@@ -129,8 +130,11 @@ def main():
             print(f"❌ Sample failed: {error_msg}")
 
         # Answers
-        predicted_answers.append(full_state.get("final_answer", ""))
-        ground_truth_answers.append(gold_answer)
+        predicted_answer = normalize_answer(full_state.get("final_answer", ""))
+        ground_truth_answer = normalize_answer(gold_answer)
+        
+        predicted_answers.append(predicted_answer)
+        ground_truth_answers.append(ground_truth_answer)
         
         # Explanations
         predicted_explanations[sample_id] = [full_state.get("explanation", "")]

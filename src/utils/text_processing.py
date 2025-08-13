@@ -63,3 +63,26 @@ def extract_explanation(result: str) -> str:
 def remove_think_block(text: str) -> str:
     """Removes the <think>...</think> block from a string."""
     return re.sub(r'<think>.*?</think>', '', text, flags=re.DOTALL).strip()
+
+
+def normalize_answer(text: str) -> str:
+    text = text.lower().strip()
+    
+    # 1. Chuẩn hóa các câu trả lời Có/Không
+    if text in ["có", "đúng", "yes", "true", "correct"]:
+        return "có"
+    if text in ["không", "sai", "no", "false", "incorrect"]:
+        return "không"
+        
+    # 2. Loại bỏ các tiền tố/hậu tố phổ biến trong tiếng Việt
+    # Ví dụ: "con bò" -> "bò", "cái cây" -> "cây"
+    prefixes_to_remove = ["con ", "cái ", "chiếc ", "quả ", "hoa ", "màu ", "bên "]
+    for prefix in prefixes_to_remove:
+        if text.startswith(prefix):
+            text = text[len(prefix):]
+            
+    # 3. Loại bỏ các ký tự đặc biệt và khoảng trắng thừa
+    text = re.sub(r'[^\w\s]', '', text)
+    text = re.sub(r'\s+', ' ', text).strip()
+    
+    return text
