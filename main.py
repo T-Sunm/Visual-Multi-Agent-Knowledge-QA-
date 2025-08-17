@@ -1,13 +1,14 @@
 import json
 import os
-os.environ["CUDA_VISIBLE_DEVICES"] = "2"  # Use the second GPU (index 2)
+os.environ["CUDA_VISIBLE_DEVICES"] = "1"  # Use the second GPU (index 1)
 import time 
 import logging
 from typing import Dict, Any, Union
 import torch
 from src.core.graph_builder.main_graph import MainGraphBuilder
 from src.tools.knowledge_tools import arxiv, wikipedia
-from src.tools.vqa_tool import vqa_tool, lm_knowledge
+from src.tools.vqa_tool import vqa_tool, lm_knowledge, dam_caption_image_tool
+from src.utils.text_processing import normalize_answer
 from PIL import Image
 from tqdm import tqdm
 from src.evaluation.metrics_x import VQAXEvaluator
@@ -22,6 +23,7 @@ def setup_tools_registry() -> Dict[str, Any]:
         "arxiv": arxiv,
         "wikipedia": wikipedia,
         "lm_knowledge": lm_knowledge,
+        "analyze_image_object": dam_caption_image_tool,
     }
 
 
@@ -49,7 +51,7 @@ for item in data:
     samples.append(sample)
 
 # Limit samples for testing
-sampled = samples[:50]
+sampled = samples[:300]
 
 def run_visual_qa(question: str, image: Union[str, Image.Image], graph, sample_id: str = None):
     """
@@ -128,14 +130,18 @@ def main():
             print(f"❌ Sample failed: {error_msg}")
 
         # Answers
-        predicted_answers.append(full_state.get("final_answer", ""))
-        ground_truth_answers.append(gold_answer)
+        predicted_answer = normalize_answer(full_state.get("final_answer", ""))
+        ground_truth_answer = normalize_answer(gold_answer)
+        
+        predicted_answers.append(predicted_answer)
+        ground_truth_answers.append(ground_truth_answer)
         
         # Explanations
         predicted_explanations[sample_id] = [full_state.get("explanation", "")]
         ground_truth_explanations[sample_id] = gold_explanation
 
         # Detailed results
+        full_state["gold_answer"] = gold_answer
         detailed_results.append(full_state)
 
     # Print error summary
