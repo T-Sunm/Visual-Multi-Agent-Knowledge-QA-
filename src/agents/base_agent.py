@@ -9,6 +9,7 @@ class Analyst(BaseModel):
     tools: List[str]
     system_prompt: str = Field(description="System prompt for the analyst.")
     final_system_prompt: str = Field(default="", description="Final system prompt for reasoning.")
+    rationale_system_prompt: str = Field(default="", description="Rationale system prompt for reasoning.")
     
     @property
     def affiliation(self) -> str:

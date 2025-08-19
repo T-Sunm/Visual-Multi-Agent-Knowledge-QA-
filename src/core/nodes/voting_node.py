@@ -11,29 +11,33 @@ def normalize_answer_for_voting(answer: str) -> str:
     - "Candidates: 10(0.99), 9(0.92)" -> "10"
     - "The answer is 10" -> "10"
     - "10" -> "10"
+    - "Có\\n\\nRationale: ..." -> "có" 
     """
     if not answer:
         return ""
     
-    answer = str(answer).strip()
+    answer_str = str(answer).strip()
+    
+    # Take only the first line in case rationale is appended
+    core_answer = answer_str.split('\n')[0].strip()
     
     # Extract from VQA format: "10(0.98)" -> "10"
-    match = re.match(r'^(\w+)\s*\(\d+\.\d+\)', answer)
+    match = re.match(r'^(\w+)\s*\(\d+\.\d+\)', core_answer)
     if match:
-        return match.group(1).strip()
+        return match.group(1).strip().lower()
     
     # Extract from candidates format: "Candidates: 10(0.99), 9(0.92)" -> "10"
-    candidates_match = re.search(r'Candidates:\s*(\w+)\s*\(\d+\.\d+\)', answer)
+    candidates_match = re.search(r'Candidates:\s*(\w+)\s*\(\d+\.\d+\)', core_answer)
     if candidates_match:
-        return candidates_match.group(1).strip()
+        return candidates_match.group(1).strip().lower()
     
     # Extract from "The answer is X" format
-    answer_match = re.search(r'the\s+answer\s+is\s+(\w+)', answer.lower())
+    answer_match = re.search(r'the\s+answer\s+is\s+(\w+)', core_answer.lower())
     if answer_match:
-        return answer_match.group(1).strip()
+        return answer_match.group(1).strip() # Already lowercase
     
-    # If it's just a simple answer, return as is
-    return answer
+    # If it's just a simple answer, return it in lowercase
+    return core_answer.lower()
 
 def voting_function(junior_answer: str, senior_answer: str, manager_answer: str) -> Tuple[str, Dict[str, int]]:
     """

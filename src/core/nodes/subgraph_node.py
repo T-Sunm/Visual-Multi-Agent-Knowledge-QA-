@@ -7,7 +7,7 @@ from src.models.llm_provider import get_llm
 from src.utils.tools_utils import _process_knowledge_result
 import re
 from src.utils.image_processing import pil_to_base64
-from src.utils.text_processing import extract_answer_from_result, remove_think_block
+from src.utils.text_processing import extract_answer, remove_think_block, extract_rationale
 
 def tool_node(state: Union[ViReJuniorState, ViReSeniorState, ViReManagerState], 
               tools_registry: Dict[str, Any]) -> Dict[str, Any]:
@@ -67,7 +67,7 @@ def call_agent_node(state: Union[ViReJuniorState, ViReSeniorState, ViReManagerSt
     tools = state["analyst"].tools
     tools = [tools_registry[tool] for tool in tools if tool in tools_registry]
     
-    llm = get_llm(tools)
+    llm = get_llm(with_tools=tools, temperature=0.2)
     # Auto-detect placeholders từ system prompt
     base_prompt = state["analyst"].system_prompt
     placeholders = re.findall(r'\{(\w+)\}', base_prompt)
@@ -92,7 +92,7 @@ def call_agent_node(state: Union[ViReJuniorState, ViReSeniorState, ViReManagerSt
 
 def rationale_node(state: Union[ViReJuniorState, ViReSeniorState, ViReManagerState]) -> Dict[str, Any]:
     """Rationale node to generate rationale"""
-    llm = get_llm(temperature=0.1)
+    llm = get_llm(temperature=0.7)
     format_values = {
             'context': state.get("image_caption", ""),
             'question': state.get("question", ""),
@@ -101,9 +101,15 @@ def rationale_node(state: Union[ViReJuniorState, ViReSeniorState, ViReManagerSta
             'LMs_Knowledge': "\n".join(state.get("lms_knowledge", [])),
             'Object_Analysis': "\n".join(state.get("object_analysis", []))
     }
+
+    rationale_system_prompt = state["analyst"].rationale_system_prompt.format(**format_values)
+    rationale_response = llm.invoke(rationale_system_prompt)
+    cleaned_content = remove_think_block(rationale_response.content)
+    rationale = extract_rationale(cleaned_content)
+
     return {
-        "messages": [state["messages"][-1]],
-        "analyst": state["analyst"]
+        "messages": [rationale_response],
+        "rationales": [{state["analyst"].name: rationale}]
     }
 
 def final_reasoning_node(state: Union[ViReJuniorState, ViReSeniorState, ViReManagerState]) -> Dict[str, Any]:
@@ -111,31 +117,28 @@ def final_reasoning_node(state: Union[ViReJuniorState, ViReSeniorState, ViReMana
     # Auto-detect placeholders từ final_system_prompt
     base_prompt = state["analyst"].final_system_prompt
     placeholders = re.findall(r'\{(\w+)\}', base_prompt)
-        
-    # Prepare available values
+
     format_values = {
             'context': state.get("image_caption", ""),
             'question': state.get("question", ""),
             'candidates': state.get("answer_candidate", ""),
-            'KBs_Knowledge': "\n".join(state.get("kbs_knowledge", [])),
-            'LMs_Knowledge': "\n".join(state.get("lms_knowledge", [])),
-            'Object_Analysis': "\n".join(state.get("object_analysis", []))
+            'rationale': state.get("rationales", [])[0].get(state["analyst"].name, "")
     }
+
     print("agent: ", state["analyst"].name, "state: ", format_values)
     # Chỉ format với placeholders có trong prompt
     format_dict = {key: format_values[key] for key in placeholders if key in format_values}
     
     final_system_prompt = base_prompt.format(**format_dict)
     
-    llm = get_llm(temperature=0.1)
+    llm = get_llm(temperature=0.7)
     
     final_response = llm.invoke(final_system_prompt)
     cleaned_content = remove_think_block(final_response.content)
-    answer, evidence = extract_answer_from_result(cleaned_content)
-
+    answer = extract_answer(cleaned_content)
+    print("agent: ", state["analyst"].name, "answer: ", answer)
     return {
-        "results": [{state["analyst"].name: answer}],
-        "evidences": [{state["analyst"].name: evidence}]
+        "results": [{state["analyst"].name: answer}]
     }
 
 
@@ -153,10 +156,10 @@ def should_continue(state: Union[ViReJuniorState, ViReSeniorState, ViReManagerSt
     }.get(state.get("analyst", {}).name)
     
     if count_of_tool_calls >= max_steps:
-        return "final_reasoning"
+        return "rationale"
     # If no tool calls, go to final reasoning  
     if not getattr(last_message, "tool_calls", None):
-        return "final_reasoning"
+        return "rationale"
     # If has tool calls, continue with tools
     else:
         return "continue"

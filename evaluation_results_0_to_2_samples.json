@@ -1,0 +1,59 @@
+{
+    "num_samples": 2,
+    "successful_samples": 2,
+    "failed_samples": 0,
+    "error_details": [],
+    "metrics": {
+        "answer_accuracy": 0.5,
+        "answer_f1_score": 0.3333333333333333,
+        "bleu_1": 0.11999999999520003,
+        "bleu_2": 2.2841609627853047e-09,
+        "bleu_3": 6.286535491221627e-12,
+        "bleu_4": 3.3815835998493277e-13,
+        "meteor": 0.15859115447872232,
+        "cider": 0.21670591646447857,
+        "rouge_l": 0.07331730769230768,
+        "spice": 0.08,
+        "bertscore_p": 0.7339648008346558,
+        "bertscore_r": 0.7409718036651611,
+        "bertscore_f": 0.7374510765075684
+    },
+    "detailed_results": [
+        {
+            "question": "Đây có phải là bức ảnh chụp nhiều độ phơi sáng của vận động viên trượt tuyết mặc áo đen không?",
+            "image_caption": "A man snowboarding down a snowy hill.",
+            "rationales": [
+                {
+                    "Junior": "Hình ảnh một người trượt tuyết trên dốc phủ đầy snow có thể cho thấy hành động trượt tuyết, nhưng không có thông tin nào về độ phơi sáng hoặc trang phục (mặc áo đen). Vì vậy, không đủ bằng chứng để xác định đây là bức ảnh chụp nhiều độ phơi sáng của vận động viên trượt tuyết mặc áo đen."
+                },
+                {
+                    "Manager": "Phân tích đối tượng cho thấy người đàn ông mặc áo đen có họa tiết lông thú trên cổ tay, cùng áo quần xanh. Theo kiến thức chung, áo đen với họa tiết lông thú là đặc điểm điển hình của vận động viên trượt tuyết. Tuy nhiên, câu hỏi yêu cầu xác định liệu đây là bức ảnh chụp nhiều độ phơi sáng hay đơn giản. Vì KBs_Knowledge không đề cập đến yếu tố này, và đối tượng chỉ thể hiện hình ảnh đơn lẻ, nên kết luận là \"không\" (không phải bức ảnh chụp nhiều độ phơi sáng)."
+                },
+                {
+                    "Senior": "Hình ảnh cho thấy một người trượt tuyết trong một bức ảnh đơn lẻ, không có yếu tố cho thấy nhiều độ phơi sáng. KBs_Knowledge đề cập đến \"rất nhiều độ phơi sáng\" nhưng không liên quan đến bức ảnh đơn lẻ này, do đó kết luận là \"không\"."
+                }
+            ],
+            "final_answer": "không",
+            "explanation": "Hình ảnh cho thấy một người trượt tuyết đơn lẻ, không có nhiều độ phơi sáng.",
+            "gold_answer": "có"
+        },
+        {
+            "question": "Đây có phải là cảnh biển không?",
+            "image_caption": "A man in a red and yellow jacket is snowboarding in the air.",
+            "rationales": [
+                {
+                    "Junior": "Hình ảnh một người mặc áo đỏ và vàng đang lăn trượt trên núi non gợi ý hoạt động phổ biến nhất là trên núi, không liên quan đến cảnh biển. Do đó, cảnh hiện tại không phải là cảnh biển."
+                },
+                {
+                    "Manager": "Phân tích hình ảnh cho thấy người đàn ông đang bơi lội trong không gian tràn ngập tuyết, hành động này không liên quan đến cảnh biển. Theo kiến thức chung, hoạt động bơi lội trong tuyết không thể là cảnh biển."
+                },
+                {
+                    "Senior": "Hình ảnh cho thấy một người đang lăn trên núi sao, đây là hoạt động thường thấy ở môi trường băng. Trong khi đó, cảnh biển thường có nước biển và không có băng. Do đó, đây không phải là cảnh biển."
+                }
+            ],
+            "final_answer": "không",
+            "explanation": "Hình ảnh cho thấy người lăn trên núi sao.",
+            "gold_answer": "không"
+        }
+    ]
+}

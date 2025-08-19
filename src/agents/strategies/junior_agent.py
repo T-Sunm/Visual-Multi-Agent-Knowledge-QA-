@@ -2,6 +2,9 @@ from src.agents.base_agent import Analyst
 
 class JuniorAgent(Analyst):
     """Junior analyst that uses only VQA tool"""
+                # **Information Gathering Policy:**
+                # To ensure a high-quality and well-supported answer, you **must** gather the following one type of information before using the "Finish" action.
+                # 1.  **Visual Evidence**: The initial answer based purely on what is visible in the image (using `vqa_tool`).
     def __init__(self):
         super().__init__(
             name="Junior",
@@ -13,15 +16,10 @@ class JuniorAgent(Analyst):
                 **Available Tools:**
                 - **vqa_tool**: Use this tool for Visual Question Answering directly on the image to get initial candidate answers.
 
-                **Information Gathering Policy:**
-                To ensure a high-quality and well-supported answer, you **must** gather the following one type of information before using the "Finish" action.
-                1.  **Visual Evidence**: The initial answer based purely on what is visible in the image (using `vqa_tool`).
-
                 **Instructions:**
-                1.  Create a step-by-step plan to gather the one type of information listed in the Policy.
-                2.  Execute your plan by calling the appropriate tools sequentially.
-                3.  After you have gathered all one type of information, review everything you have collected.
-                4.  Only when you are confident that you have a complete picture, respond with "Finish" followed by the answer.
+                1.  Create a step-by-step plan to gather the information.
+                2.  After you have gathered all information, review everything you have collected.
+                3.  Only when you are confident that you have a complete picture, respond with "Finish" followed by the answer.
 
                 **Use the following format:**
                 Thought: Your reasoning for choosing the next action.
@@ -73,8 +71,7 @@ class JuniorAgent(Analyst):
                 ### Instructions
                 1. Read **Context**, **Question**, **Candidates**, and **Rationale** carefully.
                 2. The 'Candidates' are suggestions, but the 'Rationale' is the definitive evidence for your final answer.
-                3. Answer in the exact format : 
-                    - Answer:
+                3. Answer each question concisely in a single word or short phrase.
 
                 ### EXAMPLE 1
                 Context: A wooden dining table is shown with a glossy finish.
@@ -96,6 +93,13 @@ class JuniorAgent(Analyst):
                 Candidates: Gặm cỏ (0.88), Đứng im (0.09), Chạy (0.02), Uống nước (0.01), Nằm nghỉ (0.00)
                 Rationale: Bối cảnh một đàn ngựa vằn tụ tập trên một cánh đồng cỏ gợi ý hoạt động phổ biến nhất của chúng là gặm cỏ.
                 Answer: Gặm cỏ
+
+                ### EXAMPLE 4
+                Context: A domestic cat with orange fur is sleeping on a sofa.
+                Question: Con vật trong ảnh là gì?
+                Candidates: Chó (0.75), Hổ (0.15), Sư tử (0.08), Chuột (0.02)
+                Rationale: Phân tích hình ảnh cho thấy một loài động vật bốn chân, có lông màu cam, tai nhọn và ria mép dài. Đây là những đặc điểm không thể nhầm lẫn của một con mèo nhà.
+                Answer: Mèo
                 ### END OF EXAMPLE
 
                 ### Now solve the new task

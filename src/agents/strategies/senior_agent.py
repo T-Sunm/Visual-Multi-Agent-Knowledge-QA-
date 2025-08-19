@@ -4,7 +4,10 @@ from src.agents.base_agent import Analyst
 
 class SeniorAgent(Analyst):
     """Senior analyst that uses VQA and knowledge base tools"""
-    
+                # **Information Gathering Policy:**
+                # To ensure a high-quality and well-supported answer, you **must** gather the following two types of information before using the "Finish" action.
+                # 1.  **Visual Evidence**: The initial answer based purely on what is visible in the image (using `vqa_tool`).
+                # 2.  **Factual Knowledge**: Relevant encyclopedic information about the entities in the question (using `wikipedia`).
     def __init__(self):
         super().__init__(
             name="Senior",
@@ -17,16 +20,10 @@ class SeniorAgent(Analyst):
                 - **vqa_tool**: Use this tool for Visual Question Answering directly on the image to get initial candidate answers.
                 - **wikipedia**: Use this tool to retrieve factual, encyclopedic knowledge from external sources relevant to the question.
 
-                **Information Gathering Policy:**
-                To ensure a high-quality and well-supported answer, you **must** gather the following two types of information before using the "Finish" action.
-                1.  **Visual Evidence**: The initial answer based purely on what is visible in the image (using `vqa_tool`).
-                2.  **Factual Knowledge**: Relevant encyclopedic information about the entities in the question (using `wikipedia`).
-
                 **Instructions:**
-                1.  Create a step-by-step plan to gather the two types of information listed in the Policy.
-                2.  Execute your plan by calling the appropriate tools sequentially.
-                3.  After you have gathered all two types of information, review everything you have collected.
-                4.  Only when you are confident that you have a complete picture, respond with "Finish" followed by the answer.
+                1.  Create a step-by-step plan to gather the information.
+                2.  After you have gathered all information, review everything you have collected.
+                3.  Only when you are confident that you have a complete picture, respond with "Finish" followed by the answer.
 
                 **Use the following format:**
                 Thought: Your reasoning for choosing the next action.
@@ -82,8 +79,7 @@ class SeniorAgent(Analyst):
                 ### Instructions
                 1. Read **Context**, **Question**, **Candidates**, and **Rationale** carefully.
                 2. The 'Candidates' are suggestions, but the 'Rationale' is the definitive evidence for your final answer.
-                3. Answer in the exact format : 
-                    - Answer:
+                3. Answer each question concisely in a single word or short phrase.
 
                 ### EXAMPLE 1
                 Context: A wooden dining table is shown with a glossy finish.
@@ -106,6 +102,13 @@ class SeniorAgent(Analyst):
                 Candidates: Gặm cỏ (0.88), Đứng im (0.09), Chạy (0.02), Uống nước (0.01), Nằm nghỉ (0.00)
                 Rationale: Hình ảnh cho thấy một chiếc bàn có bề mặt màu nâu, mịn và sáng bóng, đây là những đặc tính điển hình của vật liệu gỗ đã qua xử lý.
                 Answer: Gặm cỏ
+
+                ### EXAMPLE 4
+                Context: A domestic cat with orange fur is sleeping on a sofa.
+                Question: Con vật trong ảnh là gì?
+                Candidates: Chó (0.75), Hổ (0.15), Sư tử (0.08), Chuột (0.02)
+                Rationale: Phân tích hình ảnh cho thấy một loài động vật bốn chân, có lông màu cam, tai nhọn và ria mép dài. Đây là những đặc điểm không thể nhầm lẫn của một con mèo nhà.
+                Answer: Mèo
                 ### END OF EXAMPLE
 
                 ### Now solve the new task

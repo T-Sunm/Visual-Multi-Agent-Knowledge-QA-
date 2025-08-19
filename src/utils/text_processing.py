@@ -38,6 +38,34 @@ def extract_answer_from_result(result: str) -> Tuple[str, str]:
     return answer, evidence
 
 
+def extract_answer(result: str) -> str:
+    """
+    Trích xuất câu trả lời từ chuỗi kết quả của agent.
+    - Trả về nội dung sau 'Answer:'
+    """
+    match = re.search(r'Answer:\s*(.*)', result, re.IGNORECASE | re.DOTALL)
+    if match:
+        return match.group(1).strip()
+    return result.strip() if result else ""
+
+def extract_rationale(result: str) -> str:
+    """
+    Trích xuất rationale từ kết quả trả về của agent.
+    Hàm sẽ tìm marker "Rationale:" và trả về nội dung theo sau.
+    Nếu không tìm thấy, hàm sẽ trả về toàn bộ chuỗi kết quả (sau khi strip).
+    """
+    if not result:
+        return ""
+
+    # Tách chuỗi bằng regex để không phân biệt hoa thường
+    parts = re.split(r'Rationale:', result, maxsplit=1, flags=re.IGNORECASE)
+
+    # Nếu tìm thấy "Rationale:", phần thứ 2 chính là nội dung cần lấy
+    if len(parts) > 1:
+        return parts[1].strip()
+    
+    # Nếu không, trả về toàn bộ chuỗi
+    return result.strip()
 
 def extract_explanation(result: str) -> str:
     """

@@ -1,7 +1,7 @@
 from typing import Dict, Any, Type
 from langgraph.graph import StateGraph, END, START
 
-from src.core.nodes.subgraph_node import tool_node, call_agent_node, final_reasoning_node, should_continue
+from src.core.nodes.subgraph_node import tool_node, call_agent_node, final_reasoning_node, should_continue, rationale_node
 from src.core.state import (    
     ViReJuniorState, 
     ViReSeniorState, 
@@ -37,6 +37,7 @@ class SubGraphBuilder:
         # Add nodes
         workflow.add_node("agent", agent_node)
         workflow.add_node("tools", tools_node)
+        workflow.add_node("rationale", rationale_node)
         workflow.add_node("final_reasoning", final_reasoning_with_analyst)
         
         # Set entry point
@@ -45,11 +46,12 @@ class SubGraphBuilder:
         # Add conditional edges
         workflow.add_conditional_edges("agent", should_continue, {
             "continue": "tools",
-            "final_reasoning": "final_reasoning"
+            "rationale": "rationale"
         })
         
         # Add edges
         workflow.add_edge("tools", "agent")
+        workflow.add_edge("rationale", "final_reasoning")
         workflow.add_edge("final_reasoning", END)
         
         return workflow

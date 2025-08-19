@@ -1,6 +1,6 @@
 import json
 import os
-os.environ["CUDA_VISIBLE_DEVICES"] = "1"  # Use the second GPU (index 1)
+os.environ["CUDA_VISIBLE_DEVICES"] = "2"  # Use the second GPU (index 1)
 import time 
 import logging
 from typing import Dict, Any, Union
@@ -12,6 +12,8 @@ from src.utils.text_processing import normalize_answer
 from PIL import Image
 from tqdm import tqdm
 from src.evaluation.metrics_x import VQAXEvaluator
+from dotenv import load_dotenv
+load_dotenv()
 
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -63,17 +65,18 @@ def run_visual_qa(question: str, image: Union[str, Image.Image], graph, sample_i
         
         result = graph.invoke(initial_state)
         caption = result['image_caption']
-        evidences = result['evidences']
+        rationales = result['rationales']
         answer = result["final_answer"]
         explanation = result["explanation"]
         
         full_state = {
             "question": question,
             "image_caption": caption,
-            "evidences": evidences,
+            "rationales": rationales,
             "final_answer": answer,
             "explanation": explanation
         }
+        print("full_state: ", full_state)
         return full_state, True, None
         
     except Exception as e:

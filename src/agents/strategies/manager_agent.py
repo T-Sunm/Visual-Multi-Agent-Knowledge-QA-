@@ -3,7 +3,11 @@ from src.agents.base_agent import Analyst
 
 class ManagerAgent(Analyst):
     """Manager analyst with access to all tools including LLM-based knowledge generation"""
-    
+                #     **Information Gathering Policy:**
+                # To ensure a high-quality and well-supported answer, you **must** gather the following three types of information before using the "Finish" action.
+                # 1.  **Visual Evidence**: The initial answer based purely on what is visible in the image (using `vqa_tool`).
+                # 2.  **Factual Knowledge**: Relevant encyclopedic information about the entities in the question (using `wikipedia`).
+                # 3.  **Object-Specific Details**: A detailed analysis of the main object of interest (using `analyze_image_object`).
     def __init__(self):
         super().__init__(
             name="Manager",
@@ -17,17 +21,10 @@ class ManagerAgent(Analyst):
                 - **wikipedia**: Use this tool to retrieve factual, encyclopedic knowledge from external sources relevant to the question.
                 - **analyze_image_object**: Use this tool to get a detailed, knowledge-rich description of a *specific object* in the image.
 
-                **Information Gathering Policy:**
-                To ensure a high-quality and well-supported answer, you **must** gather the following three types of information before using the "Finish" action.
-                1.  **Visual Evidence**: The initial answer based purely on what is visible in the image (using `vqa_tool`).
-                2.  **Factual Knowledge**: Relevant encyclopedic information about the entities in the question (using `wikipedia`).
-                3.  **Object-Specific Details**: A detailed analysis of the main object of interest (using `analyze_image_object`).
-
                 **Instructions:**
-                1.  Create a step-by-step plan to gather the three types of information listed in the Policy.
-                2.  Execute your plan by calling the appropriate tools sequentially.
-                3.  After you have gathered all three types of information, review everything you have collected.
-                4.  Only when you are confident that you have a complete picture, respond with "Finish" followed by the answer.
+                1.  Create a step-by-step plan to gather the information.
+                2.  After you have gathered all information, review everything you have collected.
+                3.  Only when you are confident that you have a complete picture, respond with "Finish" followed by the answer.
 
                 **Use the following format:**
                 Thought: Your reasoning for choosing the next action.
@@ -87,8 +84,7 @@ class ManagerAgent(Analyst):
                 ### Instructions
                 1. Read **Context**, **Question**, **Candidates**, and **Rationale** carefully.
                 2. The 'Candidates' are suggestions, but the 'Rationale' is the definitive evidence for your final answer.
-                3. Answer in the exact format : 
-                    - Answer:
+                3. Answer each question concisely in a single word or short phrase.
 
                 ### EXAMPLE 1
                 Context: A wooden dining table is shown with a glossy finish.
@@ -111,6 +107,13 @@ class ManagerAgent(Analyst):
                 Candidates: Gặm cỏ (0.88), Đứng im (0.09), Chạy (0.02), Uống nước (0.01), Nằm nghỉ (0.00)
                 Rationale: Phân tích hình ảnh cho thấy miệng của những con ngựa vằn đang ở rất gần mặt đất, nơi có cỏ. Hành động này khớp với kiến thức về tập tính ăn uống của chúng.
                 Answer: Gặm cỏ
+
+                ### EXAMPLE 4
+                Context: A domestic cat with orange fur is sleeping on a sofa.
+                Question: Con vật trong ảnh là gì?
+                Candidates: Chó (0.75), Hổ (0.15), Sư tử (0.08), Chuột (0.02)
+                Rationale: Phân tích hình ảnh cho thấy một loài động vật bốn chân, có lông màu cam, tai nhọn và ria mép dài. Đây là những đặc điểm không thể nhầm lẫn của một con mèo nhà.
+                Answer: Mèo
                 ### END OF EXAMPLE
 
                 ### Now solve the new task

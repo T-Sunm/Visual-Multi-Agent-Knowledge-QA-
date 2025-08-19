@@ -19,7 +19,7 @@ class ViReAgentState(MessagesState):
 
     #---- Explanation ----#
     explanation: str
-    evidences: Annotated[List[Dict[str, str]], operator.add]
+    rationales: Annotated[List[Dict[str, str]], operator.add]
 
 class ViReJuniorState(MessagesState):
     question: str
@@ -29,13 +29,12 @@ class ViReJuniorState(MessagesState):
     image_caption: str
     answer_candidate: str
     
-    rationale: str
     # Results
     results: Dict[str, str]
     final_answer: str
 
-    #---- Evidence ----#
-    evidences: Dict[str, str]
+    #---- Rationale ----#
+    rationales: Dict[str, str]
 
 class ViReSeniorState(MessagesState):
     question: str
@@ -45,12 +44,11 @@ class ViReSeniorState(MessagesState):
     count_of_tool_calls: int
     answer_candidate: str
     kbs_knowledge: Annotated[List[str], operator.add]
-    rationale: str
     # Results
     results: Dict[str, str]
 
-    #---- Evidence ----#
-    evidences: Dict[str, str]
+    #---- Rationale ----#
+    rationales: Dict[str, str]
 
 class ViReManagerState(MessagesState):
     question: str
@@ -62,21 +60,20 @@ class ViReManagerState(MessagesState):
     kbs_knowledge: Annotated[List[str], operator.add]
     object_analysis: Annotated[List[str], operator.add]
     lms_knowledge: Annotated[List[str], operator.add]
-    rationale: str
     # Results
     results: Dict[str, str]
 
-    #---- Evidence ----#
-    evidences: Dict[str, str]
+    #---- Rationale ----#
+    rationales: Dict[str, str]
 
 class JuniorOutputState(MessagesState):
     results: Optional[Dict[str, str]] = None
-    evidences: Optional[Dict[str, str]] = None
+    rationales: Optional[Dict[str, str]] = None
 
 class SeniorOutputState(MessagesState):
     results: Optional[Dict[str, str]] = None
-    evidences: Optional[Dict[str, str]] = None
+    rationales: Optional[Dict[str, str]] = None
 
 class ManagerOutputState(MessagesState):
     results: Optional[Dict[str, str]] = None
-    evidences: Optional[Dict[str, str]] = None
+    rationales: Optional[Dict[str, str]] = None
