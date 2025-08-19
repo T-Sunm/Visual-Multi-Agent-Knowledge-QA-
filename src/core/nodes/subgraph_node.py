@@ -86,11 +86,25 @@ def call_agent_node(state: Union[ViReJuniorState, ViReSeniorState, ViReManagerSt
     response = llm.invoke(formatted_prompt, config)
     
     return {
-        "messages": state["messages"] + [response],
+        "messages": [response],
         "analyst": state["analyst"]
     }
 
-
+def rationale_node(state: Union[ViReJuniorState, ViReSeniorState, ViReManagerState]) -> Dict[str, Any]:
+    """Rationale node to generate rationale"""
+    llm = get_llm(temperature=0.1)
+    format_values = {
+            'context': state.get("image_caption", ""),
+            'question': state.get("question", ""),
+            'candidates': state.get("answer_candidate", ""),
+            'KBs_Knowledge': "\n".join(state.get("kbs_knowledge", [])),
+            'LMs_Knowledge': "\n".join(state.get("lms_knowledge", [])),
+            'Object_Analysis': "\n".join(state.get("object_analysis", []))
+    }
+    return {
+        "messages": [state["messages"][-1]],
+        "analyst": state["analyst"]
+    }
 
 def final_reasoning_node(state: Union[ViReJuniorState, ViReSeniorState, ViReManagerState]) -> Dict[str, Any]:
     """Final reasoning node to synthesize results"""
