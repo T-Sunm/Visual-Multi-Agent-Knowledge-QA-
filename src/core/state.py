@@ -66,14 +66,14 @@ class ViReManagerState(MessagesState):
     #---- Rationale ----#
     rationales: Dict[str, str]
 
-class JuniorOutputState(MessagesState):
+class JuniorOutputState():
     results: Optional[Dict[str, str]] = None
     rationales: Optional[Dict[str, str]] = None
 
-class SeniorOutputState(MessagesState):
+class SeniorOutputState():
     results: Optional[Dict[str, str]] = None
     rationales: Optional[Dict[str, str]] = None
 
-class ManagerOutputState(MessagesState):
+class ManagerOutputState():
     results: Optional[Dict[str, str]] = None
     rationales: Optional[Dict[str, str]] = None

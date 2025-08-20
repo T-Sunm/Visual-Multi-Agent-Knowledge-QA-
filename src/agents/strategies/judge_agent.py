@@ -8,20 +8,36 @@ class ConsensusJudgeAgent():
     """Consensus judge agent"""
     def __init__(self, sim_threshold: float = 0.5, min_pairs: int = 2):
         self.system_prompt = """
-            **Goal**: From the evidence, write a very short, logical explanation in Vietnamese.
+            **Goal**: From the evidence, write a logical explanation in Vietnamese.
 
             **Rules**:
             1.  Your final output must use this exact format:
                 Explanation: <lời giải thích bằng tiếng Việt>
-            2.  The explanation must be **EXTREMELY SHORT**, around **7-10 words**. Only state the main visual fact. DO NOT add any extra words.
+            2.  The explanation must be around **7-10 words**. Only state the main visual fact that justifies the answer. DO NOT add any extra words or concluding thoughts.
 
-            ### EXAMPLE 
-            Question: Loại quả nào trong hình thường có màu vàng khi chín?
-            Answer: Quả chuối
-            Evidence1: Context mô tả “chùm chuối” xuất hiện; Question hỏi trái nào “thường có màu vàng khi chín”; trong Candidates, “banana” có xác suất cao nhất 0.85, khớp hoàn toàn với mô tả—vì thế đáp án chắc chắn là Quả chuối.
-            Evidence2: Context nêu “chùm chuối” xuất hiện; Question hỏi trái nào “thường vàng khi chín”; KBs_knowledge khẳng định chuối chín sẽ đổi vỏ sang màu vàng; trong Candidates, “banana” có xác suất cao nhất 0.85 và khớp hoàn toàn với mô tả—vì vậy đáp án chính là “Quả chuối”.
-            Evidence3: Context mô tả có một chùm chuối trên bàn. Question hỏi về loại quả có màu vàng khi chín. KBs_knowledge xác nhận chuối chuyển sang màu vàng. Đoạn văn Object_Analysis cũng mô tả chi tiết "chùm chuối với vỏ màu vàng đặc trưng khi chín". Dựa trên các bằng chứng này và xác suất cao nhất 0.85 trong Candidates, đáp án chính xác là "Chuối".
-            Explanation: Bức ảnh cho thấy một nải chuối, đây là loại quả có vỏ màu vàng khi chín.
+            ### EXAMPLE 1
+            Question: Bàn được làm bằng gì?
+            Answer: Gỗ
+            Evidence1: Bề mặt bàn màu nâu, mịn và bóng, là đặc điểm của gỗ.
+            Evidence2: Mô tả về 'bàn ăn bằng gỗ' khớp với lựa chọn 'Gỗ'.
+            Evidence3: Phân tích cho thấy bàn có bề mặt nâu, mịn, sáng bóng, khớp với kiến thức về gỗ đã qua xử lý.
+            Explanation: Chiếc bàn trong ảnh có bề mặt màu nâu và bóng.
+
+            ### EXAMPLE 2
+            Question: Các con vật đang làm gì?
+            Answer: Gặm cỏ
+            Evidence1: Những con ngựa vằn đang cúi đầu gần bãi cỏ.
+            Evidence2: Bối cảnh ngựa vằn trên đồng cỏ gợi ý hành động gặm cỏ.
+            Evidence3: Hình ảnh cho thấy miệng ngựa vằn gần mặt đất, khớp với tập tính ăn uống của chúng.
+            Explanation: Đàn ngựa vằn đang cúi đầu xuống ăn trên đồng cỏ.
+
+            ### EXAMPLE 3
+            Question: Người đàn ông đang làm gì?
+            Answer: cưỡi ngựa
+            Evidence1: Phân tích cho thấy hai người đàn ông ngồi trên ngựa.
+            Evidence2: Ngữ cảnh mô tả cảnh sát 'trên lưng ngựa', tức là cưỡi ngựa.
+            Evidence3: Rationale chỉ ra hành động là 'cưỡi ngựa', dù các ứng viên đều sai.
+            Explanation: Bức ảnh cho thấy hai người đàn ông đang ngồi trên ngựa.
             ### END EXAMPLE
 
             ### Now, using the same format, generate the final explanation for the new task:

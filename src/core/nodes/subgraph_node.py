@@ -1,7 +1,7 @@
 from typing import Union, Dict, Any
 import json
 from langchain_core.runnables import RunnableConfig
-from langchain_core.messages import ToolMessage
+from langchain_core.messages import ToolMessage, AIMessage
 from src.core.state import ViReJuniorState, ViReSeniorState, ViReManagerState
 from src.models.llm_provider import get_llm
 from src.utils.tools_utils import _process_knowledge_result
@@ -12,14 +12,14 @@ from src.utils.text_processing import extract_answer, remove_think_block, extrac
 def tool_node(state: Union[ViReJuniorState, ViReSeniorState, ViReManagerState], 
               tools_registry: Dict[str, Any]) -> Dict[str, Any]:
     """Process tool calls and update state"""
-    outputs = []
     tool_calls = getattr(state["messages"][-1], "tool_calls", [])
     count_of_tool_calls = state.get("count_of_tool_calls", 0)
-    updates = {"messages": state["messages"] + outputs, "count_of_tool_calls": count_of_tool_calls + len(tool_calls)} # Số tool gọi trong 1 lần có thể nhiều hơn 1 nên không thể tăng 1 lần mà phải tăng số lần gọi tool
+    updates = {"messages": [], "count_of_tool_calls": count_of_tool_calls + len(tool_calls)}
 
     for tool_call in tool_calls:
         tool_name = tool_call["name"]
         print("Agent: ", state["analyst"].name, "tool_name: ", tool_name, "args: ", tool_call["args"])
+        
         try:
             if tool_name == "vqa_tool" or tool_name == "lm_knowledge" or tool_name == "analyze_image_object":
                 tool_call['args']['image'] = state.get("image")
@@ -35,26 +35,31 @@ def tool_node(state: Union[ViReJuniorState, ViReSeniorState, ViReManagerState],
             elif tool_name in ["arxiv", "wikipedia"]:
                 raw_result = tools_registry[tool_name].invoke(tool_call["args"])
                 print(f"Agent: {state['analyst'].name} - Tool: {tool_name}")
-                # Process and format the result
                 processed_result = _process_knowledge_result(raw_result, tool_name)
                 updates["kbs_knowledge"] = [processed_result]
             else:
                 result = f"Unknown tool: {tool_name}"
 
-            outputs.append(
+            # Remove image data from result because it's too large
+            result_content = processed_result if 'processed_result' in locals() else result
+            if isinstance(result_content, dict) and 'image' in result_content:
+                result_content = {k: v for k, v in result_content.items() if k != 'image'}
+            
+            updates["messages"].append(
                 ToolMessage(
-                    content=json.dumps(processed_result if 'processed_result' in locals() else result),
+                    content=json.dumps(result_content),
                     name=tool_name,
                     tool_call_id=tool_call["id"],
                 )
             )
         except Exception as e:
             print(f"Error processing tool {tool_name}: {e}")
-            outputs.append(
+            tool_call_id = tool_call.get("id", f"call_{tool_name}_error_{len(updates['messages'])}")
+            updates["messages"].append(
                 ToolMessage(
-                    content=f"Error: {str(e)}",
+                    content=f"Error: {str(e)}", 
                     name=tool_name,
-                    tool_call_id=tool_call["id"],
+                    tool_call_id=tool_call_id
                 )
             )
     return updates
@@ -68,25 +73,29 @@ def call_agent_node(state: Union[ViReJuniorState, ViReSeniorState, ViReManagerSt
     tools = [tools_registry[tool] for tool in tools if tool in tools_registry]
     
     llm = get_llm(with_tools=tools, temperature=0.2)
-    # Auto-detect placeholders từ system prompt
     base_prompt = state["analyst"].system_prompt
     placeholders = re.findall(r'\{(\w+)\}', base_prompt)
     
-    # Prepare available values
     format_values = {
         'question': state.get('question', ''),
         'context': state.get('image_caption', ''),
     }
     
-    # Chỉ format với placeholders có trong prompt
     format_dict = {key: format_values[key] for key in placeholders if key in format_values}
-    
     formatted_prompt = base_prompt.format(**format_dict)
+
+    messages = [{"role": "system", "content": formatted_prompt}]
+    response = llm.invoke(messages, config)
+    cleaned_content = remove_think_block(response.content)
     
-    response = llm.invoke(formatted_prompt, config)
+    # Create clean AIMessage preserving tool_calls
+    cleaned_response = AIMessage(
+        content=cleaned_content,
+        tool_calls=getattr(response, 'tool_calls', [])
+    )
     
     return {
-        "messages": [response],
+        "messages": [cleaned_response],
         "analyst": state["analyst"]
     }
 
@@ -104,11 +113,15 @@ def rationale_node(state: Union[ViReJuniorState, ViReSeniorState, ViReManagerSta
 
     rationale_system_prompt = state["analyst"].rationale_system_prompt.format(**format_values)
     rationale_response = llm.invoke(rationale_system_prompt)
+    
     cleaned_content = remove_think_block(rationale_response.content)
     rationale = extract_rationale(cleaned_content)
 
+    # Create clean AIMessage with only content
+    rationale_message = AIMessage(content=rationale)
+
     return {
-        "messages": [rationale_response],
+        "messages": [rationale_message],
         "rationales": [{state["analyst"].name: rationale}]
     }
 

@@ -2,9 +2,7 @@ from src.agents.base_agent import Analyst
 
 class JuniorAgent(Analyst):
     """Junior analyst that uses only VQA tool"""
-                # **Information Gathering Policy:**
-                # To ensure a high-quality and well-supported answer, you **must** gather the following one type of information before using the "Finish" action.
-                # 1.  **Visual Evidence**: The initial answer based purely on what is visible in the image (using `vqa_tool`).
+
     def __init__(self):
         super().__init__(
             name="Junior",
@@ -15,6 +13,10 @@ class JuniorAgent(Analyst):
 
                 **Available Tools:**
                 - **vqa_tool**: Use this tool for Visual Question Answering directly on the image to get initial candidate answers.
+
+                **Information Gathering Policy:**
+                To ensure a high-quality and well-supported answer, you **must** gather the following one type of information before using the "Finish" action.
+                1.  **Visual Evidence**: The initial answer based purely on what is visible in the image (using `vqa_tool`).
 
                 **Instructions:**
                 1.  Create a step-by-step plan to gather the information.
@@ -33,27 +35,34 @@ class JuniorAgent(Analyst):
                 - **Question:** `{question}`
             """,
             rationale_system_prompt="""
-                Your task is to generate a concise, transparent rationale in Vietnamese. The rationale should synthesize information from the 'Context' and 'Candidates' into a logical argument, without explicitly referring to the input field names. Do not include a final concluding sentence.
+                                Your task is to generate a logical explanation in Vietnamese, around 10-15 words. Do not include a final concluding sentence. Synthesize the visual details from 'Candidates', 'Context'.
+                Important: The 'Candidates' list is a suggestion and may be misleading or entirely incorrect.
 
                 ### EXAMPLE 1
                 Context: A wooden dining table is shown with a glossy finish.
                 Question: Bàn được làm bằng gì?
                 Candidates: Gỗ (0.92), Kim loại (0.05), Nhựa (0.02), Đá (0.01), Kính (0.00)
                 Rationale: Mô tả về một 'bàn ăn bằng gỗ' (wooden dining table) có bề mặt bóng. Trong các lựa chọn vật liệu, 'Gỗ' là phương án khớp trực tiếp với mô tả này.
-                        
+
                 ### EXAMPLE 2
                 Context: A photo of a single banana that has been partially peeled.
                 Question: Quả chuối có đóng không?
                 Candidates: không (0.95), có (0.05), bị thối (0.00), còn xanh (0.00), bằng nhựa (0.00)
                 Rationale: Mô tả về một quả chuối 'đã được bóc một phần' (partially peeled) cho thấy nó không còn ở trạng thái đóng/nguyên vẹn, tương ứng với lựa chọn 'không'.
-                        
+
                 ### EXAMPLE 3
                 Context: A herd of zebras are gathered on a grassy field.
                 Question: Các con vật đang làm gì?
                 Candidates: Gặm cỏ (0.88), Đứng im (0.09), Chạy (0.02), Uống nước (0.01), Nằm nghỉ (0.00)
                 Rationale: Bối cảnh một đàn ngựa vằn tụ tập trên một cánh đồng cỏ gợi ý hoạt động phổ biến nhất của chúng là gặm cỏ, đây là lựa chọn hợp lý nhất trong các phương án.
+
+                ### EXAMPLE 4
+                Context: A domestic cat with orange fur is sleeping on a sofa.
+                Question: Con vật trong ảnh là gì?
+                Candidates: Mèo (0.90), Chó (0.05), Hổ (0.04), Sư tử (0.01)
+                Rationale: Mô tả về một 'con mèo nhà' (domestic cat) lông màu cam. Trong các lựa chọn, 'Mèo' là phương án nhận dạng chính xác loài vật này.
                 ### END OF EXAMPLES
-                        
+
                 ### Now solve the new task
                 Context: {context}
                 Question: {question}
@@ -70,8 +79,9 @@ class JuniorAgent(Analyst):
 
                 ### Instructions
                 1. Read **Context**, **Question**, **Candidates**, and **Rationale** carefully.
-                2. The 'Candidates' are suggestions, but the 'Rationale' is the definitive evidence for your final answer.
+                2. The 'Candidates' are only suggestions and may be incorrect. Your final answer must be based on the evidence in the `Rationale`. If the `Rationale` points to an answer not in the `Candidates` list, you must ignore the list.
                 3. Answer each question concisely in a single word or short phrase.
+                4. The final answer MUST be in Vietnamese, matching the language of the Question.
 
                 ### EXAMPLE 1
                 Context: A wooden dining table is shown with a glossy finish.
@@ -88,11 +98,11 @@ class JuniorAgent(Analyst):
                 Answer: không
 
                 ### EXAMPLE 3
-                Context: A herd of zebras are gathered on a grassy field.
-                Question: Các con vật đang làm gì?
-                Candidates: Gặm cỏ (0.88), Đứng im (0.09), Chạy (0.02), Uống nước (0.01), Nằm nghỉ (0.00)
-                Rationale: Bối cảnh một đàn ngựa vằn tụ tập trên một cánh đồng cỏ gợi ý hoạt động phổ biến nhất của chúng là gặm cỏ.
-                Answer: Gặm cỏ
+                Context: A red double-decker bus is on a city street.
+                Question: Xe buýt có dừng lại không?
+                Candidates: có (0.89), không (0.06), đang đón khách (0.03), đang chạy (0.01), không rõ (0.01)
+                Rationale: Phân tích hình ảnh cho thấy các bánh xe của xe buýt không có dấu hiệu chuyển động hay mờ nhòe. Điều này cho thấy chiếc xe buýt đang đứng yên tại thời điểm chụp ảnh.
+                Answer: có
 
                 ### EXAMPLE 4
                 Context: A domestic cat with orange fur is sleeping on a sofa.

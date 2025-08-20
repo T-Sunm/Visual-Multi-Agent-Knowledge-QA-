@@ -1,0 +1,104 @@
+{
+    "num_samples": 10,
+    "successful_samples": 0,
+    "failed_samples": 10,
+    "error_details": [
+        {
+            "sample_id": "393271001",
+            "question": "Đây có phải là bức ảnh chụp nhiều độ phơi sáng của vận động viên trượt tuyết mặc áo đen không?",
+            "error": "ViReAgentState() takes no arguments"
+        },
+        {
+            "sample_id": "393284000",
+            "question": "Đây có phải là cảnh biển không?",
+            "error": "ViReAgentState() takes no arguments"
+        },
+        {
+            "sample_id": "393338001",
+            "question": "Những loại hoa trong bình?",
+            "error": "ViReAgentState() takes no arguments"
+        },
+        {
+            "sample_id": "524436004",
+            "question": "Trời có mưa không?",
+            "error": "ViReAgentState() takes no arguments"
+        },
+        {
+            "sample_id": "262531001",
+            "question": "Người đàn ông đội mũ đang làm gì?",
+            "error": "ViReAgentState() takes no arguments"
+        },
+        {
+            "sample_id": "262608003",
+            "question": "Bữa ăn này có cơm không?",
+            "error": "ViReAgentState() takes no arguments"
+        },
+        {
+            "sample_id": "262651002",
+            "question": "Đây có phải là một chiếc thuyền giải trí?",
+            "error": "ViReAgentState() takes no arguments"
+        },
+        {
+            "sample_id": "524822007",
+            "question": "Đây là phòng nào?",
+            "error": "ViReAgentState() takes no arguments"
+        },
+        {
+            "sample_id": "544006",
+            "question": "Họ đang chơi gì vậy?",
+            "error": "ViReAgentState() takes no arguments"
+        },
+        {
+            "sample_id": "544014",
+            "question": "Đây là môn thể thao gì?",
+            "error": "ViReAgentState() takes no arguments"
+        }
+    ],
+    "metrics": {
+        "answer_accuracy": 0.0,
+        "answer_f1_score": 0.0,
+        "bleu1": 0.0,
+        "bleu2": 0.0,
+        "bleu3": 0.0,
+        "bleu4": 0.0,
+        "meteor": 0.0,
+        "cider": 0.0,
+        "rouge_l": 0.0,
+        "spice": 0.0,
+        "bertscore_p": 0.0,
+        "bertscore_r": 0.0,
+        "bertscore_f": 0.0
+    },
+    "detailed_results": [
+        {
+            "gold_answer": "có"
+        },
+        {
+            "gold_answer": "không"
+        },
+        {
+            "gold_answer": "hoa tulip"
+        },
+        {
+            "gold_answer": "không"
+        },
+        {
+            "gold_answer": "lướt ván"
+        },
+        {
+            "gold_answer": "đúng"
+        },
+        {
+            "gold_answer": "không"
+        },
+        {
+            "gold_answer": "phòng khách"
+        },
+        {
+            "gold_answer": "bóng chày"
+        },
+        {
+            "gold_answer": "bóng chày"
+        }
+    ]
+}

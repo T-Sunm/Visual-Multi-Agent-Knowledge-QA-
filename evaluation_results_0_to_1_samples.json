@@ -6,36 +6,36 @@
     "metrics": {
         "answer_accuracy": 1.0,
         "answer_f1_score": 1.0,
-        "bleu_1": 0.14285714285034018,
-        "bleu_2": 2.6726124189937955e-09,
-        "bleu_3": 7.217267259522698e-12,
-        "bleu_4": 3.8015566316858765e-13,
-        "meteor": 0.10967250571210968,
+        "bleu_1": 1.340640091535023e-16,
+        "bleu_2": 1.4988811889794536e-16,
+        "bleu_3": 1.7122419125424406e-16,
+        "bleu_4": 2.0252884943922996e-16,
+        "meteor": 0.04953560371517029,
         "cider": 0.0,
-        "rouge_l": 0.19122257053291536,
+        "rouge_l": 0.0,
         "spice": 0.0,
-        "bertscore_p": 0.6644431948661804,
-        "bertscore_r": 0.6765741109848022,
-        "bertscore_f": 0.6704537868499756
+        "bertscore_p": 0.765775203704834,
+        "bertscore_r": 0.7298463582992554,
+        "bertscore_f": 0.7473792433738708
     },
     "detailed_results": [
         {
-            "question": "Những loại hoa trong bình?",
-            "image_caption": "A vase of tulips on a table.",
-            "evidences": [
+            "question": "Đây có phải là cảnh biển không?",
+            "image_caption": "A man in a red and yellow jacket is snowboarding in the air.",
+            "rationales": [
                 {
-                    "Junior": "Context mô tả \"bình có hoa tulips\", và trong Candidates, \"hoa tulip\" có xác suất cao nhất 0.0584, khớp hoàn toàn với mô tả—vì thế đáp án chắc chắn là Hoa tulip."
+                    "Junior": "Bối cảnh mô tả người chơi lăn trượt trên núi, không có yếu tố biển."
                 },
                 {
-                    "Manager": "Context mô tả một bình có hoa tulip. KBs_Knowledge xác nhận tulip là loài hoa có màu sắc rực rỡ và thường được đặt trong bình. Object_Analysis cho biết bình có hoa tulip tươi và màu sắc rực rỡ. Dù các lựa chọn候选 không bao gồm \"tulip\", câu trả lời chính xác dựa trên thông tin trong ngữ cảnh và kiến thức cơ bản về tulip."
+                    "Manager": "Cảnh vật không có biển, chỉ có núi và lăn trên mặt đất."
                 },
                 {
-                    "Senior": "Context nêu rõ \"một bình hoa tulips trên bàn\", và KBs_knowledge xác nhận tulips là loài hoa có đặc điểm cụ thể. Vì vậy, loại hoa trong bình là tulips."
+                    "Senior": "Ngữ cảnh mô tả người đàn ông đang cưỡi ngựa trên núi, không phải cảnh biển."
                 }
             ],
-            "final_answer": "Tulip",
-            "explanation": "Bức ảnh cho thấy bình có hoa tulip, và theo kiến thức thông thường, hoa tulip thường được đặt trong bình.",
-            "gold_answer": "hoa tulip"
+            "final_answer": "không",
+            "explanation": "Cảnh vật không có biển.",
+            "gold_answer": "không"
         }
     ]
 }

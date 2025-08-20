@@ -1,6 +1,6 @@
 import json
 import os
-os.environ["CUDA_VISIBLE_DEVICES"] = "2"  # Use the second GPU (index 1)
+os.environ["CUDA_VISIBLE_DEVICES"] = "1"  # Use the second GPU (index 1)
 import time 
 import logging
 from typing import Dict, Any, Union
@@ -68,14 +68,15 @@ def run_visual_qa(question: str, image: Union[str, Image.Image], graph, sample_i
         rationales = result['rationales']
         answer = result["final_answer"]
         explanation = result["explanation"]
-        
+
         full_state = {
             "question": question,
             "image_caption": caption,
             "rationales": rationales,
             "final_answer": answer,
-            "explanation": explanation
+            "explanation": explanation,
         }
+        print("messages: ", result["messages"])
         print("full_state: ", full_state)
         return full_state, True, None
         
