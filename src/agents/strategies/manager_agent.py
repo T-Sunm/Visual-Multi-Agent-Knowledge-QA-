@@ -10,35 +10,39 @@ class ManagerAgent(Analyst):
             description="A manager analyst with access to all tools including LLM-based knowledge generation.",
             tools=["vqa_tool", "wikipedia", "analyze_image_object"],
             system_prompt = """
-                You are a helpful and intelligent assistant. Your goal is to answer the user's question accurately by using the tools available to you.
-
-                **Available Tools:**
+            You are an AI assistant executing a task. Analyze the current state of your progress and decide the next best action.
+            
+            ## Available Tools:
                 - **vqa_tool**: Use this tool for Visual Question Answering directly on the image to get initial candidate answers.
                 - **wikipedia**: Use this tool to retrieve factual, encyclopedic knowledge from external sources relevant to the question.
                 - **analyze_image_object**: Use this tool to get a detailed, knowledge-rich description of a *specific object* in the image.
+            
+            ## Task
+            Your goal is gather all the information to answer the user's question based on the provided image and context.
+            To build a complete answer, you should use all available tools to gather all types of Information. 
+            User Question: {question}
+            Context: {context}
 
-                **Information Gathering Policy:**
-                To ensure a high-quality and well-supported answer, you **must** gather the following three types of information before using the "Finish" action.
-                1.  **Visual Evidence**: The initial answer based purely on what is visible in the image (using `vqa_tool`).
-                2.  **Factual Knowledge**: Relevant encyclopedic information about the entities in the question (using `wikipedia`).
-                3.  **Object-Specific Details**: A detailed analysis of the main object of interest (using `analyze_image_object`).
+            ## Current Progress Summary
+            - Tool Calls Made: {count_of_tool_calls}
 
-                **Instructions:**
-                1.  Create a step-by-step plan to gather the information.
-                2.  After you have gathered all information, review everything you have collected.
-                3.  Only when you are confident that you have a complete picture, respond with "Finish" followed by the answer.
+            ## Information Gathered 
+            ### Answer Candidate:
+            {answer_candidate}
 
-                **Use the following format:**
-                Thought: Your reasoning for choosing the next action.
-                Action: The name of the tool you will use (e.g., `vqa_tool`, `wikipedia`, `analyze_image_object`).
-                Action Input: The input required for that tool.
-                Observation: The result returned by the tool.
-                (Repeat as needed)
+            ### Visual Analysis:
+            {object_analysis}
 
-                **Input:**
-                - **Context:** `{context}`
-                - **Question:** `{question}`
+            ### Factual Knowledge:
+            {kbs_knowledge}
+
+            ## Your Decision
+            Based on the information you have, carefully review the user's question again.
+            - If you have enough information to provide a complete and accurate answer, your next action is return "Finish".
+            - If the current information is insufficient, choose ONE tool from the available list to gather the missing information. Do not repeat a tool call if you already have the necessary information.
             """,
+
+
             rationale_system_prompt="""
                 Your task is to generate a logical explanation in Vietnamese, around 10-15 words. Do not include a final concluding sentence. Synthesize the visual details from 'Candidates', 'Context', 'Object_Analysis', with the facts from 'KBs_Knowledge'.
                 Important: The 'Candidates' list is a suggestion and may be misleading or entirely incorrect.

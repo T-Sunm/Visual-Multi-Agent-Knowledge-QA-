@@ -4,36 +4,56 @@
     "failed_samples": 0,
     "error_details": [],
     "metrics": {
-        "answer_accuracy": 1.0,
-        "answer_f1_score": 1.0,
-        "bleu_1": 0.09995321961073966,
-        "bleu_2": 2.414099603942028e-09,
-        "bleu_3": 7.415408250142518e-12,
-        "bleu_4": 4.345627629885743e-13,
-        "meteor": 0.05902606984751599,
-        "cider": 0.14834736974468019,
-        "rouge_l": 0.11466165413533834,
+        "answer_accuracy": 0.5,
+        "answer_f1_score": 0.3333333333333333,
+        "bleu_1": 0.17857142856505104,
+        "bleu_2": 2.620712091707599e-09,
+        "bleu_3": 6.589854024757705e-12,
+        "bleu_4": 3.377156414201673e-13,
+        "meteor": 0.22256729788689858,
+        "cider": 0.29742025796536664,
+        "rouge_l": 0.16565384177143072,
         "spice": 0.0,
-        "bertscore_p": 0.7138227224349976,
-        "bertscore_r": 0.6959013342857361,
-        "bertscore_f": 0.7046524286270142
+        "bertscore_p": 0.736416757106781,
+        "bertscore_r": 0.76273113489151,
+        "bertscore_f": 0.7493184804916382
     },
     "detailed_results": [
+        {
+            "question": "Đây có phải là bức ảnh chụp nhiều độ phơi sáng của vận động viên trượt tuyết mặc áo đen không?",
+            "image_caption": "A man snowboarding down a snowy hill.",
+            "rationales": [
+                {
+                    "Junior": "Mô tả về một người trượt tuyết trên núi non trăng không đề cập đến màu áo giáp hoặc trạng thái ánh sáng. Các lựa chọn như \"đúng\" (correct) hoặc \"không\" (no) không được hỗ trợ bởi thông tin trong bối cảnh. Bối cảnh chỉ tập trung vào hành động trượt tuyết, không liên quan đến độ phơi sáng hoặc màu áo. Do đó, câu trả lời phù hợp nhất là \"không\" vì không có bằng chứng trực tiếp về sự xuất hiện của áo đen hoặc nhiều độ phơi sáng."
+                },
+                {
+                    "Manager": "Hình ảnh cho thấy hành động trượt tuyết và màu áo đen, phù hợp với KBs_Knowledge về hành động và màu sắc."
+                },
+                {
+                    "Senior": "Ngữ cảnh mô tả một người đàn ông trượt tuyết trên một núi trăng phủ đầy tuyết, có thể cho thấy hình ảnh có nhiều ánh sáng khác nhau (như góc chụp khác nhau) và người trượt tuyết mặc áo đen. Các lựa chọn \"có\" và \"không\" phản ánh nghi ngờ về việc có ánh sáng đa dạng, nhưng không có thông tin cụ thể từ KBs_Knowledge để xác nhận."
+                }
+            ],
+            "final_answer": "không",
+            "explanation": "Hình ảnh cho thấy người trượt tuyết mặc áo đen nhưng không có bằng chứng về nhiều độ phơi sáng.",
+            "gold_answer": "có"
+        },
         {
             "question": "Đây có phải là cảnh biển không?",
             "image_caption": "A man in a red and yellow jacket is snowboarding in the air.",
             "rationales": [
                 {
-                    "Junior": "Cảnh người đi phong cách snowboarding không phải là cảnh biển vì hoạt động này xảy ra trên núi."
+                    "Junior": "Mô tả về một người đàn ông mặc áo đỏ và vàng đang trượt tuyết trong không gian có sương trắng cho thấy hành động và môi trường đều liên quan đến mùa đông và địa điểm trượt tuyết, không liên quan đến cảnh biển. Trong các lựa chọn, \"không\" là phương án phù hợp nhất vì cảnh hiện tại không đề cập đến biển hoặc môi trường nước, và hành động trượt tuyết rõ ràng khẳng định đây là cảnh trượt tuyết, không phải biển."
                 },
                 {
-                    "Manager": "Cảnh hiện ra một người đàn ông cưỡi ngựa, không phải ở bãi biển."
+                    "Manager": "Hành động của người đàn ông là cưỡi ngựa trên núi, không phải cảnh biển."
                 },
                 {
-                    "Senior": "Ngữ cảnh cho thấy người đàn ông đang cưỡi ngựa, hành vi này không liên quan đến cảnh biển."
+                    "Senior": "Ngữ cảnh mô tả người đàn ông đang bơi lội trên tuyết, hành vi này không liên quan đến cảnh biển. Vì người chơi bơi lội thường xảy ra trong môi trường lạnh, và bơi lội trên tuyết là hoạt động phổ biến trong mùa đông, nên đây không phải là cảnh biển."
                 }
             ],
             "final_answer": "không",
-            "explanation": "Bức ảnh cho thấy người đàn ông đang cưỡi ngựa.",
-            "messages": [
-                
+            "explanation": "Người đàn ông đang trượt tuyết trên núi.",
+            "gold_answer": "không"
+        }
+    ]
+}

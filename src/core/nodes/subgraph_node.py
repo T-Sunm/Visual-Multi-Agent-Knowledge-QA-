@@ -76,9 +76,15 @@ def call_agent_node(state: Union[ViReJuniorState, ViReSeniorState, ViReManagerSt
     base_prompt = state["analyst"].system_prompt
     placeholders = re.findall(r'\{(\w+)\}', base_prompt)
     
+    # Expanded format_values to include current state information
     format_values = {
         'question': state.get('question', ''),
         'context': state.get('image_caption', ''),
+        'count_of_tool_calls': state.get('count_of_tool_calls', 0),
+        'answer_candidate': state.get('answer_candidate', ''),
+        'kbs_knowledge': "\n".join(state.get('kbs_knowledge', [])),
+        'object_analysis': "\n".join(state.get('object_analysis', [])),
+        'lms_knowledge': "\n".join(state.get('lms_knowledge', [])),
     }
     
     format_dict = {key: format_values[key] for key in placeholders if key in format_values}
