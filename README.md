@@ -5,7 +5,6 @@
 [![Dataset](https://img.shields.io/badge/Dataset-ViVQA--X-blue)](https://huggingface.co/datasets/VLAI-AIVN/ViVQA-X)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/T-Sunm/VMARC-QA/blob/main/LICENSE)
 
----
 
 ## 📖 Introduction
 
@@ -32,9 +31,8 @@ The overall architecture of VMARC-QA is shown in the figure below:
 *Figure 1: Overview of the VMARC-QA Framework. Three agents independently generate answer-rationale pairs, which are then aggregated by a dual-stream consensus mechanism to produce the final output.*
 
 
-## 📚 Table of Contents
+## Table of Contents
 - [Introduction](#-introduction)
-- [Quick Start](#-quick-start)
 - [Repository Structure](#-repository-structure)
 - [Installation](#️-installation)
 - [Data Preparation](#-data-preparation)
@@ -43,30 +41,7 @@ The overall architecture of VMARC-QA is shown in the figure below:
 - [Citation](#-citation)
 - [License](#-license)
 
-## 🚀 Quick Start
-
-This guide helps you set up the necessary environments to run VMARC-QA.
-
-```bash
-# 1. Clone the repository and its submodules
-git clone --recurse-submodules [https://github.com/T-Sunm/VMARC-QA.git](https://github.com/T-Sunm/VMARC-QA.git)
-cd VMARC-QA
-
-# 2. Set up the main environment (for the LangGraph framework)
-conda create -n vmarc-qa python=3.10 -y
-conda activate vmarc-qa
-pip install -r requirements.txt
-
-# 3. Set up the tool environment (for the ViVQA-X model)
-# (Execute from the project's root directory)
-cd ViVQA-X
-conda create -n vmarc-qa-tool python=3.10 -y
-conda activate vmarc-qa-tool
-pip install -r requirements.txt
-pip install fastapi uvicorn[standard] python-multipart
-cd ..
-```
-## 📁 Repository Structure
+## Repository Structure
 
 ```
 VMARC-QA/
@@ -75,32 +50,81 @@ VMARC-QA/
 │   ├── core/            # LangGraph multi-agent graph implementation
 │   ├── models/          # Pydantic models for state management
 │   ├── tools/           # VQA and knowledge retrieval tools
-│   ├── utils/           # Utility functions
-│   ├── evaluation/      # Scripts for performance evaluation
-│   └── main.py          # Main entry point for the application
+│   └── utils/           # Utility functions
 │
-├── ViVQA-X/             # Submodule containing the base Vietnamese VQA model
+├── api/                 # FastAPI server providing the VQA tool
 │
-├── scripts/             # Scripts for running experiments and setup
+├── ViVQA-X/             # Git submodule for the base ViVQA model and data
+│
+├── data/                # (To be created) Stores COCO images and ViVQA-X annotations
+│
+├── assets/              # Contains images and assets for the README
+│
+├── notebooks/           # Jupyter notebooks for data exploration or analysis
+│
+├── results/             # Directory to save experiment outputs
+│
+├── experiments/         # Contains experiment configurations and logs
+│
+├── scripts/             # Scripts for setup and running experiments
 │
 ├── .env.example         # Example environment file
-└── requirements.txt     # Python dependencies
+├── main.py              # Main entry point for the application
+├── requirements.txt     # Python dependencies for the main environment
+└── README.md            # This file
 ```
 
 
-## ⚙️ Installation
+## Installation
 
-This section provides a detailed step-by-step guide to setting up the entire project.
+This project requires **two separate Conda environments** due to dependency conflicts between the main LangGraph framework and the legacy ViVQA-X model used for the VQA tool.
+
+---
 
 ### 1. Prerequisites
-- **Conda**: For managing isolated environments.
-- **Python 3.10+**
-- **API Keys**: Copy the `.env.example` file to `.env` and fill in your API keys (if you plan to use services like OpenAI, Wikipedia, etc.).
+
+* **Conda**: For managing isolated environments.
+* **Python 3.10+**
+* **API Keys**: Copy the `.env.example` file to `.env` and add your API keys (e.g., `OPENAI_API_KEY`).
+
+---
 
 ### 2. Environment Setup
-Follow the steps in the [🚀 Quick Start](#-quick-start) section to install the two required conda environments: `vmarc-qa` and `vmarc-qa-tool`.
 
-## 📦 Data Preparation
+You can use the automated setup script:
+
+```bash
+bash scripts/setup.sh
+```
+
+This will create both environments and install all dependencies.
+
+If you prefer manual setup, follow these steps:
+
+**a. Main Environment (`vmarc-qa`)**
+This environment runs the **core multi-agent framework**.
+
+```bash
+conda create -n vmarc-qa python=3.10 -y
+conda activate vmarc-qa
+pip install -r requirements.txt
+```
+
+**b. Tool Environment (`vmarc-qa-tool`)**
+This environment runs a **FastAPI server** that provides the *Aligned Candidate Generator* tool, based on the original **ViVQA-X LSTM-Generative model**.
+
+```bash
+# From the project root
+cd ViVQA-X
+conda create -n vmarc-qa-tool python=3.10 -y
+conda activate vmarc-qa-tool
+pip install -r requirements.txt
+pip install fastapi uvicorn[standard] python-multipart
+cd ..
+```
+
+
+## Data Preparation
 
 VMARC-QA is evaluated on the **ViVQA-X** dataset, which uses images from MS COCO 2014.
 
@@ -130,7 +154,7 @@ cp ViVQA-X/data/final/ViVQA-X_test.json data/ViVQA-X/
 Your data directory structure should look like this when you're done:
 
 ```
-Visual-Multi-Agent-Knowledge-QA-/
+VMARC-QA/
 ├── data/
 │   ├── COCO_Images/
 │   │   └── val2014/
@@ -140,7 +164,7 @@ Visual-Multi-Agent-Knowledge-QA-/
 │       └── ViVQA-X_test.json
 ```
 
-## ▶️ Usage
+## Usage
 The VMARC-QA system consists of multiple components. Follow these steps to run a full experiment.
 
 ### Step 1: Run the VQA Tool Server
@@ -188,7 +212,7 @@ bash scripts/full_system.sh
 ```
 
 
-## 📈 Main Results
+## Main Results
 
 Performance comparison on the ViVQA-X test set. Our method establishes a new state-of-the-art in answer accuracy while maintaining highly competitive explanation quality.
 
@@ -196,17 +220,17 @@ Performance comparison on the ViVQA-X test set. Our method establishes a new sta
 
 | Method              | B1   | B2   | B3   | B4   | M    | R-L  | C    | S   | BS   | Acc  |
 |:--------------------|:----:|:----:|:----:|:----:|:----:|:----:|:----:|:---:|:----:|:----:|
-| Heuristic Baseline [5]  | 8.46 | 3.0  | 1.3  | 0.6  | 8.5  | 7.9  | 0.5  | 0.6 | 70.8 | 10.1 |
-| LSTM-Generative [5] | 22.6 | 11.7 | 6.2  | 3.2  | 16.4 | 23.7 | 34.1 | 4.3 | 72.2 | 53.8 |
-| **NLX-GPT** [21]        | **42.4** | **27.8** | **18.5** | **12.4** | 20.4 | **32.8** | **51.4** | **5.0** | **76.3** | 53.7 |
-| OFA-X [17]              | 30.1 | 22.5 | 10.9 | 9.2  | 17.6 | 25.4 | 25.7 | 3.9 | 68.9 | 50.5 |
-| ReRe [14]               | 34.0 | 21.2 | 13.8 | 9.0  | **20.8** | 29.4 | 35.5 | 4.2 | 74.9 | 47.5 |
+| Heuristic Baseline  | 8.46 | 3.0  | 1.3  | 0.6  | 8.5  | 7.9  | 0.5  | 0.6 | 70.8 | 10.1 |
+| LSTM-Generative     | 22.6 | 11.7 | 6.2  | 3.2  | 16.4 | 23.7 | 34.1 | 4.3 | 72.2 | 53.8 |
+| **NLX-GPT**         | **42.4** | **27.8** | **18.5** | **12.4** | 20.4 | **32.8** | **51.4** | **5.0** | **76.3** | 53.7 |
+| OFA-X               | 30.1 | 22.5 | 10.9 | 9.2  | 17.6 | 25.4 | 25.7 | 3.9 | 68.9 | 50.5 |
+| ReRe                | 34.0 | 21.2 | 13.8 | 9.0  | **20.8** | 29.4 | 35.5 | 4.2 | 74.9 | 47.5 |
 | **VMARC-QA (ours)** | 27.5 | 14.8 | 8.1  | 4.4  | 17.6 | 22.4 | 23.6 | 4.0 | 76.0 | **64.8** |
 
 </div>
 
 
-## 📜 Citation
+## Citation
 
 If you use the code or methods from this work in your research, please cite our paper:
 
@@ -214,7 +238,7 @@ If you use the code or methods from this work in your research, please cite our 
 ```
 
 
-## 📝 License
+## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details. 
 
