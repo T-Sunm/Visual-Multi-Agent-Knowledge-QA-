@@ -79,15 +79,11 @@ VMARC-QA/
 
 This project requires **two separate Conda environments** due to dependency conflicts between the main LangGraph framework and the legacy ViVQA-X model used for the VQA tool.
 
----
-
 ### 1. Prerequisites
 
 * **Conda**: For managing isolated environments.
 * **Python 3.10+**
 * **API Keys**: Copy the `.env.example` file to `.env` and add your API keys (e.g., `OPENAI_API_KEY`).
-
----
 
 ### 2. Environment Setup
 
